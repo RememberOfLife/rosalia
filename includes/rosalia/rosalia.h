@@ -1,6 +1,8 @@
 #pragma once
 
 #include "rosalia/base64.h"
+#include "rosalia/config.h"
+#include "rosalia/jobs.h"
 #include "rosalia/noise.h"
 #include "rosalia/rand.h"
 #include "rosalia/raw_stream.h"
