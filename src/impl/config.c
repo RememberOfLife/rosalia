@@ -1,11 +1,12 @@
-#include <cassert>
-#include <cstdarg>
-#include <cstdbool>
-#include <cstddef>
-#include <cstdint>
-#include <cstdio>
-#include <cstring>
-#include <mutex>
+#include <assert.h>
+#include <pthread.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "rosalia/noise.h"
 
@@ -14,8 +15,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-//TODO move impl from cpp to c
 
 static const uint32_t CJ_BASE_CAP = 4;
 
@@ -1381,43 +1380,46 @@ bool cj_dget_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, cj_color4
 //////////////
 // cfg locking
 
-struct cfg_lock {
-    std::mutex m; //TODO use a proper rwlock, but shared mutex needs cpp17
-};
+typedef struct cfg_lock_t {
+    pthread_rwlock_t rwl;
+} cfg_lock;
 
 void* cfg_lock_create()
 {
-    cfg_lock* locki = new cfg_lock;
+    cfg_lock* locki = (cfg_lock*)malloc(sizeof(cfg_lock));
+    pthread_rwlock_init(&locki->rwl, NULL);
     return locki;
 }
 
 void cfg_lock_destroy(void* lock)
 {
-    delete (cfg_lock*)lock;
+    cfg_lock* locki = (cfg_lock*)lock;
+    pthread_rwlock_destroy(&locki->rwl);
+    free(locki);
 }
 
 void cfg_rlock(void* lock)
 {
     cfg_lock* locki = (cfg_lock*)lock;
-    locki->m.lock();
+    pthread_rwlock_rdlock(&locki->rwl);
 }
 
 void cfg_runlock(void* lock)
 {
     cfg_lock* locki = (cfg_lock*)lock;
-    locki->m.unlock();
+    pthread_rwlock_unlock(&locki->rwl);
 }
 
 void cfg_wlock(void* lock)
 {
     cfg_lock* locki = (cfg_lock*)lock;
-    locki->m.lock();
+    pthread_rwlock_wrlock(&locki->rwl);
 }
 
 void cfg_wunlock(void* lock)
 {
     cfg_lock* locki = (cfg_lock*)lock;
-    locki->m.unlock();
+    pthread_rwlock_unlock(&locki->rwl);
 }
 
 #ifdef __cplusplus

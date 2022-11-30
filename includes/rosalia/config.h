@@ -167,6 +167,7 @@ bool cj_dget_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, cj_color4
 // bool cj_set_u64(cj_ovac* root, const char* data_path, uint64_t v); //TODO want shallow value set?
 //...
 
+//TODO need this still?
 // for concurrent access to the tree, later on might make the tree more capable and lock free
 void* cfg_lock_create();
 void cfg_lock_destroy(void* lock);
