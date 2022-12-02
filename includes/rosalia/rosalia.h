@@ -2,6 +2,7 @@
 
 #include "rosalia/base64.h"
 #include "rosalia/config.h"
+#include "rosalia/heapstackify.h"
 #include "rosalia/jobs.h"
 #include "rosalia/noise.h"
 #include "rosalia/rand.h"

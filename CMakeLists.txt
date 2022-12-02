@@ -28,6 +28,21 @@ set(INCLUDES
 )
 
 set(SOURCES
+    src/impl/argparse.c
+    src/impl/base64.c
+    src/impl/config.c
+    src/impl/heapstackify.c
+    src/impl/jobs.cpp
+    src/impl/math.c
+    src/impl/noise.c
+    src/impl/rand.c
+    src/impl/raw_stream.c
+    src/impl/semver.c
+    src/impl/serialization.c
+    src/impl/timestamp.c
+
+    src/tests/heapstackify.c
+
     src/main.c
 )
 
