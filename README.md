@@ -32,7 +32,6 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * (rand)
   * raw_stream (serialize random types and check that deserialize produces expected output)
   * semver
-  * serialization (test that obj1->serialize->deserializeto(obj2) and ob2->serialize produce the same serialization, same for copy)
   * timestamp (show monotonicity and fractional use)
 * versioning for apis?
 * possibly work through and adapt some things from the [stb_howto](https://github.com/nothings/stb/blob/master/docs/stb_howto.txt)

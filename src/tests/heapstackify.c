@@ -3,9 +3,9 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include <rosalia/alloc.h>
-#include <rosalia/heapstackify.h>
-#include <rosalia/timestamp.h>
+#include "rosalia/alloc.h"
+#include "rosalia/heapstackify.h"
+#include "rosalia/timestamp.h"
 
 #include "tests/tests.h"
 

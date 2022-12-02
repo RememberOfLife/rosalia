@@ -6,6 +6,8 @@ extern "C" {
 
 void run_test_heapstackify();
 
+void run_test_serialization();
+
 #ifdef __cplusplus
 }
 #endif

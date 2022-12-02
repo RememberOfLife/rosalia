@@ -66,6 +66,8 @@ size_t ptrdiff(const void* p_end, const void* p_start)
 
 // primitive serialization functions
 
+//TODO somehow make this less repetitive
+
 size_t ls_primitive_bool_serializer(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     bool* cin_p = (bool*)obj_in;
@@ -530,7 +532,109 @@ size_t layout_serializer_impl(GSIT itype, const serialization_layout* layout, vo
                         cbuf = ptradd(cbuf, csize);
                     }
                 } break;
+                case SL_TYPE_UNION_INTERNALLY_TAGGED: {
+                    assert(pl->ext.un.tag_map != NULL);
+                    assert(pl->ext.un.tag_offset == 0);
+                    uint64_t un_tag;
+                    if (itype == GSIT_DESERIALIZE) {
+                        // peek tag from stream by tag_size
+                        if (ptrdiff(buf_end, buf) < pl->ext.un.tag_size) {
+                            return LS_ERR;
+                        }
+                        raw_stream rs = rs_init(buf);
+                        switch (pl->ext.un.tag_size) {
+                            case 1: {
+                                un_tag = rs_r_uint8(&rs);
+                            } break;
+                            case 2: {
+                                un_tag = rs_r_uint16(&rs);
+                            } break;
+                            case 4: {
+                                un_tag = rs_r_uint32(&rs);
+                            } break;
+                            case 8: {
+                                un_tag = rs_r_uint64(&rs);
+                            } break;
+                            default: {
+                                assert(0);
+                            } break;
+                        }
+                    } else {
+                        switch (pl->ext.un.tag_size) {
+                            case 1: {
+                                un_tag = (uint64_t)(*(uint8_t*)in_p);
+                            } break;
+                            case 2: {
+                                un_tag = (uint64_t)(*(uint16_t*)in_p);
+                            } break;
+                            case 4: {
+                                un_tag = (uint64_t)(*(uint32_t*)in_p);
+                            } break;
+                            case 8: {
+                                un_tag = (uint64_t)(*(uint64_t*)in_p);
+                            } break;
+                            default: {
+                                assert(0);
+                            } break;
+                        }
+                    }
+                    assert(pl->ext.un.tag_max > 0);
+                    if (un_tag >= pl->ext.un.tag_max) {
+                        return LS_ERR;
+                    }
+                    size_t csize = layout_serializer_impl(itype, pl->ext.un.tag_map[un_tag], in_p, out_p, cbuf, ebuf);
+                    if (csize == LS_ERR) {
+                        return LS_ERR;
+                    }
+                    rsize += csize;
+                    if (use_buf == true) {
+                        cbuf = ptradd(cbuf, csize);
+                    }
+                } break;
+                case SL_TYPE_UNION_EXTERNALLY_TAGGED: {
+                    assert(pl->ext.un.tag_map != NULL);
+                    void* tag_p;
+                    if (itype == GSIT_DESERIALIZE) {
+                        tag_p = ptradd(obj_out, pl->ext.un.tag_offset);
+                    } else {
+                        tag_p = ptradd(obj_in, pl->ext.un.tag_offset);
+                    }
+                    uint64_t un_tag;
+                    switch (pl->ext.un.tag_size) {
+                        case 1: {
+                            un_tag = (uint64_t) * ((uint8_t*)tag_p);
+                        } break;
+                        case 2: {
+                            un_tag = (uint64_t) * ((uint16_t*)tag_p);
+                        } break;
+                        case 4: {
+                            un_tag = (uint64_t) * ((uint32_t*)tag_p);
+                        } break;
+                        case 8: {
+                            un_tag = (uint64_t) * ((uint64_t*)tag_p);
+                        } break;
+                        default: {
+                            assert(0);
+                        } break;
+                    }
+                    assert(pl->ext.un.tag_max > 0);
+                    if (un_tag >= pl->ext.un.tag_max) {
+                        return LS_ERR;
+                    }
+                    const serialization_layout* tag_selected_union_layout = pl->ext.un.tag_map[un_tag];
+                    if (tag_selected_union_layout != NULL) {
+                        size_t csize = layout_serializer_impl(itype, tag_selected_union_layout, in_p, out_p, cbuf, ebuf);
+                        if (csize == LS_ERR) {
+                            return LS_ERR;
+                        }
+                        rsize += csize;
+                        if (use_buf == true) {
+                            cbuf = ptradd(cbuf, csize);
+                        }
+                    }
+                } break;
                 case SL_TYPE_COMPLEX: {
+                    assert(pl->ext.layout != NULL);
                     size_t csize = layout_serializer_impl(itype, pl->ext.layout, in_p, out_p, cbuf, ebuf);
                     if (csize == LS_ERR) {
                         return LS_ERR;
@@ -541,6 +645,7 @@ size_t layout_serializer_impl(GSIT itype, const serialization_layout* layout, vo
                     }
                 } break;
                 case SL_TYPE_CUSTOM: {
+                    assert(pl->ext.serializer != NULL);
                     size_t csize = pl->ext.serializer(itype, in_p, out_p, cbuf, ebuf);
                     if (csize == LS_ERR) {
                         return LS_ERR;

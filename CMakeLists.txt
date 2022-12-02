@@ -43,6 +43,7 @@ set(SOURCES
     src/impl/timestamp.c
 
     src/tests/heapstackify.c
+    src/tests/serialization.c
 
     src/main.c
 )
