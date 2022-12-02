@@ -8,6 +8,101 @@
 extern "C" {
 #endif
 
+//TODO unserializable type that throws error on serialize and copy
+//TODO api helpers to write easy custom serializer functions if the type is known
+//TODO more detailed error reporting?
+//TODO maybe max depth for recursive ptr types
+/*TODO tagged union serializer type, usage:
+
+    enum TUT {
+        TUT_NONE = 0,
+        TUT_FOO,
+        TUT_BAR,
+        TUT_BAZ,
+        TUT_COUNT,
+        TUT_MAX_SIZE = UINT32_MAX,
+    };
+
+
+    struct tu {
+        TUT t; // must be first in base struct and union
+        uint32_t bv; // any optional extras in the base type
+        uint32_t cv; // any optional extras in the base type
+    };
+    struct tu_foo {
+        tu base;
+        char* str;
+    };
+    struct tu_bar {
+        tu base;
+        timestamp ts;
+    };
+    union tu_any {
+        tu base;
+        tu_foo foo;
+        tu_bar bar;
+    };
+    const serialization_layout* sl_tu_map[TUT_COUNT] = {
+        [TUT_NONE] = sl_tu,
+        [TUT_FOO] = sl_foo, // includes serializer for base struct (i.e. tag)
+        [TUT_BAR] = sl_bar,
+        [TUT_BAZ] = sl_tu,
+    };
+    const serialization_layout sl_tu_any[] = {
+        {
+            SL_TYPE_INTERNALY_TAGGED_UNION, 0,
+            .ext.union.tagtypesize = sizeof(TUT),
+            .ext.union.typemap = sla_tu,
+        },
+        {SL_TYPE_STOP},
+    };
+
+    use like:
+    struct has_inside_tag {
+        // other members
+        tu_any union_member;
+        // other members
+    };
+    const serialization_layout sl_hum {
+        // other members
+        {SL_TYPE_COMPLEX, offsetof(has_inside_tag, union_member), .ext.layout = sl_tu_any},
+        // other members
+        {SL_TYPE_STOP},
+    };
+
+
+    tag outside of union:
+    struct has_outside_tag {
+        // other members
+        TUT tag;
+        union {
+            tu_foo foo;
+            tu_bar bar;
+        } u;
+        // other members
+    };
+    const serialization_layout* sl_tu_map[TUT_COUNT] = {
+        [TUT_NONE] = NULL,
+        [TUT_FOO] = sl_foo,
+        [TUT_BAR] = sl_bar,
+        [TUT_BAZ] = NULL,
+    }
+    const serialization_layout sl_hot[] = {
+        {SL_TYPE_U32, offsetof(has_outside_tag, tag)},
+        {
+            SL_TYPE_EXTERNALLY_TAGGED_UNION,
+            offsetof(has_outside_tag, u),
+            .ext.union.tagtypesize = sizeof(TUT),
+            .ext.union.tagoffset = offsetof(has_outside_tag, tag),
+            .ext.union.typemap = sla_tu,
+        }
+        {SL_TYPE_STOP},
+    };
+
+    //TODO what about sparse enums for union tags? later
+
+*/
+
 /////
 // utils for serialization
 
@@ -47,7 +142,8 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
     SL_TYPE_BLOB, // blob member;
 
     // extension types, must supply typesize
-    SL_TYPE_COMPLEX, // // use ext.layout to specify the type
+    // SL_TYPE_UNION, //TODO
+    SL_TYPE_COMPLEX, // use ext.layout to specify the type //TODO rename to struct?
     SL_TYPE_CUSTOM, // use ext.serializer to supply the serializer to use
 
     SL_TYPE_STOP, // signals the end of serialization items in this sl
@@ -96,6 +192,7 @@ struct serialization_layout_s {
     union {
         size_t immediate;
         size_t offset;
+        size_t max; // optional, only for ptrarray, ignored if 0
     } len; // req'd only if PTR || ARRAY
 };
 

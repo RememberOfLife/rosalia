@@ -482,6 +482,9 @@ size_t layout_serializer_impl(GSIT itype, const serialization_layout* layout, vo
                     *(size_t*)ptradd(obj_out, pl->len.offset) = arr_len;
                 }
                 rsize += 8;
+                if (itype != GSIT_DESTROY && (pl->len.max > 0 && arr_len > pl->len.max)) {
+                    return LS_ERR;
+                }
             } else {
                 arr_len = pl->len.immediate;
             }
