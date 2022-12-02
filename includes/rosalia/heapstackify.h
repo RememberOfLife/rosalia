@@ -38,33 +38,34 @@ typedef struct hs_data_s hs_data;
 
 typedef hs_data* hs_func_t(allocator* allocp, hs_data* _hs_data_);
 
+//TODO maybe stuff context AND params in the allocation for the entire hs_data? or does this break caching and allocators when sizes are different for recursion across different functions?
 struct hs_data_s {
     uint32_t state;
     hs_data* prev;
     hs_func_t* func;
-    //TODO pointerstuff all of these into one allocation b/c always same size? maybe not for retv b/c type change
     void* context;
-    void* params;
+    void* params; // stuffed into same allocation as context
     void* retvloc; // func writes its return value to this address
 };
 
 #define HS_BEGIN case 0:
 
-#define HS_CALL_EMPLACE(rloc, name, param_list...)                                                 \
-    do {                                                                                           \
-        hs_data* new_sf = (hs_data*)allocp->malloc(allocp, sizeof(hs_data));                       \
-        *new_sf = (hs_data){                                                                       \
-            .state = 0,                                                                            \
-            .prev = _hs_data_,                                                                     \
-            .func = name,                                                                          \
-            .context = NULL,                                                                       \
-            .params = (_hs_params_##name##_*)allocp->malloc(allocp, sizeof(_hs_params_##name##_)), \
-            .retvloc = (rloc),                                                                     \
-        };                                                                                         \
-        *((_hs_params_##name##_*)new_sf->params) = (_hs_params_##name##_){param_list};             \
-        _hs_data_->state = __LINE__;                                                               \
-        return new_sf;                                                                             \
-        case __LINE__:;                                                                            \
+#define HS_CALL_EMPLACE(rloc, name, param_list...)                                                               \
+    do {                                                                                                         \
+        hs_data* new_sf = (hs_data*)allocp->malloc(allocp, sizeof(hs_data));                                     \
+        *new_sf = (hs_data){                                                                                     \
+            .state = 0,                                                                                          \
+            .prev = _hs_data_,                                                                                   \
+            .func = name,                                                                                        \
+            .context = (allocp)->malloc((allocp), sizeof(_hs_context_##name##_) + sizeof(_hs_params_##name##_)), \
+            .params = NULL,                                                                                      \
+            .retvloc = (rloc),                                                                                   \
+        };                                                                                                       \
+        new_sf->params = ptradd(new_sf->context, sizeof(_hs_context_##name##_));                                 \
+        *((_hs_params_##name##_*)new_sf->params) = (_hs_params_##name##_){param_list};                           \
+        _hs_data_->state = __LINE__;                                                                             \
+        return new_sf;                                                                                           \
+        case __LINE__:;                                                                                          \
     } while (0)
 
 #define HS_RETURN(rv)                               \
@@ -77,42 +78,46 @@ struct hs_data_s {
         }          \
         return NULL
 
-#define HS_FUNC_DECL(name, context_struct, return_type, param_list...) //TODO
-
 #define HS_FUNC_EXPAND_PARAMS_SEMICOLONIFY(v) v;
 #define HS_FUNC_EXPAND_PARAMS(param_list...) \
     FOR_EACH(HS_FUNC_EXPAND_PARAMS_SEMICOLONIFY, param_list)
 
-#define HS_FUNC_DEF(name, context_struct, return_type, param_list...)                             \
-    typedef struct _hs_params_##name##_s_ {                                                       \
-        HS_FUNC_EXPAND_PARAMS(param_list)                                                         \
-    } _hs_params_##name##_;                                                                       \
-    typedef return_type _hs_retv_##name##_;                                                       \
-    hs_data* name(allocator* allocp, hs_data* _hs_data_)                                          \
-    {                                                                                             \
-        typedef _hs_retv_##name##_ _hs_local_retv_;                                               \
-        if (_hs_data_->context == NULL) {                                                         \
-            _hs_data_->context = (context_struct*)allocp->malloc(allocp, sizeof(context_struct)); \
-        }                                                                                         \
-        context_struct* c = (context_struct*)_hs_data_->context;                                  \
-        _hs_params_##name##_* p = (_hs_params_##name##_*)_hs_data_->params;                       \
+#define HS_FUNC_DECL(name, context_struct, return_type, param_list...) \
+    typedef struct _hs_params_##name##_s_ {                            \
+        HS_FUNC_EXPAND_PARAMS(param_list)                              \
+    } _hs_params_##name##_;                                            \
+    typedef return_type _hs_retv_##name##_;                            \
+    hs_data* name(allocator* allocp, hs_data* _hs_data_);
+
+#define HS_FUNC_DEF(name, context_struct, return_type, param_list...)          \
+    typedef context_struct _hs_context_##name##_;                              \
+    typedef struct _hs_params_##name##_s_ {                                    \
+        HS_FUNC_EXPAND_PARAMS(param_list)                                      \
+    } _hs_params_##name##_;                                                    \
+    typedef return_type _hs_retv_##name##_;                                    \
+    hs_data* name(allocator* allocp, hs_data* _hs_data_)                       \
+    {                                                                          \
+        typedef _hs_retv_##name##_ _hs_local_retv_;                            \
+        _hs_context_##name##_* c = (_hs_context_##name##_*)_hs_data_->context; \
+        _hs_params_##name##_* p = (_hs_params_##name##_*)_hs_data_->params;    \
         switch (_hs_data_->state)
 
 void heapstackify_call_mgr(allocator* allocp, hs_data* hs);
 
-#define HS_ENTRY_CALL_EMPLACE(allocp, rloc, name, param_list...)                                       \
-    do {                                                                                               \
-        hs_data* new_sf = (hs_data*)(allocp)->malloc((allocp), sizeof(hs_data));                       \
-        *new_sf = (hs_data){                                                                           \
-            .state = 0,                                                                                \
-            .prev = NULL,                                                                              \
-            .func = name,                                                                              \
-            .context = NULL,                                                                           \
-            .params = (_hs_params_##name##_*)(allocp)->malloc((allocp), sizeof(_hs_params_##name##_)), \
-            .retvloc = (rloc),                                                                         \
-        };                                                                                             \
-        *((_hs_params_##name##_*)new_sf->params) = (_hs_params_##name##_){param_list};                 \
-        heapstackify_call_mgr((allocp), new_sf);                                                       \
+#define HS_ENTRY_CALL_EMPLACE(allocp, rloc, name, param_list...)                                                 \
+    do {                                                                                                         \
+        hs_data* new_sf = (hs_data*)(allocp)->malloc((allocp), sizeof(hs_data));                                 \
+        *new_sf = (hs_data){                                                                                     \
+            .state = 0,                                                                                          \
+            .prev = NULL,                                                                                        \
+            .func = name,                                                                                        \
+            .context = (allocp)->malloc((allocp), sizeof(_hs_context_##name##_) + sizeof(_hs_params_##name##_)), \
+            .params = NULL,                                                                                      \
+            .retvloc = (rloc),                                                                                   \
+        };                                                                                                       \
+        new_sf->params = ptradd(new_sf->context, sizeof(_hs_context_##name##_));                                 \
+        *((_hs_params_##name##_*)new_sf->params) = (_hs_params_##name##_){param_list};                           \
+        heapstackify_call_mgr((allocp), new_sf);                                                                 \
     } while (0)
 
 #ifdef __cplusplus
