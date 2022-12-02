@@ -1,5 +1,6 @@
 #pragma once
 
+#include "rosalia/alloc.h"
 #include "rosalia/argparse.h"
 #include "rosalia/base64.h"
 #include "rosalia/config.h"

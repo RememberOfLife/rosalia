@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include <rosalia/alloc.h>
 #include <rosalia/heapstackify.h>
 #include <rosalia/timestamp.h>
 
@@ -86,6 +87,7 @@ void run_test_heapstackify()
     uint64_t req_fib = 35;
     uint64_t result1;
     uint64_t result2;
+    allocator lina;
 
     start = timestamp_get_ms64();
     result1 = canon_fib(req_fib);
@@ -93,19 +95,38 @@ void run_test_heapstackify()
     printf("canon fib %lu: %lu in %lums\n", req_fib, result1, stop - start);
 
     start = timestamp_get_ms64();
-    HS_ENTRY_CALL_EMPLACE(&result2, fib, req_fib); //TODO use custom memory allocator up front
+    HS_ENTRY_CALL_EMPLACE(&allocator_libc, &result2, fib, req_fib);
     stop = timestamp_get_ms64();
-    printf("heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
+    printf("libc heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
+
+    lina = create_allocator_linear((size_t)1 << 32);
+    start = timestamp_get_ms64();
+    HS_ENTRY_CALL_EMPLACE(&lina, &result2, fib, req_fib);
+    stop = timestamp_get_ms64();
+    printf("linear heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
+    destroy_allocator_linear(&lina);
 
     printf("---\n");
 
-    uint64_t req_rs = 10000;
-    printf("heapstackify runsum %lu: ", req_rs);
-    HS_ENTRY_CALL_EMPLACE(&result1, runsum, req_rs);
-    printf("%lu\n", result1);
+    uint64_t req_rs = 100000;
 
-    // this overflows the stack with req_rs 10000
+    start = timestamp_get_ms64();
+    HS_ENTRY_CALL_EMPLACE(&allocator_libc, &result1, runsum, req_rs);
+    stop = timestamp_get_ms64();
+    printf("libc heapstackify runsum %lu: %lu in %lums\n", req_rs, result1, stop - start);
+
+    lina = create_allocator_linear((size_t)1 << 32);
+    start = timestamp_get_ms64();
+    HS_ENTRY_CALL_EMPLACE(&lina, &result1, runsum, req_rs);
+    stop = timestamp_get_ms64();
+    printf("linear heapstackify runsum %lu: %lu in %lums\n", req_rs, result1, stop - start);
+    destroy_allocator_linear(&lina);
+
+    // this overflows the stack with req_rs >= 10000
     printf("canon runsum %lu: ", req_rs);
     fflush(stdout);
-    printf("%lu\n", canon_runsum(req_rs));
+    start = timestamp_get_ms64();
+    result2 = canon_runsum(req_rs);
+    stop = timestamp_get_ms64();
+    printf("%luin %lums\n", result2, stop - start);
 }
