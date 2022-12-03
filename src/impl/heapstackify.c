@@ -18,7 +18,6 @@ void heapstackify_call_mgr(allocator* allocp, hs_data* hs)
         }
         hs_data* del_sf = callstack;
         callstack = callstack->prev;
-        allocp->free(allocp, del_sf->context); // this frees the params too b/c they're stuffed in the same allocation
         allocp->free(allocp, del_sf);
     }
 }
