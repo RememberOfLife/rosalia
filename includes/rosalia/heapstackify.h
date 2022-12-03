@@ -68,9 +68,11 @@ struct hs_data_s {
         case __LINE__:;                                                                                          \
     } while (0)
 
-#define HS_RETURN(rv)                               \
-    *((_hs_local_retv_*)_hs_data_->retvloc) = (rv); \
-    return NULL
+#define HS_RETURN(rv)                                   \
+    do {                                                \
+        *((_hs_local_retv_*)_hs_data_->retvloc) = (rv); \
+        return NULL;                                    \
+    } while (0)
 
 #define HS_END     \
     default:       \
@@ -83,6 +85,7 @@ struct hs_data_s {
     FOR_EACH(HS_FUNC_EXPAND_PARAMS_SEMICOLONIFY, param_list)
 
 #define HS_FUNC_DECL(name, context_struct, return_type, param_list...) \
+    typedef context_struct _hs_context_##name##_;                      \
     typedef struct _hs_params_##name##_s_ {                            \
         HS_FUNC_EXPAND_PARAMS(param_list)                              \
     } _hs_params_##name##_;                                            \
