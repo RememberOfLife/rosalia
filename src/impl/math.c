@@ -52,3 +52,23 @@ uint64_t rosa_overlap(uint64_t value, uint64_t align)
     }
     return 0;
 }
+
+float rosa_scale_f2f(float in_v, float in_min, float in_max, float out_min, float out_max)
+{
+    return (in_v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+uint64_t rosa_scale_f2i(float in_v, float in_min, float in_max, uint64_t out_min, uint64_t out_max)
+{
+    return (uint64_t)((in_v - in_min) * ((float)(out_max - out_min)) / (in_max - in_min) + (float)(out_min));
+}
+
+float rosa_scale_i2f(uint64_t in_v, uint64_t in_min, uint64_t in_max, float out_min, float out_max)
+{
+    return (float)(in_v - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
+}
+
+uint64_t rosa_scale_i2i(uint64_t in_v, uint64_t in_min, uint64_t in_max, uint64_t out_min, uint64_t out_max)
+{
+    return (in_v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}

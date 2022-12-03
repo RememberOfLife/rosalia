@@ -69,13 +69,13 @@ float get_2d_zto(int32_t indexX, int32_t indexY, uint32_t seed)
     return (float)(ONE_OVER_MAX_UINT * (double)get_2d_u32(indexX, indexY, seed));
 }
 
-float get_4d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
+float get_3d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
     return (float)(ONE_OVER_MAX_UINT * (double)get_3d_u32(indexX, indexY, indexZ, seed));
 }
 
-float get_5d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
+float get_4d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
     return (float)(ONE_OVER_MAX_UINT * (double)get_4d_u32(indexX, indexY, indexZ, indexT, seed));
@@ -99,7 +99,7 @@ float get_3d_noto(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
     return (float)(ONE_OVER_MAX_INT * (double)(int)get_3d_u32(indexX, indexY, indexZ, seed));
 }
 
-float get_5d_noto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
+float get_4d_noto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
     return (float)(ONE_OVER_MAX_INT * (double)(int)get_4d_u32(indexX, indexY, indexZ, indexT, seed));
@@ -117,6 +117,23 @@ uint32_t strhash(const char* str, const char* str_end)
         str++;
     }
     return acc;
+}
+
+float coherent_noise_2d(coherent_noise* cn, float x, float y)
+{
+    float max_amp = 0;
+    float amp = 1;
+    float freq = cn->scale;
+    float sample = 0;
+    // add successively smaller, higher-frequency terms
+    for (uint8_t i = 0; i < cn->octaves; i++) {
+        sample += get_2d_noto(x * freq, y * freq, cn->seed) * amp;
+        max_amp += amp;
+        amp *= cn->persistence;
+        freq *= cn->lacunarity;
+    }
+    sample /= max_amp; // take the average value of the iterations
+    return sample;
 }
 
 #ifdef __cplusplus

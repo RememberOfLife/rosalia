@@ -10,7 +10,7 @@ General purpose convencience APIs for C.
 |[`config.h`](./includes/rosalia/config.h)|**JSON** representation and (de-)serialization.|
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)|**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)|**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation.|
-|[`math.h`](./includes/rosalia/math.h)|**Math utils**, mostly integer for now.|
+|[`math.h`](./includes/rosalia/math.h)|**Math utils.**|
 |[`noise.h`](./includes/rosalia/noise.h)|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./includes/rosalia/rand.h)|**PCG32 PRNG** with acceptable speed.|
 |[`raw_stream.h`](./includes/rosalia/raw_stream.h)|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
@@ -36,10 +36,10 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 * versioning for apis?
 * possibly work through and adapt some things from the [stb_howto](https://github.com/nothings/stb/blob/master/docs/stb_howto.txt)
 * feature todos:
-  * noise needs brownian motion (i.e. layered noise)
+  * include original opensimplex noise
   * make macros available for ptradd ptrdiff ptrsub
   * skiplist
-  * linked lists
+  * linked lists (also pointer stable segmented array)
   * markdown parser
   * dynamic str based plugin loading?
   * general purpose events and event queue?

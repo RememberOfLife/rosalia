@@ -13,6 +13,8 @@ extern "C" {
 
 //TODO ability to use custom context
 
+//TODO provide memcheck composition part for allocator
+
 /*
 * SM: debug utility for malloc free replace to find leaks etc
   * use pthreadmutex

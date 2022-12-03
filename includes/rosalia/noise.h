@@ -67,19 +67,32 @@ uint32_t get_4d_u32(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t inde
 // same nois, mapped to floats in [0,1] for convenience
 float get_1d_zto(int32_t index, uint32_t seed);
 float get_2d_zto(int32_t indexX, int32_t indexY, uint32_t seed);
-float get_4d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
-float get_5d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
+float get_3d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
+float get_4d_zto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
 
 // same nois, mapped to floats in [-1,1] for convenience
 float get_1d_noto(int32_t index, uint32_t seed);
 float get_2d_noto(int32_t indexX, int32_t indexY, uint32_t seed);
 float get_3d_noto(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
-float get_5d_noto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
+float get_4d_noto(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
 
 // strhash function not part of squirrelnoise
 // pass str_end NULL as default to use normal null character termination
 // str_end points to the first character NOT included in the hash
 uint32_t strhash(const char* str, const char* str_end);
+
+typedef struct coherent_noise_s {
+    uint32_t seed;
+    float scale; // what distance to view the noisemap from, smaller is closer (i.e. structures get bigger)
+    uint8_t octaves; // levels of detail noise should have, higher gives more possible detail (finer grain)
+    float lacunarity; // how much detail is added or removed each octave (adjusts frequency), higher gives less blending of octaves
+    float persistence; // how much each octave contributes to the overall shape (adjusts amplitude), higher makes rougher
+} coherent_noise;
+
+// returns in [-1,1]
+float coherent_noise_2d(coherent_noise* cn, float x, float y);
+
+//TODO get_2d_noto double and coherent noise double
 
 /*
 diy inserts:
