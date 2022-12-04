@@ -10,7 +10,6 @@
 extern "C" {
 #endif
 
-//TODO ugly as hell
 // for each macro
 #define FE_0(WHAT)
 #define FE_1(WHAT, X) WHAT(X)
@@ -46,6 +45,8 @@ struct hs_data_s {
 };
 
 #define HS_BEGIN case 0:
+
+//TODO replace retvloc by offset of stackframe, CALL_EMPLACE asserts that this offset is guaranteed not to be out of bounds, also HS_RETURN does pointer addition, also need initial HS_FUNC
 
 #define HS_CALL_EMPLACE(rloc, name, param_list...)                                                                         \
     do {                                                                                                                   \

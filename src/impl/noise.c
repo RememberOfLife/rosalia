@@ -127,7 +127,7 @@ float coherent_noise_2d(coherent_noise* cn, float x, float y)
     float sample = 0;
     // add successively smaller, higher-frequency terms
     for (uint8_t i = 0; i < cn->octaves; i++) {
-        sample += get_2d_noto(x * freq, y * freq, cn->seed) * amp;
+        sample += get_2d_noto(x * freq, y * freq, cn->seed) * amp; //TODO use proper simplex noise, this doesnt work
         max_amp += amp;
         amp *= cn->persistence;
         freq *= cn->lacunarity;

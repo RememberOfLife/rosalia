@@ -47,36 +47,33 @@ HS_FUNC_DEF(fib, fib_local, uint64_t, uint64_t v)
     HS_END;
 }
 
-uint64_t canon_runsum(uint64_t v)
+int canon_ackerman(uint64_t m, uint64_t n)
 {
-    uint64_t locals[500];
-    locals[v % 500] = v;
-    if (v == 0) {
-        return 0;
-    }
-    if (locals[v % 500] == 0) {
-        locals[17] = 17;
-    }
-    return v + canon_runsum(v - 1);
+    if (m == 0)
+        return n + 1;
+    else if (n == 0)
+        return canon_ackerman(m - 1, 1);
+    else
+        return canon_ackerman(m - 1, canon_ackerman(m, n - 1));
 }
 
 typedef struct runsum_local_s {
-    uint64_t locals[500];
-    uint64_t r;
+    uint64_t ret;
 } runsum_local;
 
-HS_FUNC_DEF(runsum, runsum_local, uint64_t, uint64_t v)
+HS_FUNC_DEF(ackerman, runsum_local, uint64_t, uint64_t m, uint64_t n)
 {
     HS_BEGIN;
-    c->locals[p->v % 500] = p->v;
-    if (p->v == 0) {
-        HS_RETURN(0);
+    if (p->m == 0)
+        HS_RETURN(p->n + 1);
+    else if (p->n == 0) {
+        HS_CALL_EMPLACE(&c->ret, ackerman, p->m - 1, 1);
+        HS_RETURN(c->ret);
+    } else {
+        HS_CALL_EMPLACE(&c->ret, ackerman, p->m, p->n - 1);
+        HS_CALL_EMPLACE(&c->ret, ackerman, p->m - 1, c->ret);
+        HS_RETURN(c->ret);
     }
-    if (c->locals[p->v % 500] == 0) {
-        c->locals[17] = 17;
-    }
-    HS_CALL_EMPLACE(&c->r, runsum, p->v - 1);
-    HS_RETURN(p->v + c->r);
     HS_END;
 }
 
@@ -108,25 +105,25 @@ void run_test_heapstackify()
 
     printf("---\n");
 
-    uint64_t req_rs = 100000;
+    uint64_t req_rs_m = 3;
+    uint64_t req_rs_n = 11;
 
     start = timestamp_get_ms64();
-    HS_ENTRY_CALL_EMPLACE(&allocator_libc, &result1, runsum, req_rs);
+    HS_ENTRY_CALL_EMPLACE(&allocator_libc, &result1, ackerman, req_rs_m, req_rs_n);
     stop = timestamp_get_ms64();
-    printf("libc heapstackify runsum %lu: %lu in %lums\n", req_rs, result1, stop - start);
+    printf("libc heapstackify ackerman %lu %lu: %lu in %lums\n", req_rs_m, req_rs_n, result1, stop - start);
 
-    lina = create_allocator_linear((size_t)1 << 32);
+    lina = create_allocator_linear((size_t)1 << 34);
     start = timestamp_get_ms64();
-    HS_ENTRY_CALL_EMPLACE(&lina, &result1, runsum, req_rs);
+    HS_ENTRY_CALL_EMPLACE(&lina, &result1, ackerman, req_rs_m, req_rs_n);
     stop = timestamp_get_ms64();
-    printf("linear heapstackify runsum %lu: %lu in %lums\n", req_rs, result1, stop - start);
+    printf("linear heapstackify ackerman %lu %lu: %lu in %lums\n", req_rs_m, req_rs_n, result1, stop - start);
     destroy_allocator_linear(&lina);
 
-    // this overflows the stack with req_rs >= 10000
-    printf("canon runsum %lu: ", req_rs);
+    printf("canon ackerman %lu %lu: ", req_rs_m, req_rs_n);
     fflush(stdout);
     start = timestamp_get_ms64();
-    result2 = canon_runsum(req_rs);
+    result2 = canon_ackerman(req_rs_m, req_rs_n);
     stop = timestamp_get_ms64();
-    printf("%luin %lums\n", result2, stop - start);
+    printf("%lu in %lums\n", result2, stop - start);
 }
