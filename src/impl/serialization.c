@@ -15,10 +15,21 @@ extern "C" {
 /////
 // utils for event serialization
 
+const blob BLOB_NULL = (blob){
+    .len = 0,
+    .data = NULL,
+};
+
 void blob_create(blob* b, size_t len)
 {
     b->len = len;
     b->data = len > 0 ? malloc(len) : NULL;
+}
+
+bool blob_is_null(blob* b)
+{
+    assert(b->data == NULL);
+    return b->len == 0;
 }
 
 void blob_resize(blob* b, size_t len, bool preserve_data)

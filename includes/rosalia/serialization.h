@@ -12,6 +12,7 @@ extern "C" {
 //TODO api helpers to write easy custom serializer functions if the type is known
 //TODO more detailed error reporting?
 //TODO maybe max depth for recursive ptr types
+//TODO how does size work across machines of different register width?
 
 //NOTE: sparse enums for union tags not supported for now
 
@@ -27,7 +28,11 @@ typedef struct blob_s {
     void* data;
 } blob;
 
+extern const blob BLOB_NULL;
+
 void blob_create(blob* b, size_t len);
+
+bool blob_is_null(blob* b);
 
 void blob_resize(blob* b, size_t len, bool preserve_data);
 
@@ -55,6 +60,7 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
     // pseudo primitives
     SL_TYPE_STRING, // char* member;
     SL_TYPE_BLOB, // blob member;
+    //TODO both blob and string need some way to set max size
 
     // extension types, must supply typesize if ptr/arr
     SL_TYPE_UNION_INTERNALLY_TAGGED, // use ext.un.{tag_size,tag_max,tag_map}
@@ -93,6 +99,7 @@ typedef struct serialization_layout_s serialization_layout;
 // must provide guarantee that any zero initialized object will be destructible from any partial deserialized state *as left by this function*
 typedef size_t custom_serializer_t(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end);
 
+//TODO dont use size_t for offsets and sizes because they are so small anyways?
 struct serialization_layout_s {
     SL_TYPE type;
     size_t data_offset;
@@ -120,6 +127,8 @@ struct serialization_layout_s {
         size_t offset;
         size_t max; // optional, only for ptrarray, ignored if 0
     } len; // req'd only if PTR || ARRAY
+
+    //TODO typeopts void* which is passed verbatim to the type serializer, e.g. for int min max or blob max size etc
 };
 
 static const size_t LS_ERR = SIZE_MAX;
