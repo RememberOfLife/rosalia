@@ -2,21 +2,21 @@
 
 General purpose convencience APIs for C.
 
-|library|description|
-|---|---|
-|[`alloc.h`](./includes/rosalia/alloc.h)|**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
-|[`argparse.h`](./includes/rosalia/argparse.h)|**CLI argument parsing** (//TODO: with different flavors).|
-|[`base64.h`](./includes/rosalia/base64.h)|**Base64** encode and decode capabilities.|
-|[`config.h`](./includes/rosalia/config.h)|**JSON** representation and (de-)serialization.|
-|[`heapstackify.h`](./includes/rosalia/heapstackify.h)|**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
-|[`jobs.h`](./includes/rosalia/jobs.h)|**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
-|[`math.h`](./includes/rosalia/math.h)|**Math utils.**|
-|[`noise.h`](./includes/rosalia/noise.h)|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
-|[`rand.h`](./includes/rosalia/rand.h)|**PCG32 PRNG** with acceptable speed.|
-|[`raw_stream.h`](./includes/rosalia/raw_stream.h)|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
-|[`semver.h`](./includes/rosalia/semver.h)|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
-|[`serialization.h`](./includes/rosalia/serialization.h)|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
-|[`timestamp.h`](./includes/rosalia/timestamp.h)|**Monotonic timestamps (with fractional seconds).**|
+|library|version|description|
+|---|---|---|
+|[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
+|[`argparse.h`](./includes/rosalia/argparse.h)||**CLI argument parsing** (//TODO: with different flavors).|
+|[`base64.h`](./includes/rosalia/base64.h)||**Base64** encode and decode capabilities.|
+|[`config.h`](./includes/rosalia/config.h)||**JSON** representation and (de-)serialization.|
+|[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
+|[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
+|[`math.h`](./includes/rosalia/math.h)||**Math utils.**|
+|[`noise.h`](./includes/rosalia/noise.h)||**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
+|[`rand.h`](./includes/rosalia/rand.h)||**PCG32 PRNG** with acceptable speed.|
+|[`raw_stream.h`](./includes/rosalia/raw_stream.h)||**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
+|[`semver.h`](./includes/rosalia/semver.h)|`0.1.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
+|[`serialization.h`](./includes/rosalia/serialization.h)||**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
+|[`timestamp.h`](./includes/rosalia/timestamp.h)||**Monotonic timestamps (with fractional seconds).**|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
@@ -59,3 +59,4 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * vector
   * heapstackify yield and continue execution, also dont crash on oom
   * in-place version for hm set etc.. (so a struct can be both in a linked list and a search tree and more without being just a pointer in each)
+  * mini readline alike thing just for history and tab completion
