@@ -20,6 +20,8 @@ void run_test_semver();
 
 void run_test_serialization();
 
+void run_test_timestamp();
+
 #ifdef __cplusplus
 }
 #endif

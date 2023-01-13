@@ -34,7 +34,6 @@ set(SOURCES
     src/impl/heapstackify.c
     src/impl/jobs.cpp
     src/impl/serialization.c
-    src/impl/timestamp.c
 
     src/tests/base64.c
     src/tests/heapstackify.c
@@ -44,6 +43,7 @@ set(SOURCES
     src/tests/raw_stream.c
     src/tests/semver.c
     src/tests/serialization.c
+    src/tests/timestamp.c
 
     src/main.c
 )

@@ -10,5 +10,6 @@ int main()
     run_test_raw_stream();
     run_test_semver();
     run_test_serialization();
+    run_test_timestamp();
     return 0;
 }

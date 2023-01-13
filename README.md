@@ -16,7 +16,7 @@ General purpose convencience APIs for C.
 |[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.0`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.1`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)||**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
-|[`timestamp.h`](./includes/rosalia/timestamp.h)||**Monotonic timestamps (with fractional seconds).**|
+|[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.0`|**Monotonic timestamps (with fractional seconds).**|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
