@@ -22,7 +22,7 @@
 
 #define ROSALIA_NOISE_VERSION_MAJOR 0
 #define ROSALIA_NOISE_VERSION_MINOR 1
-#define ROSALIA_NOISE_VERSION_PATCH 0
+#define ROSALIA_NOISE_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -278,7 +278,6 @@ ROSALIA__DEF uint32_t ROSALIA__DECORATE(strhash)(const char* str, const char* st
 }
 #endif
 
-#undef ROSALIA_NOISE_IMPLEMENTATION
 #undef ROSALIA__INTERNAL
 #endif
 

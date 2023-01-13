@@ -21,7 +21,7 @@
 
 #define ROSALIA_RAND_VERSION_MAJOR 0
 #define ROSALIA_RAND_VERSION_MINOR 1
-#define ROSALIA_RAND_VERSION_PATCH 0
+#define ROSALIA_RAND_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -80,7 +80,6 @@ ROSALIA__DEF uint32_t ROSALIA__DECORATE(fprng_rand)(fast_prng* fprng)
 }
 #endif
 
-#undef ROSALIA_RAND_IMPLEMENTATION
 #undef ROSALIA__INTERNAL
 #endif
 

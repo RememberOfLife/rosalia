@@ -5,24 +5,24 @@ General purpose convencience APIs for C.
 |library|version|description|
 |---|---|---|
 |[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
-|[`argparse.h`](./includes/rosalia/argparse.h)||**CLI argument parsing** (//TODO: with different flavors).|
-|[`base64.h`](./includes/rosalia/base64.h)|`0.1.1`|**Base64** encode and decode capabilities.|
+|[`argparse.h`](./includes/rosalia/argparse.h)|`0.1.0`|**CLI argument parsing** (//TODO: with different flavors).|
+|[`base64.h`](./includes/rosalia/base64.h)|`0.1.2`|**Base64** encode and decode capabilities.|
 |[`config.h`](./includes/rosalia/config.h)||**JSON** representation and (de-)serialization.|
-|[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
+|[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
-|[`math.h`](./includes/rosalia/math.h)|`0.1.0`|**Math utils.**|
-|[`noise.h`](./includes/rosalia/noise.h)|`0.1.0`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
-|[`rand.h`](./includes/rosalia/rand.h)|`0.1.0`|**PCG32 PRNG** with acceptable speed.|
-|[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.0`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
-|[`semver.h`](./includes/rosalia/semver.h)|`0.1.1`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
+|[`math.h`](./includes/rosalia/math.h)|`0.1.1`|**Math utils.**|
+|[`noise.h`](./includes/rosalia/noise.h)|`0.1.1`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
+|[`rand.h`](./includes/rosalia/rand.h)|`0.1.1`|**PCG32 PRNG** with acceptable speed.|
+|[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.1`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
+|[`semver.h`](./includes/rosalia/semver.h)|`0.1.2`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)||**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
-|[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.0`|**Monotonic timestamps (with fractional seconds).**|
+|[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.1`|**Monotonic timestamps (with fractional seconds).**|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
 ## Notes and Todos
 * Bump versions to 1.0.0 once all libs are header only
-* decorate structs in single headers
+* decorate structs/enums/functypes in single headers
 * possibly rename config to json
 * add tests for the things that can be tested:
   * argparse (once it has flavors, show them working)
@@ -31,7 +31,7 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * jobs (mostly about resizing, cancellation and queue wakeup)
   * noise (specifically test some string hash collisions and generate a few statistics about bit correlations)
   * raw_stream (serialize random types and check that deserialize produces expected output)
-  * semver
+  * semver (parse and print and satisfy)
   * timestamp (show monotonicity and fractional use)
 * versioning for apis?
 * possibly work through and adapt some things from the [stb_howto](https://github.com/nothings/stb/blob/master/docs/stb_howto.txt)

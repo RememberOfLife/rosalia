@@ -2,6 +2,7 @@
 
 int main()
 {
+    run_test_argparse();
     run_test_base64();
     run_test_heapstackify();
     run_test_math();

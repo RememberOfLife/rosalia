@@ -23,7 +23,7 @@
 
 #define ROSALIA_RAW_STREAM_VERSION_MAJOR 0
 #define ROSALIA_RAW_STREAM_VERSION_MINOR 1
-#define RSOALIA_RAW_STREAM_VERSION_PATCH 0
+#define RSOALIA_RAW_STREAM_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -396,7 +396,6 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_r_raw)(raw_stream* rs, uint8_t* buf)
 }
 #endif
 
-#undef ROSALIA_RAW_STREAM_IMPLEMENTATION
 #undef ROSALIA__INTERNAL
 #endif
 

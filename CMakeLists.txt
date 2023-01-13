@@ -29,12 +29,12 @@ set(INCLUDES
 
 set(SOURCES
     src/impl/alloc.c
-    src/impl/argparse.c
     src/impl/config.c
     src/impl/heapstackify.c
     src/impl/jobs.cpp
     src/impl/serialization.c
 
+    src/tests/argparse.c
     src/tests/base64.c
     src/tests/heapstackify.c
     src/tests/math.c

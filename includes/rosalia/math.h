@@ -22,7 +22,7 @@
 
 #define ROSALIA_MATH_VERSION_MAJOR 0
 #define ROSALIA_MATH_VERSION_MINOR 1
-#define ROSALIA_MATH_VERSION_PATCH 0
+#define ROSALIA_MATH_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -130,7 +130,6 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_scale_i2i)(uint64_t in_v, uint64_t 
     return (in_v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-#undef ROSALIA_MATH_IMPLEMENTATION
 #undef ROSALIA__INTERNAL
 #endif
 

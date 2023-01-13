@@ -25,7 +25,7 @@
 
 #define ROSALIA_BASE64_VERSION_MAJOR 0
 #define ROSALIA_BASE64_VERSION_MINOR 1
-#define ROSALIA_BASE64_VERSION_PATCH 1
+#define ROSALIA_BASE64_VERSION_PATCH 2
 
 #ifdef __cplusplus
 extern "C" {
@@ -194,7 +194,6 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(b64_decode)(uint8_t* data_bytes, const cha
 }
 #endif
 
-#undef ROSALIA_BASE64_IMPLEMENTATION
 #undef ROSALIA__INTERNAL
 #endif
 
