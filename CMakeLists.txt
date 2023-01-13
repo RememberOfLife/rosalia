@@ -35,12 +35,12 @@ set(SOURCES
     src/impl/jobs.cpp
     src/impl/math.c
     src/impl/noise.c
-    src/impl/rand.c
     src/impl/serialization.c
     src/impl/timestamp.c
 
     src/tests/base64.c
     src/tests/heapstackify.c
+    src/tests/rand.c
     src/tests/raw_stream.c
     src/tests/serialization.c
 

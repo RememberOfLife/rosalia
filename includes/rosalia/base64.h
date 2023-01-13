@@ -8,7 +8,6 @@
 #include <stdint.h>
 
 #ifdef ROSALIA_BASE64_STATIC
-#undef ROSALIA_BASE64_STATIC
 #define ROSALIA__DEC static
 #define ROSALIA__DEC_EXT static
 #define ROSALIA__DEF static
@@ -26,7 +25,7 @@
 
 #define ROSALIA_BASE64_VERSION_MAJOR 0
 #define ROSALIA_BASE64_VERSION_MINOR 1
-#define ROSALIA_BASE64_VERSION_PATCH 0
+#define ROSALIA_BASE64_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {

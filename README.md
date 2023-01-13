@@ -6,15 +6,15 @@ General purpose convencience APIs for C.
 |---|---|---|
 |[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
 |[`argparse.h`](./includes/rosalia/argparse.h)||**CLI argument parsing** (//TODO: with different flavors).|
-|[`base64.h`](./includes/rosalia/base64.h)|`0.1.0`|**Base64** encode and decode capabilities.|
+|[`base64.h`](./includes/rosalia/base64.h)|`0.1.1`|**Base64** encode and decode capabilities.|
 |[`config.h`](./includes/rosalia/config.h)||**JSON** representation and (de-)serialization.|
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
 |[`math.h`](./includes/rosalia/math.h)||**Math utils.**|
 |[`noise.h`](./includes/rosalia/noise.h)||**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
-|[`rand.h`](./includes/rosalia/rand.h)||**PCG32 PRNG** with acceptable speed.|
+|[`rand.h`](./includes/rosalia/rand.h)|`0.1.0`|**PCG32 PRNG** with acceptable speed.|
 |[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.0`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
-|[`semver.h`](./includes/rosalia/semver.h)|`0.1.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
+|[`semver.h`](./includes/rosalia/semver.h)|`0.1.1`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)||**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
 |[`timestamp.h`](./includes/rosalia/timestamp.h)||**Monotonic timestamps (with fractional seconds).**|
 
@@ -30,7 +30,6 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * heapstackify (something that properly shows the use)
   * jobs (mostly about resizing, cancellation and queue wakeup)
   * noise (specifically test some string hash collisions and generate a few statistics about bit correlations)
-  * (rand)
   * raw_stream (serialize random types and check that deserialize produces expected output)
   * semver
   * timestamp (show monotonicity and fractional use)
