@@ -8,6 +8,8 @@ void run_test_base64();
 
 void run_test_heapstackify();
 
+void run_test_noise();
+
 void run_test_rand();
 
 void run_test_raw_stream();

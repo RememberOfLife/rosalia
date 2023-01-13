@@ -11,7 +11,7 @@ General purpose convencience APIs for C.
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
 |[`math.h`](./includes/rosalia/math.h)||**Math utils.**|
-|[`noise.h`](./includes/rosalia/noise.h)||**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
+|[`noise.h`](./includes/rosalia/noise.h)|`0.1.0`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./includes/rosalia/rand.h)|`0.1.0`|**PCG32 PRNG** with acceptable speed.|
 |[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.0`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.1`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
