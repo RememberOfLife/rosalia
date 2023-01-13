@@ -33,15 +33,16 @@ set(SOURCES
     src/impl/config.c
     src/impl/heapstackify.c
     src/impl/jobs.cpp
-    src/impl/math.c
-    src/impl/noise.c
     src/impl/serialization.c
     src/impl/timestamp.c
 
     src/tests/base64.c
     src/tests/heapstackify.c
+    src/tests/math.c
+    src/tests/noise.c
     src/tests/rand.c
     src/tests/raw_stream.c
+    src/tests/semver.c
     src/tests/serialization.c
 
     src/main.c
