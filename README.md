@@ -13,7 +13,7 @@ General purpose convencience APIs for C.
 |[`math.h`](./includes/rosalia/math.h)||**Math utils.**|
 |[`noise.h`](./includes/rosalia/noise.h)||**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./includes/rosalia/rand.h)||**PCG32 PRNG** with acceptable speed.|
-|[`raw_stream.h`](./includes/rosalia/raw_stream.h)||**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
+|[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.0`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)||**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
 |[`timestamp.h`](./includes/rosalia/timestamp.h)||**Monotonic timestamps (with fractional seconds).**|
@@ -22,6 +22,7 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
 ## Notes and Todos
 * Bump versions to 1.0.0 once all libs are header only
+* decorate structs in single headers
 * possibly rename config to json
 * add tests for the things that can be tested:
   * argparse (once it has flavors, show them working)

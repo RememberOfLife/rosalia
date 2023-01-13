@@ -31,6 +31,7 @@
 extern "C" {
 #endif
 
+//TODO ROSALIA__DECORATE for this struct and _ext
 typedef struct semver_s {
     uint32_t major;
     uint32_t minor;
