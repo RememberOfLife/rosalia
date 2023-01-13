@@ -6,7 +6,7 @@ General purpose convencience APIs for C.
 |---|---|---|
 |[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
 |[`argparse.h`](./includes/rosalia/argparse.h)||**CLI argument parsing** (//TODO: with different flavors).|
-|[`base64.h`](./includes/rosalia/base64.h)||**Base64** encode and decode capabilities.|
+|[`base64.h`](./includes/rosalia/base64.h)|`0.1.0`|**Base64** encode and decode capabilities.|
 |[`config.h`](./includes/rosalia/config.h)||**JSON** representation and (de-)serialization.|
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate "co-routines" on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
@@ -21,10 +21,10 @@ General purpose convencience APIs for C.
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
 ## Notes and Todos
+* Bump versions to 1.0.0 once all libs are header only
 * possibly rename config to json
 * add tests for the things that can be tested:
   * argparse (once it has flavors, show them working)
-  * base64 (basic static example for expected input/output)
   * config (basic static example for deserialization)
   * heapstackify (something that properly shows the use)
   * jobs (mostly about resizing, cancellation and queue wakeup)

@@ -30,7 +30,6 @@ set(INCLUDES
 set(SOURCES
     src/impl/alloc.c
     src/impl/argparse.c
-    src/impl/base64.c
     src/impl/config.c
     src/impl/heapstackify.c
     src/impl/jobs.cpp
@@ -38,10 +37,10 @@ set(SOURCES
     src/impl/noise.c
     src/impl/rand.c
     src/impl/raw_stream.c
-    src/impl/semver.c
     src/impl/serialization.c
     src/impl/timestamp.c
 
+    src/tests/base64.c
     src/tests/heapstackify.c
     src/tests/serialization.c
 
