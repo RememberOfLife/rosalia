@@ -16,8 +16,6 @@ void run_test_noise();
 
 void run_test_rand();
 
-void run_test_raw_stream();
-
 void run_test_semver();
 
 void run_test_serialization();

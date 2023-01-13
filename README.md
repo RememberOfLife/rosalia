@@ -13,9 +13,8 @@ General purpose convencience APIs for C.
 |[`math.h`](./includes/rosalia/math.h)|`0.1.1`|**Math utils.**|
 |[`noise.h`](./includes/rosalia/noise.h)|`0.1.1`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./includes/rosalia/rand.h)|`0.1.1`|**PCG32 PRNG** with acceptable speed.|
-|[`raw_stream.h`](./includes/rosalia/raw_stream.h)|`0.1.1`|**Low overhead serialization for primitive datatypes.** Provides no safeties or guarantees, just maps primitives (and strings and blobs) to byte streams and back.|
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.2`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
-|[`serialization.h`](./includes/rosalia/serialization.h)||**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types.|
+|[`serialization.h`](./includes/rosalia/serialization.h)|`0.1.0`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.|
 |[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.1`|**Monotonic timestamps (with fractional seconds).**|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
@@ -23,6 +22,7 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 ## Notes and Todos
 * Bump versions to 1.0.0 once all libs are header only
 * decorate structs/enums/functypes in single headers
+* decorate macro calls are split on 2 lines if not assigned! fix clang format file is possible
 * possibly rename config to json
 * add tests for the things that can be tested:
   * argparse (once it has flavors, show them working)

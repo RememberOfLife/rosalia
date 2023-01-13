@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define ROSALIA_SERIALIZATION_IMPLEMENTATION
 #include "rosalia/serialization.h"
 
 #include "tests/tests.h"

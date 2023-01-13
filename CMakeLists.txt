@@ -32,7 +32,6 @@ set(SOURCES
     src/impl/config.c
     src/impl/heapstackify.c
     src/impl/jobs.cpp
-    src/impl/serialization.c
 
     src/tests/argparse.c
     src/tests/base64.c
@@ -40,7 +39,6 @@ set(SOURCES
     src/tests/math.c
     src/tests/noise.c
     src/tests/rand.c
-    src/tests/raw_stream.c
     src/tests/semver.c
     src/tests/serialization.c
     src/tests/timestamp.c
