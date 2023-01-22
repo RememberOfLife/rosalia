@@ -35,6 +35,7 @@ extern "C" {
 //TODO maybe max depth for recursive ptr types
 //TODO how does size work across machines of different register width?
 //TODO cyclic pointer graph serialization via pointer cache and index, i.e. dfs/bfs serialize graph and instead of pointers with recursive serialization, put an index into the pointer cache list, on deserialize first allocate all objects in the pointercache then replace indices by pointers //TODO this needs more serialization state than just initzero/destroy can provide (where to remember pointercache?) //TODO this should work for graphs where we just have one entry pointer, and also for those where we get the array of all objects in advance //TODO might want to support multiple distinct entry pointers, e.g. pointers to objects additionally stored as hashmap value somewhere (is this even doable with the scheme?)
+//TODO functionally tagged unions, dont use a map but use a function for mapping enums values to layouts instead
 
 //TODO decorate structs/enums/functypes
 
