@@ -17,35 +17,37 @@
 #ifdef ROSALIA_MATH_DECORATE
 #define ROSALIA__DECORATE(ident) ROSALIA_MATH_DECORATE(ident)
 #else
-#define ROSALIA__DECORATE(ident) ident
+#define ROSALIA__DECORATE(ident) rosa_##ident
 #endif
 
 #define ROSALIA_MATH_VERSION_MAJOR 0
-#define ROSALIA_MATH_VERSION_MINOR 1
-#define ROSALIA_MATH_VERSION_PATCH 1
+#define ROSALIA_MATH_VERSION_MINOR 2
+#define ROSALIA_MATH_VERSION_PATCH 0
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_log2)(uint64_t v);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(log2)(uint64_t v);
 
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_ceil2pow2)(uint64_t v);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(ceil2pow2)(uint64_t v);
 
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_ceil2mult)(uint64_t val, uint64_t mult);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(ceil2mult)(uint64_t val, uint64_t mult);
 
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_ceildiv)(uint64_t div, uint64_t divisor);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(ceildiv)(uint64_t div, uint64_t divisor);
 
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_overlap)(uint64_t value, uint64_t align);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(overlap)(uint64_t value, uint64_t align);
 
 //TODO double versions
 //TODO check that they work properly, especially for the non f2f versions
-ROSALIA__DEC float ROSALIA__DECORATE(rosa_scale_f2f)(float in_v, float in_min, float in_max, float out_min, float out_max);
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_scale_f2i)(float in_v, float in_min, float in_max, uint64_t out_min, uint64_t out_max);
-ROSALIA__DEC float ROSALIA__DECORATE(rosa_scale_i2f)(uint64_t in_v, uint64_t in_min, uint64_t in_max, float out_min, float out_max);
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_scale_i2i)(uint64_t in_v, uint64_t in_min, uint64_t in_max, uint64_t out_min, uint64_t out_max);
+ROSALIA__DEC float ROSALIA__DECORATE(scale_f2f)(float in_v, float in_min, float in_max, float out_min, float out_max);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(scale_f2i)(float in_v, float in_min, float in_max, uint64_t out_min, uint64_t out_max);
+ROSALIA__DEC float ROSALIA__DECORATE(scale_i2f)(uint64_t in_v, uint64_t in_min, uint64_t in_max, float out_min, float out_max);
+ROSALIA__DEC uint64_t ROSALIA__DECORATE(scale_i2i)(uint64_t in_v, uint64_t in_min, uint64_t in_max, uint64_t out_min, uint64_t out_max);
 
 //TODO Clamp TresholdEq
+
+//TODO float + epsilon (smallest value increment)
 
 #ifdef __cplusplus
 }
@@ -60,7 +62,7 @@ ROSALIA__DEC uint64_t ROSALIA__DECORATE(rosa_scale_i2i)(uint64_t in_v, uint64_t 
 #include <stddef.h>
 #include <stdint.h>
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_log2)(uint64_t v)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(log2)(uint64_t v)
 {
     uint64_t res = 0;
     while (v > 0) {
@@ -70,7 +72,7 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_log2)(uint64_t v)
     return res;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_ceil2pow2)(uint64_t v)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(ceil2pow2)(uint64_t v)
 {
     v--;
     v |= v >> 1;
@@ -83,7 +85,7 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_ceil2pow2)(uint64_t v)
     return v;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_ceil2mult)(uint64_t val, uint64_t mult)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(ceil2mult)(uint64_t val, uint64_t mult)
 {
     uint64_t rem = val % mult;
     if (rem > 0) {
@@ -92,7 +94,7 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_ceil2mult)(uint64_t val, uint64_t m
     return val;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_ceildiv)(uint64_t div, uint64_t divisor)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(ceildiv)(uint64_t div, uint64_t divisor)
 {
     uint64_t rem = div / divisor;
     if (rem * divisor == div) {
@@ -101,7 +103,7 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_ceildiv)(uint64_t div, uint64_t div
     return rem + 1;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_overlap)(uint64_t value, uint64_t align)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(overlap)(uint64_t value, uint64_t align)
 {
     uint64_t rem = value % align;
     if (rem > 0) {
@@ -110,22 +112,22 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_overlap)(uint64_t value, uint64_t a
     return 0;
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(rosa_scale_f2f)(float in_v, float in_min, float in_max, float out_min, float out_max)
+ROSALIA__DEF float ROSALIA__DECORATE(scale_f2f)(float in_v, float in_min, float in_max, float out_min, float out_max)
 {
     return (in_v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_scale_f2i)(float in_v, float in_min, float in_max, uint64_t out_min, uint64_t out_max)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(scale_f2i)(float in_v, float in_min, float in_max, uint64_t out_min, uint64_t out_max)
 {
     return (uint64_t)((in_v - in_min) * ((float)(out_max - out_min)) / (in_max - in_min) + (float)(out_min));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(rosa_scale_i2f)(uint64_t in_v, uint64_t in_min, uint64_t in_max, float out_min, float out_max)
+ROSALIA__DEF float ROSALIA__DECORATE(scale_i2f)(uint64_t in_v, uint64_t in_min, uint64_t in_max, float out_min, float out_max)
 {
     return (float)(in_v - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rosa_scale_i2i)(uint64_t in_v, uint64_t in_min, uint64_t in_max, uint64_t out_min, uint64_t out_max)
+ROSALIA__DEF uint64_t ROSALIA__DECORATE(scale_i2i)(uint64_t in_v, uint64_t in_min, uint64_t in_max, uint64_t out_min, uint64_t out_max)
 {
     return (in_v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
