@@ -22,6 +22,8 @@ void run_test_serialization();
 
 void run_test_timestamp();
 
+void run_test_vector();
+
 #ifdef __cplusplus
 }
 #endif

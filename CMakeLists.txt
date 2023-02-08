@@ -42,6 +42,7 @@ set(SOURCES
     src/tests/semver.c
     src/tests/serialization.c
     src/tests/timestamp.c
+    src/tests/vector.c
 
     src/main.c
 )

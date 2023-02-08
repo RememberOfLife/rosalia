@@ -22,6 +22,7 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 ## Notes and Todos
 * Bump versions to 1.0.0 once all libs are header only
 * decorate structs/enums/functypes in single headers
+  * can name decorators be split from how the impl has to be named?
 * decorate macro calls are split on 2 lines if not assigned! fix clang format file is possible
 * possibly rename config to json
 * add tests for the things that can be tested:
