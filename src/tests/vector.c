@@ -17,6 +17,7 @@ void run_test_vector()
         printf(" %u", v1[i]);
     }
     printf("\n");
+    VEC_DESTROY(&v1);
 
     printf("vector - ok\n");
 }

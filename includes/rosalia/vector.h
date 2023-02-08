@@ -21,7 +21,7 @@
 #endif
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
-#define ROSALIA_VECTOR_VERSION_MINOR 1
+#define ROSALIA_VECTOR_VERSION_MINOR 2
 #define ROSALIA_VECTOR_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -34,7 +34,7 @@ extern "C" {
 // short names enabled by default
 #ifndef ROSALIA_VECTOR_NO_SHORT_NAMES
 #define VEC_CREATE ROSALIA_VECTOR_CREATE
-#define VEC_FREE ROSALIA_VECTOR_FREE // this one doesn't need to be a macro
+#define VEC_DESTROY ROSALIA_VECTOR_DESTROY // this one doesn't need to be a macro
 #define VEC_CAP ROSALIA_VECTOR_CAP // this one doesn't need to be a macro
 #define VEC_SETCAP ROSALIA_VECTOR_SETCAP
 #define VEC_FITCAP ROSALIA_VECTOR_FITCAP
@@ -48,6 +48,7 @@ extern "C" {
 //TODO pushn is just addlen
 #define VEC_POP ROSALIA_VECTOR_POP
 //TODO want popn?
+//TODO peek with idx from back?
 #define VEC_INSERT ROSALIA_VECTOR_INSERT
 #define VEC_INSERT_N ROSALIA_VECTOR_INSERT_N
 #define VEC_REMOVE ROSALIA_VECTOR_REMOVE
@@ -84,9 +85,9 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 //TODO description
 #define ROSALIA_VECTOR_CREATE(pp_vec, cap) (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
 
-// free
+// destroy
 //TODO description
-#define ROSALIA_VECTOR_FREE(pp_vec) ((void)(*(pp_vec) != NULL ? free(ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)) : (void)0), *(pp_vec) = NULL)
+#define ROSALIA_VECTOR_DESTROY(pp_vec) ((void)(*(pp_vec) != NULL ? free(ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)) : (void)0), *(pp_vec) = NULL)
 
 // cap
 //TODO description
@@ -134,27 +135,27 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 
 // insert
 //TODO description
-#define ROSALIA_VECTOR_INSERT(pp_vec, idx, elem) //TODO
+#define ROSALIA_VECTOR_INSERT(pp_vec, idx, elem) ((ROSALIA_VECTOR_INSERT_N((pp_vec), (idx), 1), (*(pp_vec))[idx] = (elem)))
 
 // insert_n
 //TODO description
-#define ROSALIA_VECTOR_INSERT_N(pp_vec, idx, len) //TODO
+#define ROSALIA_VECTOR_INSERT_N(pp_vec, idx, len) (ROSALIA_VECTOR_ADDLEN((pp_vec), (len)), memmove(&(*(pp_vec))[(idx) + (len)], &(*(pp_vec))[idx], sizeof(**(pp_vec)) * (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) - (idx))))
 
 // remove
 //TODO description
-#define ROSALIA_VECTOR_REMOVE(pp_vec, idx) //TODO
+#define ROSALIA_VECTOR_REMOVE(pp_vec, idx) (ROSALIA_VECTOR_REMOVE((pp_vec), (idx), 1))
 
 // remove_n
 //TODO description
-#define ROSALIA_VECTOR_REMOVE_N(pp_vec, idx, len) //TODO
+#define ROSALIA_VECTOR_REMOVE_N(pp_vec, idx, len) (memmove(&(*(pp_vec))[idx], &(*(pp_vec))[(idx) + (len)], sizeof(**(pp_vec)) * (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) - (idx))), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length -= (len))
 
 // remove_swap
 //TODO description
-#define ROSALIA_VECTOR_REMOVE_SWAP(pp_vec, idx) //TODO
+#define ROSALIA_VECTOR_REMOVE_SWAP(pp_vec, idx) (ROSALIA_VECTOR_REMOVE_SWAP_N((pp_vec), (idx), 1))
 
 // remove_swap_n
 //TODO description
-#define ROSALIA_VECTOR_REMOVE_SWAP_N(pp_vec, idx, len) //TODO
+#define ROSALIA_VECTOR_REMOVE_SWAP_N(pp_vec, idx, len) (memmove(&(*(pp_vec))[idx], &(*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - ((idx) + (len) > ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len))], (idx) + (len) > ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len)), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length -= (len))
 
 // last
 //TODO description
@@ -168,8 +169,7 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 
 //TODO serialization.h compatibility, layout must be given each time on serialization
 
-// #ifdef ROSALIA_VECTOR_IMPLEMENTATION
-#if 1
+#ifdef ROSALIA_VECTOR_IMPLEMENTATION
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

@@ -16,6 +16,7 @@ General purpose convencience APIs for C.
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.2`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)|`0.1.0`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.|
 |[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.1`|**Monotonic timestamps (with fractional seconds).**|
+|[`vector.h`](./includes/rosalia/vector.h)|`0.1.1`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
