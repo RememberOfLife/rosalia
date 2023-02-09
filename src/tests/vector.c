@@ -12,12 +12,13 @@ void run_test_vector()
     for (int i = 0; i < 10; i++) {
         VEC_PUSH(&v1, i);
     }
-    printf("v1 len(%zu) cap(%zu):", VEC_LEN(&v1), VEC_CAP(&v1));
+    assert(VEC_LEN(&v1) == 10);
+    assert(VEC_CAP(&v1) >= 10);
     for (int i = 0; i < VEC_LEN(&v1); i++) {
-        printf(" %u", v1[i]);
+        assert(v1[i] == i);
     }
-    printf("\n");
     VEC_DESTROY(&v1);
+    assert(v1 == NULL);
 
     printf("vector - ok\n");
 }

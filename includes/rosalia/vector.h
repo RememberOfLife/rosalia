@@ -29,7 +29,7 @@ extern "C" {
 #endif
 
 // typed vector macro api taken from: https://github.com/nothings/stb/blob/master/stb_ds.h in the public domain
-//TODO api is slightly adapted, make sure to read each the macros usage instructions after the short names
+// api is slightly adapted, make sure to read each the macros usage instructions after the short names
 
 // short names enabled by default
 #ifndef ROSALIA_VECTOR_NO_SHORT_NAMES
@@ -41,14 +41,13 @@ extern "C" {
 #define VEC_LEN ROSALIA_VECTOR_LEN // this one doesn't need to be a macro
 #define VEC_SETLEN ROSALIA_VECTOR_SETLEN
 #define VEC_FITLEN ROSALIA_VECTOR_FITLEN
-#define VEC_ADDLEN ROSALIA_VECTOR_ADDLEN //TODO need this, its really just one of the 2 below and discarding the return
 #define VEC_ADDLEN_IDX ROSALIA_VECTOR_ADDLEN_IDX
 #define VEC_ADDLEN_PTR ROSALIA_VECTOR_ADDLEN_PTR
 #define VEC_PUSH ROSALIA_VECTOR_PUSH
-//TODO pushn is just addlen
+#define VEC_PUSH_N ROSALIA_VECTOR_PUSH_N
 #define VEC_POP ROSALIA_VECTOR_POP
-//TODO want popn?
-//TODO peek with idx from back?
+#define VEC_POP_N ROSALIA_VECTOR_POP_N
+#define VEC_PEEK ROSALIA_VECTOR_PEEK
 #define VEC_INSERT ROSALIA_VECTOR_INSERT
 #define VEC_INSERT_N ROSALIA_VECTOR_INSERT_N
 #define VEC_REMOVE ROSALIA_VECTOR_REMOVE
@@ -81,6 +80,10 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 
 #define ROSALIA__INTERNAL_VECTOR_MGROW(pp_vec, len) ((*(pp_vec) == NULL || ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length + (len) > ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->capacity) ? (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), (len), 0), 0) : 0)
 
+//////
+// for a vector of type T
+// T* myvec = NULL;
+
 // create
 //TODO description
 #define ROSALIA_VECTOR_CREATE(pp_vec, cap) (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
@@ -89,8 +92,8 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 //TODO description
 #define ROSALIA_VECTOR_DESTROY(pp_vec) ((void)(*(pp_vec) != NULL ? free(ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)) : (void)0), *(pp_vec) = NULL)
 
-// cap
-//TODO description
+// size_t cap(T** pp_vec)
+// returns the capacity of the vector, i.e. num of elems it could contain before it must be reallocated to grow
 #define ROSALIA_VECTOR_CAP(pp_vec) (*(pp_vec) != NULL ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->capacity : 0)
 
 // setcap
@@ -98,11 +101,14 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 #define ROSALIA_VECTOR_SETCAP(pp_vec, cap) (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
 
 // fitcap
-//TODO description
+// shrink to fit capacity:
+// len < cap : "expected natural shrink", fit=max(len*2,4)
+// len == cap : realloc to fit=len //TODO might want natural shrink here too
+// len > cap : truncate length, realloc to fit=len
 #define ROSALIA_VECTOR_FITCAP(pp_vec) (*(pp_vec) = rosalia__internal_vector_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec) < ROSALIA_VECTOR_CAP(pp_vec) ? 2 * ROSALIA_VECTOR_LEN(pp_vec) : ROSALIA_VECTOR_CAP(pp_vec)))
 
-// len
-//TODO description
+// size_t len(T** pp_vec)
+// returns the number of elements currently in the vector
 #define ROSALIA_VECTOR_LEN(pp_vec) (*(pp_vec) != NULL ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length : 0)
 
 // setlen
@@ -110,12 +116,8 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 #define ROSALIA_VECTOR_SETLEN(pp_vec, len) ((ROSALIA_VECTOR_CAP(pp_vec) < (size_t)(len) ? ROSALIA_VECTOR_SETCAP((pp_vec), (size_t)(len)), 0 : 0), *(pp_vec) != NULL ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length = (size_t)(len) : 0)
 
 // fitlen
-//TODO description
+// shrink to fit length, this is the strictest shrinking
 #define ROSALIA_VECTOR_FITLEN(pp_vec) (*(pp_vec) = rosalia__internal_vector_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec)))
-
-// addlen
-//TODO description
-#define ROSALIA_VECTOR_ADDLEN(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), (len)), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length += len)
 
 // addlen_idx
 //TODO description
@@ -129,9 +131,21 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 //TODO description
 #define ROSALIA_VECTOR_PUSH(pp_vec, elem) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), 1), (*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length++] = (elem))
 
+// push_n
+//TODO description
+#define ROSALIA_VECTOR_PUSH_N(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), (len)), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length += len)
+
 // pop
 //TODO description
 #define ROSALIA_VECTOR_POP(pp_vec) (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length--, (*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length])
+
+// pop_n
+//TODO description
+#define ROSALIA_VECTOR_POP_N(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length >= len ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length -= len : ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length = 0)
+
+// peek
+//TODO description
+#define ROSALIA_VECTOR_PEEK(pp_vec, ridx) ((*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - 1 - (rdix)])
 
 // insert
 //TODO description
