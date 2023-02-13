@@ -25,7 +25,7 @@
 
 #define ROSALIA_BASE64_VERSION_MAJOR 0
 #define ROSALIA_BASE64_VERSION_MINOR 1
-#define ROSALIA_BASE64_VERSION_PATCH 2
+#define ROSALIA_BASE64_VERSION_PATCH 3
 
 #ifdef __cplusplus
 extern "C" {
@@ -176,16 +176,18 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(b64_decode)(uint8_t* data_bytes, const cha
         uint32_t v = (ROSALIA__DECORATE(b64_inv)[data_chars[ci] - 43] << 18);
         v |= (ROSALIA__DECORATE(b64_inv)[data_chars[ci + 1] - 43] << 12);
         data_bytes[bi] = ((v >> 16) & 0xFF); // writeout byte1
+        bi++;
         if (data_chars[ci + 2] != '=') {
             v |= (ROSALIA__DECORATE(b64_inv)[data_chars[ci + 2] - 43] << 6);
-            data_bytes[bi + 1] = ((v >> 8) & 0xFF); // writeout byte2 (optional)
+            data_bytes[bi] = ((v >> 8) & 0xFF); // writeout byte2 (optional)
+            bi++;
         }
         if (data_chars[ci + 3] != '=') {
             v |= ROSALIA__DECORATE(b64_inv)[data_chars[ci + 3] - 43];
-            data_bytes[bi + 2] = (v & 0xFF); // writeout byte3 (optional)
+            data_bytes[bi] = (v & 0xFF); // writeout byte3 (optional)
+            bi++;
         }
         ci += 4;
-        bi += 3;
     }
     return bi;
 }

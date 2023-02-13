@@ -11,7 +11,7 @@
 
 void run_test_base64()
 {
-    const int bytes_len;
+    const int bytes_len = 256;
     uint8_t bytes1[256];
     uint8_t bytes2[256];
     char string1[1024];

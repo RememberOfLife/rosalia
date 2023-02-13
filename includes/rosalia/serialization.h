@@ -23,7 +23,7 @@
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
 #define ROSALIA_SERIALIZATION_VERSION_MINOR 4
-#define ROSALIA_SERIALIZATION_VERSION_PATCH 0
+#define ROSALIA_SERIALIZATION_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,6 +38,8 @@ extern "C" {
 //TODO functionally tagged unions, dont use a map but use a function for mapping enums values to layouts instead
 
 //TODO decorate structs/enums/functypes
+
+//TODO global accessible bools so everyone can check if features like vector or hm are implemented as well or not
 
 //NOTE: sparse enums for union tags not supported for now
 
@@ -911,7 +913,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_float_serializer)(GSIT itype,
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u64_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_double_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     double* cin_p = (double*)obj_in;
     double* cout_p = (double*)obj_out;
