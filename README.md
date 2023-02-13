@@ -16,7 +16,7 @@ General purpose convencience APIs for C.
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.2`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)|`0.1.0`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.|
 |[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.1`|**Monotonic timestamps (with fractional seconds).**|
-|[`vector.h`](./includes/rosalia/vector.h)|`0.1.1`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
+|[`vector.h`](./includes/rosalia/vector.h)|`0.3.0`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
@@ -35,7 +35,6 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * raw_stream (serialize random types and check that deserialize produces expected output)
   * semver (parse and print and satisfy)
   * timestamp (show monotonicity and fractional use)
-* versioning for apis?
 * possibly work through and adapt some things from the [stb_howto](https://github.com/nothings/stb/blob/master/docs/stb_howto.txt)
 * feature todos:
   * include original opensimplex noise
@@ -56,9 +55,8 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * memcheck (quick and dirty for leaks,write-after-free,buffer-overrun)
   * set
     * red-black vs avl? and ofc usual cpp sets
-  * stack
   * string
-  * vector
   * heapstackify yield and continue execution, also dont crash on oom
   * in-place version for hm set etc.. (so a struct can be both in a linked list and a search tree and more without being just a pointer in each)
   * mini readline alike thing just for history and tab completion
+  * locks and atomics also with windows specifics

@@ -21,7 +21,7 @@
 #endif
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
-#define ROSALIA_VECTOR_VERSION_MINOR 2
+#define ROSALIA_VECTOR_VERSION_MINOR 3
 #define ROSALIA_VECTOR_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -84,20 +84,21 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 // for a vector of type T
 // T* myvec = NULL;
 
-// create
-//TODO description
+// create(T** pp_vec, size_t cap)
+// allocate the vector with an initial capacity of cap
 #define ROSALIA_VECTOR_CREATE(pp_vec, cap) (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
 
-// destroy
-//TODO description
+// destroy(T** pp_vec)
+// free the vector and set it to NULL
 #define ROSALIA_VECTOR_DESTROY(pp_vec) ((void)(*(pp_vec) != NULL ? free(ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)) : (void)0), *(pp_vec) = NULL)
 
 // size_t cap(T** pp_vec)
 // returns the capacity of the vector, i.e. num of elems it could contain before it must be reallocated to grow
 #define ROSALIA_VECTOR_CAP(pp_vec) (*(pp_vec) != NULL ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->capacity : 0)
 
-// setcap
-//TODO description
+// setcap(T** pp_vec, size_t cap)
+// set the capacity of the vector, this will grow the vector if required
+// note that the capacity may also be lower than the length, in this cas
 #define ROSALIA_VECTOR_SETCAP(pp_vec, cap) (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
 
 // fitcap
@@ -111,68 +112,69 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 // returns the number of elements currently in the vector
 #define ROSALIA_VECTOR_LEN(pp_vec) (*(pp_vec) != NULL ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length : 0)
 
-// setlen
-//TODO description
+// setlen(T** pp_vec, size_t len)
+// set the length of the vector, this will add additional uninitialized elements at the end if necessary
 #define ROSALIA_VECTOR_SETLEN(pp_vec, len) ((ROSALIA_VECTOR_CAP(pp_vec) < (size_t)(len) ? ROSALIA_VECTOR_SETCAP((pp_vec), (size_t)(len)), 0 : 0), *(pp_vec) != NULL ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length = (size_t)(len) : 0)
 
-// fitlen
+// fitlen(T** pp_vec)
 // shrink to fit length, this is the strictest shrinking
+// note a vector will never shrink below 4 elements
 #define ROSALIA_VECTOR_FITLEN(pp_vec) (*(pp_vec) = rosalia__internal_vector_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec)))
 
-// addlen_idx
-//TODO description
+// addlen_idx(T** pp_vec, size_t len)
+// add len uninitialized elements to the end of the vector and return the index of the first of them
 #define ROSALIA_VECTOR_ADDLEN_IDX(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), (len)), (len) > 0 ? (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length += (n), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (n)) : ROSALIA_VECTOR_LEN(pp_vec))
 
-// addlen_ptr
-//TODO description
+// addlen_ptr(T** pp_vec, size_t len)
+// add len uninitialized elements to the end of the vector and return a ptr to the first of them
 #define ROSALIA_VECTOR_ADDLEN_PTR(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), (len)), (len) > 0 ? (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length += (len), &(*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len)]) : *(pp_vec))
 
-// push
-//TODO description
+// push(T** pp_vec, T elem)
+// add elem to the end of the vector
 #define ROSALIA_VECTOR_PUSH(pp_vec, elem) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), 1), (*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length++] = (elem))
 
-// push_n
-//TODO description
+// push_n(T** pp_vec, size_t len)
+// add len uninitialized elements to the end of the vector
 #define ROSALIA_VECTOR_PUSH_N(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_MGROW((pp_vec), (len)), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length += len)
 
-// pop
-//TODO description
+// T pop(T** pp_vec)
+// get the last element of the vector, and remove it at the same time
 #define ROSALIA_VECTOR_POP(pp_vec) (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length--, (*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length])
 
-// pop_n
-//TODO description
+// pop_n(T** pp_vec, size_t len)
+// remove the len last elements from the vector
 #define ROSALIA_VECTOR_POP_N(pp_vec, len) (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length >= len ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length -= len : ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length = 0)
 
-// peek
-//TODO description
+// T peek(T** pp_vec, size_t ridx)
+// get the element at ridx from the end of the vector, i.e. vec[VEC_LEN(&vec) - 1 - ridx]
 #define ROSALIA_VECTOR_PEEK(pp_vec, ridx) ((*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - 1 - (rdix)])
 
-// insert
-//TODO description
+// insert(T** pp_vec, size_t idx, T elem)
+// insert elem T such that it is reachable at idx
 #define ROSALIA_VECTOR_INSERT(pp_vec, idx, elem) ((ROSALIA_VECTOR_INSERT_N((pp_vec), (idx), 1), (*(pp_vec))[idx] = (elem)))
 
-// insert_n
-//TODO description
+// insert_n(T** pp_vec, size_t idx, size_t len)
+// inserts len uninitialized elements at idx forward
 #define ROSALIA_VECTOR_INSERT_N(pp_vec, idx, len) (ROSALIA_VECTOR_ADDLEN((pp_vec), (len)), memmove(&(*(pp_vec))[(idx) + (len)], &(*(pp_vec))[idx], sizeof(**(pp_vec)) * (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) - (idx))))
 
-// remove
-//TODO description
+// remove(T** pp_vec, size_t idx)
+// remove element at idx and copy the rest so the order stays stable
 #define ROSALIA_VECTOR_REMOVE(pp_vec, idx) (ROSALIA_VECTOR_REMOVE((pp_vec), (idx), 1))
 
-// remove_n
-//TODO description
+// remove_n(T** pp_vec, size_t idx, size_t len)
+// remove len elements at idx forward and copy the rest so the order stays stable
 #define ROSALIA_VECTOR_REMOVE_N(pp_vec, idx, len) (memmove(&(*(pp_vec))[idx], &(*(pp_vec))[(idx) + (len)], sizeof(**(pp_vec)) * (ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) - (idx))), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length -= (len))
 
-// remove_swap
-//TODO description
+// remove_swap(T** pp_vec, size_t idx)
+// remove element at idx and swap in an element from the back, order is not stable, but is much faster than copying
 #define ROSALIA_VECTOR_REMOVE_SWAP(pp_vec, idx) (ROSALIA_VECTOR_REMOVE_SWAP_N((pp_vec), (idx), 1))
 
-// remove_swap_n
-//TODO description
+// remove_swap_n(T** pp_vec, size_t idx, size_t len)
+// remove len elements at idx forward and swap in element from the back (if required), order is not stable, but is much faster than copying
 #define ROSALIA_VECTOR_REMOVE_SWAP_N(pp_vec, idx, len) (memmove(&(*(pp_vec))[idx], &(*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - ((idx) + (len) > ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len))], (idx) + (len) > ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len)), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length -= (len))
 
-// last
-//TODO description
+// T last(T** pp_vec)
+// get the last element in the vector
 #define ROSALIA_VECTOR_LAST(pp_vec) ((*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - 1])
 
 #ifdef __cplusplus
@@ -182,6 +184,17 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 #endif
 
 //TODO serialization.h compatibility, layout must be given each time on serialization
+/*
+usage should look like:
+typedef struct thing_s {
+    uint32_t* vec1;
+} thing;
+
+serialization_layout sl_thing[] = {
+    {SL_TYPE_32 | SL_TYPE_VECTOR, offsetof(thing, vec1)},
+    {SL_TYPE_STOP},
+};
+*/
 
 #ifdef ROSALIA_VECTOR_IMPLEMENTATION
 
