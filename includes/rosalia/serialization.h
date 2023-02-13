@@ -22,7 +22,7 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 3
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 4
 #define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -138,8 +138,8 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
     SL_TYPE_U32,
     SL_TYPE_U64,
     SL_TYPE_SIZE,
-    //TODO float
-    //TODO double
+    SL_TYPE_FLOAT,
+    SL_TYPE_DOUBLE,
 
     // pseudo primitives
     SL_TYPE_STRING, // char* member;
@@ -235,6 +235,8 @@ ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u16_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u32_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u64_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_size_serializer);
+ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_float_serializer);
+ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_double_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_string_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_blob_serializer);
 
@@ -868,6 +870,88 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_size_serializer)(GSIT itype, 
     return 0;
 }
 
+ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_float_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+{
+    float* cin_p = (float*)obj_in;
+    float* cout_p = (float*)obj_out;
+    switch (itype) {
+        case GSIT_NONE: {
+            assert(0);
+        } break;
+        case GSIT_INITZERO: {
+            // pass
+        } break;
+        case GSIT_SIZE: {
+            return 4;
+        } break;
+        case GSIT_SERIALIZE: {
+            raw_stream rs = rs_init(buf);
+            rs_w_float(&rs, *cin_p);
+            return 4;
+        } break;
+        case GSIT_DESERIALIZE: {
+            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 4) {
+                return LS_ERR;
+            }
+            raw_stream rs = rs_init(buf);
+            *cout_p = rs_r_float(&rs);
+            return 4;
+        } break;
+        case GSIT_COPY: {
+            *cout_p = *cin_p;
+        } break;
+        case GSIT_DESTROY: {
+            // pass
+        } break;
+        case GSIT_COUNT:
+        case GSIT_SIZE_MAX: {
+            assert(0);
+        } break;
+    }
+    return 0;
+}
+
+ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u64_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+{
+    double* cin_p = (double*)obj_in;
+    double* cout_p = (double*)obj_out;
+    switch (itype) {
+        case GSIT_NONE: {
+            assert(0);
+        } break;
+        case GSIT_INITZERO: {
+            // pass
+        } break;
+        case GSIT_SIZE: {
+            return 8;
+        } break;
+        case GSIT_SERIALIZE: {
+            raw_stream rs = rs_init(buf);
+            rs_w_double(&rs, *cin_p);
+            return 8;
+        } break;
+        case GSIT_DESERIALIZE: {
+            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 8) {
+                return LS_ERR;
+            }
+            raw_stream rs = rs_init(buf);
+            *cout_p = rs_r_double(&rs);
+            return 8;
+        } break;
+        case GSIT_COPY: {
+            *cout_p = *cin_p;
+        } break;
+        case GSIT_DESTROY: {
+            // pass
+        } break;
+        case GSIT_COUNT:
+        case GSIT_SIZE_MAX: {
+            assert(0);
+        } break;
+    }
+    return 0;
+}
+
 ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_string_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     char** cin_p = (char**)obj_in;
@@ -1009,6 +1093,8 @@ custom_serializer_t* ROSALIA__INTERNAL(ls_primitive_serializers)[] = {
     [SL_TYPE_U32] = ROSALIA__DECORATE(ls_primitive_u32_serializer),
     [SL_TYPE_U64] = ROSALIA__DECORATE(ls_primitive_u64_serializer),
     [SL_TYPE_SIZE] = ROSALIA__DECORATE(ls_primitive_size_serializer),
+    [SL_TYPE_FLOAT] = ROSALIA__DECORATE(ls_primitive_float_serializer),
+    [SL_TYPE_DOUBLE] = ROSALIA__DECORATE(ls_primitive_double_serializer),
     [SL_TYPE_STRING] = ROSALIA__DECORATE(ls_primitive_string_serializer),
     [SL_TYPE_BLOB] = ROSALIA__DECORATE(ls_primitive_blob_serializer),
 };
