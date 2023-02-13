@@ -22,7 +22,7 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 1
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 2
 #define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -131,7 +131,7 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
     SL_TYPE_BOOL,
     //TODO I8,I16,I32,I64
     SL_TYPE_U8,
-    //TODO U16
+    SL_TYPE_U16,
     SL_TYPE_U32,
     SL_TYPE_U64,
     SL_TYPE_SIZE,
@@ -153,13 +153,18 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
 
     SL_TYPE_COUNT,
 
-    SL_TYPE_TYPEMASK = 0b00111111,
+    SL_TYPE_TYPEMASK = 0x00FF,
+    SL_TYPE_FLAGMASK = 0xFF00,
     // these are flags applicable to all serializable types
-    SL_TYPE_PTR = 0b01000000,
-    SL_TYPE_ARRAY = 0b10000000, // if ptr: use len.offset else: len.immediate, to get size of the array, len.offset always locates a size_t
+    // if not otherwise noted these flags are mututally exclusive with each other to provide ease of use
+    SL_TYPE_PTR = 1 << (8 + 0), // this and SL_TYPE_ARRAY are compatible with each other
+    SL_TYPE_ARRAY = 1 << (8 + 1), // if ptr: use len.offset else: len.immediate, to get size of the array, len.offset always locates a size_t
     SL_TYPE_PTRARRAY = SL_TYPE_PTR | SL_TYPE_ARRAY, // convenience type for sl definitions
+    // pseudo flags
+    // SL_TYPE_VECTOR = 1 << (8 + 2), //TODO impl
+    //TODO more pseudo types, and how are things like hm with multiple types made?
 
-    SL_TYPE_SIZE_MAX = UINT8_MAX,
+    SL_TYPE_SIZE_MAX = UINT16_MAX,
 } SL_TYPE;
 
 // general serializer invocation type
@@ -695,6 +700,47 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u8_serializer)(GSIT itype, vo
     return 0;
 }
 
+ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u16_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+{
+    uint16_t* cin_p = (uint16_t*)obj_in;
+    uint16_t* cout_p = (uint16_t*)obj_out;
+    switch (itype) {
+        case GSIT_NONE: {
+            assert(0);
+        } break;
+        case GSIT_INITZERO: {
+            // pass
+        } break;
+        case GSIT_SIZE: {
+            return 2;
+        } break;
+        case GSIT_SERIALIZE: {
+            raw_stream rs = rs_init(buf);
+            rs_w_uint16(&rs, *cin_p);
+            return 2;
+        } break;
+        case GSIT_DESERIALIZE: {
+            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 2) {
+                return LS_ERR;
+            }
+            raw_stream rs = rs_init(buf);
+            *cout_p = rs_r_uint32(&rs);
+            return 2;
+        } break;
+        case GSIT_COPY: {
+            *cout_p = *cin_p;
+        } break;
+        case GSIT_DESTROY: {
+            // pass
+        } break;
+        case GSIT_COUNT:
+        case GSIT_SIZE_MAX: {
+            assert(0);
+        } break;
+    }
+    return 0;
+}
+
 ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u32_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     uint32_t* cin_p = (uint32_t*)obj_in;
@@ -951,6 +997,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_blob_serializer)(GSIT itype, 
 custom_serializer_t* ROSALIA__INTERNAL(ls_primitive_serializers)[] = {
     [SL_TYPE_BOOL] = ROSALIA__DECORATE(ls_primitive_bool_serializer),
     [SL_TYPE_U8] = ROSALIA__DECORATE(ls_primitive_u8_serializer),
+    [SL_TYPE_U16] = ROSALIA__DECORATE(ls_primitive_u16_serializer),
     [SL_TYPE_U32] = ROSALIA__DECORATE(ls_primitive_u32_serializer),
     [SL_TYPE_U64] = ROSALIA__DECORATE(ls_primitive_u64_serializer),
     [SL_TYPE_SIZE] = ROSALIA__DECORATE(ls_primitive_size_serializer),
@@ -981,6 +1028,12 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
         switch (pl->type & SL_TYPE_TYPEMASK) {
             case SL_TYPE_BOOL: {
                 typesize = sizeof(bool);
+            } break;
+            case SL_TYPE_U8: {
+                typesize = sizeof(uint8_t);
+            } break;
+            case SL_TYPE_U16: {
+                typesize = sizeof(uint16_t);
             } break;
             case SL_TYPE_U32: {
                 typesize = sizeof(uint32_t);
