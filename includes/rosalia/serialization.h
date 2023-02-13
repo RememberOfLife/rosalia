@@ -22,7 +22,7 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 2
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 3
 #define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -129,7 +129,10 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
 
     // primitives
     SL_TYPE_BOOL,
-    //TODO I8,I16,I32,I64
+    SL_TYPE_I8,
+    SL_TYPE_I16,
+    SL_TYPE_I32,
+    SL_TYPE_I64,
     SL_TYPE_U8,
     SL_TYPE_U16,
     SL_TYPE_U32,
@@ -228,6 +231,7 @@ ROSALIA__DEC size_t ROSALIA__DECORATE(layout_serializer)(GSIT itype, const seria
 // primitive serializers
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_bool_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u8_serializer);
+ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u16_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u32_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u64_serializer);
 ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_size_serializer);
@@ -724,7 +728,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u16_serializer)(GSIT itype, v
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
-            *cout_p = rs_r_uint32(&rs);
+            *cout_p = rs_r_uint16(&rs);
             return 2;
         } break;
         case GSIT_COPY: {
@@ -996,6 +1000,10 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_blob_serializer)(GSIT itype, 
 
 custom_serializer_t* ROSALIA__INTERNAL(ls_primitive_serializers)[] = {
     [SL_TYPE_BOOL] = ROSALIA__DECORATE(ls_primitive_bool_serializer),
+    [SL_TYPE_I8] = ROSALIA__DECORATE(ls_primitive_u8_serializer),
+    [SL_TYPE_I16] = ROSALIA__DECORATE(ls_primitive_u16_serializer),
+    [SL_TYPE_I32] = ROSALIA__DECORATE(ls_primitive_u32_serializer),
+    [SL_TYPE_I64] = ROSALIA__DECORATE(ls_primitive_u64_serializer),
     [SL_TYPE_U8] = ROSALIA__DECORATE(ls_primitive_u8_serializer),
     [SL_TYPE_U16] = ROSALIA__DECORATE(ls_primitive_u16_serializer),
     [SL_TYPE_U32] = ROSALIA__DECORATE(ls_primitive_u32_serializer),
