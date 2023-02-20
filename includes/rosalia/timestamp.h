@@ -4,24 +4,24 @@
 #include <stdint.h>
 
 #ifdef ROSALIA_TIMESTAMP_STATIC
-#define ROSALIA__DEC static
-#define ROSALIA__DEC_EXT static
-#define ROSALIA__DEF static
+#define ROSALIA__TIMESTAMP_DEC static
+#define ROSALIA__TIMESTAMP_DEC_EXT static
+#define ROSALIA__TIMESTAMP_DEF static
 #else
-#define ROSALIA__DEC
-#define ROSALIA__DEC_EXT extern
-#define ROSALIA__DEF
+#define ROSALIA__TIMESTAMP_DEC
+#define ROSALIA__TIMESTAMP_DEC_EXT extern
+#define ROSALIA__TIMESTAMP_DEF
 #endif
 
 #ifdef ROSALIA_TIMESTAMP_DECORATE
-#define ROSALIA__DECORATE(ident) ROSALIA_TIMESTAMP_DECORATE(ident)
+#define ROSALIA__TIMESTAMP_DECORATE(ident) ROSALIA_TIMESTAMP_DECORATE(ident)
 #else
-#define ROSALIA__DECORATE(ident) ident
+#define ROSALIA__TIMESTAMP_DECORATE(ident) ident
 #endif
 
 #define ROSALIA_TIMESTAMP_VERSION_MAJOR 0
 #define ROSALIA_TIMESTAMP_VERSION_MINOR 1
-#define ROSALIA_TIMESTAMP_VERSION_PATCH 2
+#define ROSALIA_TIMESTAMP_VERSION_PATCH 4
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,8 +30,8 @@ extern "C" {
 //TODO work through https://github.com/floooh/sokol/blob/master/sokol_time.h
 
 // general purpose timing function that counts up monotonically
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(timestamp_get_ms64)(); // milliseconds
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(timestamp_get_ns64)(); // nanoseconds
+ROSALIA__TIMESTAMP_DEC uint64_t ROSALIA__TIMESTAMP_DECORATE(timestamp_get_ms64)(); // milliseconds
+ROSALIA__TIMESTAMP_DEC uint64_t ROSALIA__TIMESTAMP_DECORATE(timestamp_get_ns64)(); // nanoseconds
 
 static const uint32_t TIMESTAMP_MAX_FRACTION = 999999999;
 
@@ -43,7 +43,7 @@ typedef struct timestamp_s {
     uint32_t fraction; // nanosecond fraction 0-999.999.999 (TIMESTAMP_MAX_FRACTION)
 } timestamp;
 
-ROSALIA__DEC timestamp ROSALIA__DECORATE(timestamp_get)();
+ROSALIA__TIMESTAMP_DEC timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_get)();
 /*
 // usage example to extract local time info from this:
 timestamp ts = timestamp_get(NULL);
@@ -55,13 +55,13 @@ printf("%d-%d-%d %02d:%02d:%02d.%09d", 1900 + info->tm_year, info->tm_mon, info-
 // lhs < rhs ==> -1
 // lhs = rhs ==> 0
 // lhs > rhs ==> 1
-ROSALIA__DEC int ROSALIA__DECORATE(timestamp_compare)(timestamp lhs, timestamp rhs);
+ROSALIA__TIMESTAMP_DEC int ROSALIA__TIMESTAMP_DECORATE(timestamp_compare)(timestamp lhs, timestamp rhs);
 
 // returns the absolute difference between ts1 and ts2, regardless of which is greater, as a duration
-ROSALIA__DEC timestamp ROSALIA__DECORATE(timestamp_diff)(timestamp ts1, timestamp ts2);
+ROSALIA__TIMESTAMP_DEC timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_diff)(timestamp ts1, timestamp ts2);
 
 // recommended use: timestamp + duration
-ROSALIA__DEC timestamp ROSALIA__DECORATE(timestamp_add)(timestamp ts1, timestamp ts2);
+ROSALIA__TIMESTAMP_DEC timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_add)(timestamp ts1, timestamp ts2);
 
 #ifdef __cplusplus
 }
@@ -80,7 +80,7 @@ ROSALIA__DEC timestamp ROSALIA__DECORATE(timestamp_add)(timestamp ts1, timestamp
 #if defined(ROSALIA_TIMESTAMP_IMPLEMENTATION) && !defined(ROSALIA_TIMESTAMP_H_IMPL)
 #define ROSALIA_TIMESTAMP_H_IMPL
 
-#define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
+#define ROSALIA__TIMESTAMP_INTERNAL(ident) rosalia__timestamp_internal_##ident
 
 #include <assert.h>
 #include <stdbool.h>
@@ -94,14 +94,14 @@ ROSALIA__DEC timestamp ROSALIA__DECORATE(timestamp_add)(timestamp ts1, timestamp
 extern "C" {
 #endif
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(timestamp_get_ms64)()
+ROSALIA__TIMESTAMP_DEF uint64_t ROSALIA__TIMESTAMP_DECORATE(timestamp_get_ms64)()
 {
     struct timespec record;
     clock_gettime(CLOCK_MONOTONIC_RAW, &record);
     return record.tv_sec * 1000 + record.tv_nsec / 1000000;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(timestamp_get_ns64)()
+ROSALIA__TIMESTAMP_DEF uint64_t ROSALIA__TIMESTAMP_DECORATE(timestamp_get_ns64)()
 {
     struct timespec record;
     clock_gettime(CLOCK_MONOTONIC_RAW, &record);
@@ -110,7 +110,7 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(timestamp_get_ns64)()
 
 // modelled after: https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/timestamp.proto
 
-ROSALIA__DEF timestamp ROSALIA__DECORATE(timestamp_get)()
+ROSALIA__TIMESTAMP_DEF timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_get)()
 {
     struct timespec record;
     clock_gettime(CLOCK_REALTIME, &record);
@@ -120,7 +120,7 @@ ROSALIA__DEF timestamp ROSALIA__DECORATE(timestamp_get)()
     };
 }
 
-ROSALIA__DEF int ROSALIA__DECORATE(timestamp_compare)(timestamp lhs, timestamp rhs)
+ROSALIA__TIMESTAMP_DEF int ROSALIA__TIMESTAMP_DECORATE(timestamp_compare)(timestamp lhs, timestamp rhs)
 {
     int rv = (lhs.time > rhs.time) - (lhs.time < rhs.time);
     if (rv == 0) {
@@ -129,11 +129,11 @@ ROSALIA__DEF int ROSALIA__DECORATE(timestamp_compare)(timestamp lhs, timestamp r
     return rv;
 }
 
-ROSALIA__DEF timestamp ROSALIA__DECORATE(timestamp_diff)(timestamp ts1, timestamp ts2)
+ROSALIA__TIMESTAMP_DEF timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_diff)(timestamp ts1, timestamp ts2)
 {
     timestamp res;
     int64_t fraction;
-    int cmp = ROSALIA__DECORATE(timestamp_compare)(ts1, ts2);
+    int cmp = ROSALIA__TIMESTAMP_DECORATE(timestamp_compare)(ts1, ts2);
     if (cmp == 1) {
         // ts1 > ts2
         res.time = ts1.time - ts2.time;
@@ -155,7 +155,7 @@ ROSALIA__DEF timestamp ROSALIA__DECORATE(timestamp_diff)(timestamp ts1, timestam
     return res;
 }
 
-ROSALIA__DEF timestamp ROSALIA__DECORATE(timestamp_add)(timestamp ts1, timestamp ts2)
+ROSALIA__TIMESTAMP_DEF timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_add)(timestamp ts1, timestamp ts2)
 {
     timestamp res = (timestamp){
         .time = ts1.time + ts2.time,
@@ -172,10 +172,4 @@ ROSALIA__DEF timestamp ROSALIA__DECORATE(timestamp_add)(timestamp ts1, timestamp
 }
 #endif
 
-#undef ROSALIA__INTERNAL
 #endif
-
-#undef ROSALIA__DEC
-#undef ROSALIA__DEC_EXT
-#undef ROSALIA__DEF
-#undef ROSALIA__DECORATE

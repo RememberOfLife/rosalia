@@ -6,24 +6,24 @@
 #include <stdint.h>
 
 #ifdef ROSALIA_SERIALIZATION_STATIC
-#define ROSALIA__DEC static
-#define ROSALIA__DEC_EXT static
-#define ROSALIA__DEF static
+#define ROSALIA__SERIALIZATION_DEC static
+#define ROSALIA__SERIALIZATION_DEC_EXT static
+#define ROSALIA__SERIALIZATION_DEF static
 #else
-#define ROSALIA__DEC
-#define ROSALIA__DEC_EXT extern
-#define ROSALIA__DEF
+#define ROSALIA__SERIALIZATION_DEC
+#define ROSALIA__SERIALIZATION_DEC_EXT extern
+#define ROSALIA__SERIALIZATION_DEF
 #endif
 
 #ifdef ROSALIA_SERIALIZATION_DECORATE
-#define ROSALIA__DECORATE(ident) ROSALIA_SERIALIZATION_DECORATE(ident)
+#define ROSALIA__SERIALIZATION_DECORATE(ident) ROSALIA_SERIALIZATION_DECORATE(ident)
 #else
-#define ROSALIA__DECORATE(ident) ident
+#define ROSALIA__SERIALIZATION_DECORATE(ident) ident
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
 #define ROSALIA_SERIALIZATION_VERSION_MINOR 4
-#define ROSALIA_SERIALIZATION_VERSION_PATCH 2
+#define ROSALIA_SERIALIZATION_VERSION_PATCH 4
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,80 +46,80 @@ extern "C" {
 /////
 // raw stream utils
 
-//TODO ROSALIA__DECORATE this struct
+//TODO ROSALIA__SERIALIZATION_DECORATE this struct
 typedef struct raw_stream_s {
     uint8_t* begin;
     uint8_t* end;
 } raw_stream;
 
-ROSALIA__DEC raw_stream ROSALIA__DECORATE(rs_init)(uint8_t* buf);
-ROSALIA__DEC size_t ROSALIA__DECORATE(rs_get_size)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC raw_stream ROSALIA__SERIALIZATION_DECORATE(rs_init)(uint8_t* buf);
+ROSALIA__SERIALIZATION_DEC size_t ROSALIA__SERIALIZATION_DECORATE(rs_get_size)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_bool)(raw_stream* rs, bool v);
-ROSALIA__DEC bool ROSALIA__DECORATE(rs_r_bool)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_bool)(raw_stream* rs, bool v);
+ROSALIA__SERIALIZATION_DEC bool ROSALIA__SERIALIZATION_DECORATE(rs_r_bool)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_int8)(raw_stream* rs, int8_t v);
-ROSALIA__DEC int8_t ROSALIA__DECORATE(rs_r_int8)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_int8)(raw_stream* rs, int8_t v);
+ROSALIA__SERIALIZATION_DEC int8_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int8)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_int16)(raw_stream* rs, int16_t v);
-ROSALIA__DEC int16_t ROSALIA__DECORATE(rs_r_int16)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_int16)(raw_stream* rs, int16_t v);
+ROSALIA__SERIALIZATION_DEC int16_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int16)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_int32)(raw_stream* rs, int32_t v);
-ROSALIA__DEC int32_t ROSALIA__DECORATE(rs_r_int32)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_int32)(raw_stream* rs, int32_t v);
+ROSALIA__SERIALIZATION_DEC int32_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int32)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_int64)(raw_stream* rs, int64_t v);
-ROSALIA__DEC int64_t ROSALIA__DECORATE(rs_r_int64)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_int64)(raw_stream* rs, int64_t v);
+ROSALIA__SERIALIZATION_DEC int64_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int64)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_uint8)(raw_stream* rs, uint8_t v);
-ROSALIA__DEC uint8_t ROSALIA__DECORATE(rs_r_uint8)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint8)(raw_stream* rs, uint8_t v);
+ROSALIA__SERIALIZATION_DEC uint8_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint8)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_uint16)(raw_stream* rs, uint16_t v);
-ROSALIA__DEC uint16_t ROSALIA__DECORATE(rs_r_uint16)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint16)(raw_stream* rs, uint16_t v);
+ROSALIA__SERIALIZATION_DEC uint16_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint16)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_uint32)(raw_stream* rs, uint32_t v);
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(rs_r_uint32)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint32)(raw_stream* rs, uint32_t v);
+ROSALIA__SERIALIZATION_DEC uint32_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint32)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_uint64)(raw_stream* rs, uint64_t v);
-ROSALIA__DEC uint64_t ROSALIA__DECORATE(rs_r_uint64)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint64)(raw_stream* rs, uint64_t v);
+ROSALIA__SERIALIZATION_DEC uint64_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint64)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_size)(raw_stream* rs, size_t v);
-ROSALIA__DEC size_t ROSALIA__DECORATE(rs_r_size)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_size)(raw_stream* rs, size_t v);
+ROSALIA__SERIALIZATION_DEC size_t ROSALIA__SERIALIZATION_DECORATE(rs_r_size)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_float)(raw_stream* rs, float v);
-ROSALIA__DEC float ROSALIA__DECORATE(rs_r_float)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_float)(raw_stream* rs, float v);
+ROSALIA__SERIALIZATION_DEC float ROSALIA__SERIALIZATION_DECORATE(rs_r_float)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_double)(raw_stream* rs, double v);
-ROSALIA__DEC double ROSALIA__DECORATE(rs_r_double)(raw_stream* rs);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_double)(raw_stream* rs, double v);
+ROSALIA__SERIALIZATION_DEC double ROSALIA__SERIALIZATION_DECORATE(rs_r_double)(raw_stream* rs);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_string)(raw_stream* rs, const char* str, const char* str_end);
-ROSALIA__DEC size_t ROSALIA__DECORATE(rs_r_string_size)(raw_stream* rs); // does NOT alter the stream position; DOES account for the null character
-ROSALIA__DEC void ROSALIA__DECORATE(rs_r_string)(raw_stream* rs, char* str);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_string)(raw_stream* rs, const char* str, const char* str_end);
+ROSALIA__SERIALIZATION_DEC size_t ROSALIA__SERIALIZATION_DECORATE(rs_r_string_size)(raw_stream* rs); // does NOT alter the stream position; DOES account for the null character
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_r_string)(raw_stream* rs, char* str);
 
-ROSALIA__DEC void ROSALIA__DECORATE(rs_w_raw)(raw_stream* rs, const uint8_t* buf, size_t size);
-ROSALIA__DEC size_t ROSALIA__DECORATE(rs_r_raw_size)(raw_stream* rs); // does NOT alter the stream position
-ROSALIA__DEC void ROSALIA__DECORATE(rs_r_raw)(raw_stream* rs, uint8_t* buf);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_w_raw)(raw_stream* rs, const uint8_t* buf, size_t size);
+ROSALIA__SERIALIZATION_DEC size_t ROSALIA__SERIALIZATION_DECORATE(rs_r_raw_size)(raw_stream* rs); // does NOT alter the stream position
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(rs_r_raw)(raw_stream* rs, uint8_t* buf);
 
 /////
 // utils for serialization
 
-ROSALIA__DEC void* ROSALIA__DECORATE(ptradd)(void* p, size_t v);
-ROSALIA__DEC void* ROSALIA__DECORATE(ptrsub)(void* p, size_t v);
-ROSALIA__DEC size_t ROSALIA__DECORATE(ptrdiff)(const void* p_end, const void* p_start);
+ROSALIA__SERIALIZATION_DEC void* ROSALIA__SERIALIZATION_DECORATE(ptradd)(void* p, size_t v);
+ROSALIA__SERIALIZATION_DEC void* ROSALIA__SERIALIZATION_DECORATE(ptrsub)(void* p, size_t v);
+ROSALIA__SERIALIZATION_DEC size_t ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(const void* p_end, const void* p_start);
 
 typedef struct blob_s {
     size_t len;
     void* data;
 } blob;
 
-ROSALIA__DEC_EXT const blob BLOB_NULL;
+ROSALIA__SERIALIZATION_DEC_EXT const blob BLOB_NULL;
 
-ROSALIA__DEC void ROSALIA__DECORATE(blob_create)(blob* b, size_t len);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_create)(blob* b, size_t len);
 
-ROSALIA__DEC bool ROSALIA__DECORATE(blob_is_null)(blob* b);
+ROSALIA__SERIALIZATION_DEC bool ROSALIA__SERIALIZATION_DECORATE(blob_is_null)(blob* b);
 
-ROSALIA__DEC void ROSALIA__DECORATE(blob_resize)(blob* b, size_t len, bool preserve_data);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_resize)(blob* b, size_t len, bool preserve_data);
 
-ROSALIA__DEC void ROSALIA__DECORATE(blob_destroy)(blob* b);
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_destroy)(blob* b);
 
 /////
 // layout based serialization
@@ -227,20 +227,20 @@ static const size_t LS_ERR = SIZE_MAX;
 // returned size_t is only valid if itype SIZE/SERIALIZE/DESERIALIZE
 // if return value is LS_ERR then an error occured, can not happen during init or destroy
 // deserialization errors are automatically cleaned up and do not leak memory (assuming all used custom functions do this as well)
-ROSALIA__DEC size_t ROSALIA__DECORATE(layout_serializer)(GSIT itype, const serialization_layout* layout, void* obj_in, void* obj_out, void* buf, void* buf_end);
+ROSALIA__SERIALIZATION_DEC size_t ROSALIA__SERIALIZATION_DECORATE(layout_serializer)(GSIT itype, const serialization_layout* layout, void* obj_in, void* obj_out, void* buf, void* buf_end);
 
 //TODO rather give lookup array?
 // primitive serializers
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_bool_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u8_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u16_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u32_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_u64_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_size_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_float_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_double_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_string_serializer);
-ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_blob_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_bool_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u8_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u16_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u32_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u64_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_size_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_float_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_double_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_string_serializer);
+ROSALIA__SERIALIZATION_DEC custom_serializer_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_blob_serializer);
 
 #ifdef __cplusplus
 }
@@ -251,7 +251,7 @@ ROSALIA__DEC custom_serializer_t ROSALIA__DECORATE(ls_primitive_blob_serializer)
 #if defined(ROSALIA_SERIALIZATION_IMPLEMENTATION) && !defined(ROSALIA_SERIALIZATION_H_IMPL)
 #define ROSALIA_SERIALIZATION_H_IMPL
 
-#define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
+#define ROSALIA__SERIALIZATION_INTERNAL(ident) rosalia__serialization_internal_##ident
 
 #include <assert.h>
 #include <stdbool.h>
@@ -269,7 +269,7 @@ extern "C" {
 
 //TODO simplify RAW_STREAM encoding process for byte based primitives (int/uint/float etc) by just using one, "encode bytes" func, on a union type!
 
-ROSALIA__DEF raw_stream ROSALIA__DECORATE(rs_init)(uint8_t* buf)
+ROSALIA__SERIALIZATION_DEF raw_stream ROSALIA__SERIALIZATION_DECORATE(rs_init)(uint8_t* buf)
 {
     return (raw_stream){
         .begin = buf,
@@ -277,45 +277,45 @@ ROSALIA__DEF raw_stream ROSALIA__DECORATE(rs_init)(uint8_t* buf)
     };
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(rs_get_size)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(rs_get_size)(raw_stream* rs)
 {
     return rs->end - rs->begin;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_bool)(raw_stream* rs, bool v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_bool)(raw_stream* rs, bool v)
 {
     rs->end[0] = (uint8_t)v;
     rs->end++;
 }
 
-ROSALIA__DEF bool ROSALIA__DECORATE(rs_r_bool)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF bool ROSALIA__SERIALIZATION_DECORATE(rs_r_bool)(raw_stream* rs)
 {
     bool r = (bool)(rs->end[0]);
     rs->end++;
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_int8)(raw_stream* rs, int8_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_int8)(raw_stream* rs, int8_t v)
 {
     rs->end[0] = (uint8_t)v;
     rs->end++;
 }
 
-ROSALIA__DEF int8_t ROSALIA__DECORATE(rs_r_int8)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF int8_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int8)(raw_stream* rs)
 {
     int8_t r = (int8_t)(rs->end[0]);
     rs->end++;
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_int16)(raw_stream* rs, int16_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_int16)(raw_stream* rs, int16_t v)
 {
     rs->end[0] = (uint8_t)((v >> 8) & 0xFF);
     rs->end[1] = (uint8_t)((v >> 0) & 0xFF);
     rs->end += 2;
 }
 
-ROSALIA__DEF int16_t ROSALIA__DECORATE(rs_r_int16)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF int16_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int16)(raw_stream* rs)
 {
     int16_t r = 0;
     r |= (int16_t)(rs->end[0]) << 8;
@@ -324,7 +324,7 @@ ROSALIA__DEF int16_t ROSALIA__DECORATE(rs_r_int16)(raw_stream* rs)
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_int32)(raw_stream* rs, int32_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_int32)(raw_stream* rs, int32_t v)
 {
     rs->end[0] = (uint8_t)((v >> 24) & 0xFF);
     rs->end[1] = (uint8_t)((v >> 16) & 0xFF);
@@ -333,7 +333,7 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_int32)(raw_stream* rs, int32_t v)
     rs->end += 4;
 }
 
-ROSALIA__DEF int32_t ROSALIA__DECORATE(rs_r_int32)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF int32_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int32)(raw_stream* rs)
 {
     int32_t r = 0;
     r |= (int32_t)(rs->end[0]) << 24;
@@ -344,7 +344,7 @@ ROSALIA__DEF int32_t ROSALIA__DECORATE(rs_r_int32)(raw_stream* rs)
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_int64)(raw_stream* rs, int64_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_int64)(raw_stream* rs, int64_t v)
 {
     rs->end[0] = (uint8_t)((v >> 56) & 0xFF);
     rs->end[1] = (uint8_t)((v >> 48) & 0xFF);
@@ -357,7 +357,7 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_int64)(raw_stream* rs, int64_t v)
     rs->end += 8;
 }
 
-ROSALIA__DEF int64_t ROSALIA__DECORATE(rs_r_int64)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF int64_t ROSALIA__SERIALIZATION_DECORATE(rs_r_int64)(raw_stream* rs)
 {
     int64_t r = 0;
     r |= (int64_t)(rs->end[0]) << 56;
@@ -372,27 +372,27 @@ ROSALIA__DEF int64_t ROSALIA__DECORATE(rs_r_int64)(raw_stream* rs)
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_uint8)(raw_stream* rs, uint8_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint8)(raw_stream* rs, uint8_t v)
 {
     rs->end[0] = (uint8_t)v;
     rs->end++;
 }
 
-ROSALIA__DEF uint8_t ROSALIA__DECORATE(rs_r_uint8)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF uint8_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint8)(raw_stream* rs)
 {
     uint8_t r = (uint8_t)(rs->end[0]);
     rs->end++;
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_uint16)(raw_stream* rs, uint16_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint16)(raw_stream* rs, uint16_t v)
 {
     rs->end[0] = (uint8_t)((v >> 8) & 0xFF);
     rs->end[1] = (uint8_t)((v >> 0) & 0xFF);
     rs->end += 2;
 }
 
-ROSALIA__DEF uint16_t ROSALIA__DECORATE(rs_r_uint16)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF uint16_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint16)(raw_stream* rs)
 {
     uint16_t r = 0;
     r |= (uint16_t)(rs->end[0]) << 8;
@@ -401,7 +401,7 @@ ROSALIA__DEF uint16_t ROSALIA__DECORATE(rs_r_uint16)(raw_stream* rs)
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_uint32)(raw_stream* rs, uint32_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint32)(raw_stream* rs, uint32_t v)
 {
     rs->end[0] = (uint8_t)((v >> 24) & 0xFF);
     rs->end[1] = (uint8_t)((v >> 16) & 0xFF);
@@ -410,7 +410,7 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_uint32)(raw_stream* rs, uint32_t v)
     rs->end += 4;
 }
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(rs_r_uint32)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF uint32_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint32)(raw_stream* rs)
 {
     uint32_t r = 0;
     r |= (uint32_t)(rs->end[0]) << 24;
@@ -421,7 +421,7 @@ ROSALIA__DEF uint32_t ROSALIA__DECORATE(rs_r_uint32)(raw_stream* rs)
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_uint64)(raw_stream* rs, uint64_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_uint64)(raw_stream* rs, uint64_t v)
 {
     rs->end[0] = (uint8_t)((v >> 56) & 0xFF);
     rs->end[1] = (uint8_t)((v >> 48) & 0xFF);
@@ -434,7 +434,7 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_uint64)(raw_stream* rs, uint64_t v)
     rs->end += 8;
 }
 
-ROSALIA__DEF uint64_t ROSALIA__DECORATE(rs_r_uint64)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF uint64_t ROSALIA__SERIALIZATION_DECORATE(rs_r_uint64)(raw_stream* rs)
 {
     uint64_t r = 0;
     r |= (uint64_t)(rs->end[0]) << 56;
@@ -449,18 +449,18 @@ ROSALIA__DEF uint64_t ROSALIA__DECORATE(rs_r_uint64)(raw_stream* rs)
     return r;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_size)(raw_stream* rs, size_t v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_size)(raw_stream* rs, size_t v)
 {
-    ROSALIA__DECORATE(rs_w_uint64)
+    ROSALIA__SERIALIZATION_DECORATE(rs_w_uint64)
     (rs, (uint64_t)(v));
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(rs_r_size)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(rs_r_size)(raw_stream* rs)
 {
-    return (size_t)ROSALIA__DECORATE(rs_r_uint64)(rs);
+    return (size_t)ROSALIA__SERIALIZATION_DECORATE(rs_r_uint64)(rs);
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_float)(raw_stream* rs, float v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_float)(raw_stream* rs, float v)
 {
     union {
         float f;
@@ -468,12 +468,12 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_float)(raw_stream* rs, float v)
     } f32 = {.f = v};
 
     for (int i = 0; i < sizeof(float); i++) {
-        ROSALIA__DECORATE(rs_w_uint8)
+        ROSALIA__SERIALIZATION_DECORATE(rs_w_uint8)
         (rs, f32.u8[i]);
     }
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(rs_r_float)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF float ROSALIA__SERIALIZATION_DECORATE(rs_r_float)(raw_stream* rs)
 {
     union {
         float f;
@@ -481,12 +481,12 @@ ROSALIA__DEF float ROSALIA__DECORATE(rs_r_float)(raw_stream* rs)
     } f32;
 
     for (int i = 0; i < sizeof(float); i++) {
-        f32.u8[i] = ROSALIA__DECORATE(rs_r_uint8)(rs);
+        f32.u8[i] = ROSALIA__SERIALIZATION_DECORATE(rs_r_uint8)(rs);
     }
     return f32.f;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_double)(raw_stream* rs, double v)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_double)(raw_stream* rs, double v)
 {
     union {
         double d;
@@ -494,12 +494,12 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_double)(raw_stream* rs, double v)
     } f64 = {.d = v};
 
     for (int i = 0; i < sizeof(double); i++) {
-        ROSALIA__DECORATE(rs_w_uint8)
+        ROSALIA__SERIALIZATION_DECORATE(rs_w_uint8)
         (rs, f64.u8[i]);
     }
 }
 
-ROSALIA__DEF double ROSALIA__DECORATE(rs_r_double)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF double ROSALIA__SERIALIZATION_DECORATE(rs_r_double)(raw_stream* rs)
 {
     union {
         double d;
@@ -507,12 +507,12 @@ ROSALIA__DEF double ROSALIA__DECORATE(rs_r_double)(raw_stream* rs)
     } f64;
 
     for (int i = 0; i < sizeof(double); i++) {
-        f64.u8[i] = ROSALIA__DECORATE(rs_r_uint8)(rs);
+        f64.u8[i] = ROSALIA__SERIALIZATION_DECORATE(rs_r_uint8)(rs);
     }
     return f64.d;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_string)(raw_stream* rs, const char* str, const char* str_end)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_string)(raw_stream* rs, const char* str, const char* str_end)
 {
     size_t size;
     if (str_end == NULL) {
@@ -524,36 +524,36 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_w_string)(raw_stream* rs, const char* str
     rs->end += size;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(rs_r_string_size)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(rs_r_string_size)(raw_stream* rs)
 {
     return strlen((char*)rs->end) + 1;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_r_string)(raw_stream* rs, char* str)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_r_string)(raw_stream* rs, char* str)
 {
     size_t len = strlen((char*)rs->end) + 1;
     memcpy(str, rs->end, len);
     rs->end += len;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_w_raw)(raw_stream* rs, const uint8_t* buf, size_t size)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_w_raw)(raw_stream* rs, const uint8_t* buf, size_t size)
 {
-    ROSALIA__DECORATE(rs_w_size)
+    ROSALIA__SERIALIZATION_DECORATE(rs_w_size)
     (rs, size);
     memcpy(rs->end, buf, size);
     rs->end += size;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(rs_r_raw_size)(raw_stream* rs)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(rs_r_raw_size)(raw_stream* rs)
 {
-    size_t size = ROSALIA__DECORATE(rs_r_size)(rs);
+    size_t size = ROSALIA__SERIALIZATION_DECORATE(rs_r_size)(rs);
     rs->end -= sizeof(uint64_t); // this function should not alter the stream position
     return size;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(rs_r_raw)(raw_stream* rs, uint8_t* buf)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(rs_r_raw)(raw_stream* rs, uint8_t* buf)
 {
-    size_t size = ROSALIA__DECORATE(rs_r_size)(rs);
+    size_t size = ROSALIA__SERIALIZATION_DECORATE(rs_r_size)(rs);
     memcpy(buf, rs->end, size);
     rs->end += size;
 }
@@ -561,40 +561,40 @@ ROSALIA__DEF void ROSALIA__DECORATE(rs_r_raw)(raw_stream* rs, uint8_t* buf)
 /////
 // utils for event serialization
 
-ROSALIA__DEF const blob BLOB_NULL = (blob){
+ROSALIA__SERIALIZATION_DEF const blob BLOB_NULL = (blob){
     .len = 0,
     .data = NULL,
 };
 
-ROSALIA__DEF void ROSALIA__DECORATE(blob_create)(blob* b, size_t len)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(blob_create)(blob* b, size_t len)
 {
     b->len = len;
     b->data = len > 0 ? malloc(len) : NULL;
 }
 
-ROSALIA__DEF bool ROSALIA__DECORATE(blob_is_null)(blob* b)
+ROSALIA__SERIALIZATION_DEF bool ROSALIA__SERIALIZATION_DECORATE(blob_is_null)(blob* b)
 {
     assert(b->data == NULL);
     return b->len == 0;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(blob_resize)(blob* b, size_t len, bool preserve_data)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(blob_resize)(blob* b, size_t len, bool preserve_data)
 {
     if (b->len == len) {
         return;
     }
     blob new_blob;
-    ROSALIA__DECORATE(blob_create)
+    ROSALIA__SERIALIZATION_DECORATE(blob_create)
     (&new_blob, len);
     if (preserve_data == true && b->len > 0 && len > 0) {
         memcpy(new_blob.data, b->data, len);
     }
-    ROSALIA__DECORATE(blob_destroy)
+    ROSALIA__SERIALIZATION_DECORATE(blob_destroy)
     (b);
     *b = new_blob;
 }
 
-ROSALIA__DEF void ROSALIA__DECORATE(blob_destroy)(blob* b)
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(blob_destroy)(blob* b)
 {
     if (b->data) {
         free(b->data);
@@ -608,17 +608,17 @@ ROSALIA__DEF void ROSALIA__DECORATE(blob_destroy)(blob* b)
 
 //TODO can inline these, but instantiate https://stackoverflow.com/a/16245669
 
-ROSALIA__DEF void* ROSALIA__DECORATE(ptradd)(void* p, size_t v)
+ROSALIA__SERIALIZATION_DEF void* ROSALIA__SERIALIZATION_DECORATE(ptradd)(void* p, size_t v)
 {
     return (char*)p + v;
 }
 
-ROSALIA__DEF void* ROSALIA__DECORATE(ptrsub)(void* p, size_t v)
+ROSALIA__SERIALIZATION_DEF void* ROSALIA__SERIALIZATION_DECORATE(ptrsub)(void* p, size_t v)
 {
     return (char*)p - v;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ptrdiff)(const void* p_end, const void* p_start)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(const void* p_end, const void* p_start)
 {
     return (const char*)p_end - (const char*)p_start;
 }
@@ -627,7 +627,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ptrdiff)(const void* p_end, const void* p_
 
 //TODO somehow make this less repetitive
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_bool_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_bool_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     bool* cin_p = (bool*)obj_in;
     bool* cout_p = (bool*)obj_out;
@@ -647,7 +647,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_bool_serializer)(GSIT itype, 
             return 1;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 1) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 1) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -668,7 +668,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_bool_serializer)(GSIT itype, 
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u8_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u8_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     uint8_t* cin_p = (uint8_t*)obj_in;
     uint8_t* cout_p = (uint8_t*)obj_out;
@@ -688,7 +688,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u8_serializer)(GSIT itype, vo
             return 1;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 1) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 1) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -709,7 +709,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u8_serializer)(GSIT itype, vo
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u16_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u16_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     uint16_t* cin_p = (uint16_t*)obj_in;
     uint16_t* cout_p = (uint16_t*)obj_out;
@@ -729,7 +729,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u16_serializer)(GSIT itype, v
             return 2;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 2) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 2) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -750,7 +750,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u16_serializer)(GSIT itype, v
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u32_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u32_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     uint32_t* cin_p = (uint32_t*)obj_in;
     uint32_t* cout_p = (uint32_t*)obj_out;
@@ -770,7 +770,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u32_serializer)(GSIT itype, v
             return 4;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 4) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 4) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -791,7 +791,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u32_serializer)(GSIT itype, v
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u64_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u64_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     uint64_t* cin_p = (uint64_t*)obj_in;
     uint64_t* cout_p = (uint64_t*)obj_out;
@@ -811,7 +811,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u64_serializer)(GSIT itype, v
             return 8;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 8) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 8) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -832,7 +832,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_u64_serializer)(GSIT itype, v
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_size_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_size_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     size_t* cin_p = (size_t*)obj_in;
     size_t* cout_p = (size_t*)obj_out;
@@ -852,7 +852,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_size_serializer)(GSIT itype, 
             return 8;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 8) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 8) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -873,7 +873,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_size_serializer)(GSIT itype, 
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_float_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_float_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     float* cin_p = (float*)obj_in;
     float* cout_p = (float*)obj_out;
@@ -893,7 +893,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_float_serializer)(GSIT itype,
             return 4;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 4) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 4) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -914,7 +914,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_float_serializer)(GSIT itype,
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_double_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_double_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     double* cin_p = (double*)obj_in;
     double* cout_p = (double*)obj_out;
@@ -934,7 +934,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_double_serializer)(GSIT itype
             return 8;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 8) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 8) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
@@ -955,7 +955,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_double_serializer)(GSIT itype
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_string_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_string_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     char** cin_p = (char**)obj_in;
     char** cout_p = (char**)obj_out;
@@ -987,19 +987,19 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_string_serializer)(GSIT itype
             return string_size;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 1) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 1) {
                 return LS_ERR;
             }
-            size_t max_string_size = ROSALIA__DECORATE(ptrdiff)(buf_end, buf);
+            size_t max_string_size = ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf);
             const void* found = memchr(buf, '\0', max_string_size);
             if (!found || max_string_size < 2) {
                 return LS_ERR;
             }
-            size_t string_size = ROSALIA__DECORATE(ptrdiff)(found, buf) + 1;
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < string_size) {
+            size_t string_size = ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(found, buf) + 1;
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < string_size) {
                 return LS_ERR;
             }
-            if (string_size == 1 && *(uint8_t*)ROSALIA__DECORATE(ptradd)(buf, 1) == 0x00) {
+            if (string_size == 1 && *(uint8_t*)ROSALIA__SERIALIZATION_DECORATE(ptradd)(buf, 1) == 0x00) {
                 *cout_p = NULL;
                 string_size = 2;
             } else {
@@ -1027,7 +1027,7 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_string_serializer)(GSIT itype
     return 0;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_blob_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(ls_primitive_blob_serializer)(GSIT itype, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     blob* cin_p = (blob*)obj_in;
     blob* cout_p = (blob*)obj_out;
@@ -1053,28 +1053,28 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_blob_serializer)(GSIT itype, 
             return 8 + cin_p->len;
         } break;
         case GSIT_DESERIALIZE: {
-            if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < 8) {
+            if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < 8) {
                 return LS_ERR;
             }
             raw_stream rs = rs_init(buf);
             size_t csize = rs_r_size(&rs);
-            ROSALIA__DECORATE(blob_create)
+            ROSALIA__SERIALIZATION_DECORATE(blob_create)
             (cout_p, csize);
             if (csize > 0) {
-                if (ROSALIA__DECORATE(ptrdiff)(buf_end, ROSALIA__DECORATE(ptradd)(buf, 8)) < csize) {
+                if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, ROSALIA__SERIALIZATION_DECORATE(ptradd)(buf, 8)) < csize) {
                     return LS_ERR;
                 }
-                memcpy(cout_p->data, ROSALIA__DECORATE(ptradd)(buf, 8), csize);
+                memcpy(cout_p->data, ROSALIA__SERIALIZATION_DECORATE(ptradd)(buf, 8), csize);
             }
             return csize + 8;
         } break;
         case GSIT_COPY: {
-            ROSALIA__DECORATE(blob_create)
+            ROSALIA__SERIALIZATION_DECORATE(blob_create)
             (cout_p, cin_p->len);
             memcpy(cout_p->data, cin_p->data, cin_p->len);
         } break;
         case GSIT_DESTROY: {
-            ROSALIA__DECORATE(blob_destroy)
+            ROSALIA__SERIALIZATION_DECORATE(blob_destroy)
             (cin_p);
         } break;
         case GSIT_COUNT:
@@ -1085,26 +1085,26 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(ls_primitive_blob_serializer)(GSIT itype, 
     return 0;
 }
 
-custom_serializer_t* ROSALIA__INTERNAL(ls_primitive_serializers)[] = {
-    [SL_TYPE_BOOL] = ROSALIA__DECORATE(ls_primitive_bool_serializer),
-    [SL_TYPE_I8] = ROSALIA__DECORATE(ls_primitive_u8_serializer),
-    [SL_TYPE_I16] = ROSALIA__DECORATE(ls_primitive_u16_serializer),
-    [SL_TYPE_I32] = ROSALIA__DECORATE(ls_primitive_u32_serializer),
-    [SL_TYPE_I64] = ROSALIA__DECORATE(ls_primitive_u64_serializer),
-    [SL_TYPE_U8] = ROSALIA__DECORATE(ls_primitive_u8_serializer),
-    [SL_TYPE_U16] = ROSALIA__DECORATE(ls_primitive_u16_serializer),
-    [SL_TYPE_U32] = ROSALIA__DECORATE(ls_primitive_u32_serializer),
-    [SL_TYPE_U64] = ROSALIA__DECORATE(ls_primitive_u64_serializer),
-    [SL_TYPE_SIZE] = ROSALIA__DECORATE(ls_primitive_size_serializer),
-    [SL_TYPE_FLOAT] = ROSALIA__DECORATE(ls_primitive_float_serializer),
-    [SL_TYPE_DOUBLE] = ROSALIA__DECORATE(ls_primitive_double_serializer),
-    [SL_TYPE_STRING] = ROSALIA__DECORATE(ls_primitive_string_serializer),
-    [SL_TYPE_BLOB] = ROSALIA__DECORATE(ls_primitive_blob_serializer),
+custom_serializer_t* ROSALIA__SERIALIZATION_INTERNAL(ls_primitive_serializers)[] = {
+    [SL_TYPE_BOOL] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_bool_serializer),
+    [SL_TYPE_I8] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u8_serializer),
+    [SL_TYPE_I16] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u16_serializer),
+    [SL_TYPE_I32] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u32_serializer),
+    [SL_TYPE_I64] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u64_serializer),
+    [SL_TYPE_U8] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u8_serializer),
+    [SL_TYPE_U16] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u16_serializer),
+    [SL_TYPE_U32] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u32_serializer),
+    [SL_TYPE_U64] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_u64_serializer),
+    [SL_TYPE_SIZE] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_size_serializer),
+    [SL_TYPE_FLOAT] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_float_serializer),
+    [SL_TYPE_DOUBLE] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_double_serializer),
+    [SL_TYPE_STRING] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_string_serializer),
+    [SL_TYPE_BLOB] = ROSALIA__SERIALIZATION_DECORATE(ls_primitive_blob_serializer),
 };
 
 //TODO replace surena/rawstream uses by something cheaper
 // recursive object serializer
-ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const serialization_layout* layout, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)(GSIT itype, const serialization_layout* layout, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     assert(layout != NULL);
     const bool in_ex = (itype != GSIT_DESERIALIZE);
@@ -1155,31 +1155,31 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
         void* in_p = NULL;
         void* out_p = NULL;
         if (in_ex == true) {
-            in_p = ROSALIA__DECORATE(ptradd)(obj_in, pl->data_offset);
+            in_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->data_offset);
         }
         if (out_ex == true) {
-            out_p = ROSALIA__DECORATE(ptradd)(obj_out, pl->data_offset);
+            out_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_out, pl->data_offset);
         }
         size_t arr_len = 1;
         if (is_array == true) {
             if (is_ptr == true) {
                 if (itype == GSIT_DESERIALIZE) {
-                    if (ROSALIA__DECORATE(ptrdiff)(ebuf, cbuf) < 8) {
+                    if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(ebuf, cbuf) < 8) {
                         return LS_ERR;
                     }
                     raw_stream rs = rs_init(cbuf);
                     arr_len = rs_r_size(&rs);
-                    cbuf = ROSALIA__DECORATE(ptradd)(cbuf, 8);
+                    cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, 8);
                 } else {
-                    arr_len = *(size_t*)ROSALIA__DECORATE(ptradd)(obj_in, pl->len.offset);
+                    arr_len = *(size_t*)ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->len.offset);
                     if (use_buf == true) {
                         raw_stream rs = rs_init(cbuf);
                         rs_w_size(&rs, arr_len);
-                        cbuf = ROSALIA__DECORATE(ptradd)(cbuf, 8);
+                        cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, 8);
                     }
                 }
                 if (out_ex) {
-                    *(size_t*)ROSALIA__DECORATE(ptradd)(obj_out, pl->len.offset) = arr_len;
+                    *(size_t*)ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_out, pl->len.offset) = arr_len;
                 }
                 rsize += 8;
                 if (itype != GSIT_DESTROY && (pl->len.max > 0 && arr_len > pl->len.max)) {
@@ -1190,18 +1190,18 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
             }
         } else if (is_ptr == true) {
             if (itype == GSIT_DESERIALIZE) {
-                if (ROSALIA__DECORATE(ptrdiff)(ebuf, cbuf) < 1) {
+                if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(ebuf, cbuf) < 1) {
                     return LS_ERR;
                 }
                 raw_stream rs = rs_init(cbuf);
                 arr_len = (rs_r_uint8(&rs) == 0xFF ? 1 : 0);
-                cbuf = ROSALIA__DECORATE(ptradd)(cbuf, 1);
+                cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, 1);
             } else {
                 arr_len = ((*(void**)in_p) == NULL ? 0 : 1);
                 if (use_buf == true) {
                     raw_stream rs = rs_init(cbuf);
                     rs_w_uint8(&rs, arr_len == 0 ? 0x00 : 0xFF);
-                    cbuf = ROSALIA__DECORATE(ptradd)(cbuf, 1);
+                    cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, 1);
                 }
             }
             rsize += 1;
@@ -1221,13 +1221,13 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
             switch (serialize_type) {
                 default: {
                     // use primitive serializer func
-                    size_t csize = ROSALIA__INTERNAL(ls_primitive_serializers)[serialize_type](itype, in_p, out_p, cbuf, ebuf);
+                    size_t csize = ROSALIA__SERIALIZATION_INTERNAL(ls_primitive_serializers)[serialize_type](itype, in_p, out_p, cbuf, ebuf);
                     if (csize == LS_ERR) {
                         return LS_ERR;
                     }
                     rsize += csize;
                     if (use_buf == true) {
-                        cbuf = ROSALIA__DECORATE(ptradd)(cbuf, csize);
+                        cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, csize);
                     }
                 } break;
                 case SL_TYPE_UNION_INTERNALLY_TAGGED: {
@@ -1236,7 +1236,7 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
                     uint64_t un_tag;
                     if (itype == GSIT_DESERIALIZE) {
                         // peek tag from stream by tag_size
-                        if (ROSALIA__DECORATE(ptrdiff)(buf_end, buf) < pl->ext.un.tag_size) {
+                        if (ROSALIA__SERIALIZATION_DECORATE(ptrdiff)(buf_end, buf) < pl->ext.un.tag_size) {
                             return LS_ERR;
                         }
                         raw_stream rs = rs_init(buf);
@@ -1280,22 +1280,22 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
                     if (un_tag >= pl->ext.un.tag_max) {
                         return LS_ERR;
                     }
-                    size_t csize = ROSALIA__INTERNAL(layout_serializer_impl)(itype, pl->ext.un.tag_map[un_tag], in_p, out_p, cbuf, ebuf);
+                    size_t csize = ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)(itype, pl->ext.un.tag_map[un_tag], in_p, out_p, cbuf, ebuf);
                     if (csize == LS_ERR) {
                         return LS_ERR;
                     }
                     rsize += csize;
                     if (use_buf == true) {
-                        cbuf = ROSALIA__DECORATE(ptradd)(cbuf, csize);
+                        cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, csize);
                     }
                 } break;
                 case SL_TYPE_UNION_EXTERNALLY_TAGGED: {
                     assert(pl->ext.un.tag_map != NULL);
                     void* tag_p;
                     if (itype == GSIT_DESERIALIZE) {
-                        tag_p = ROSALIA__DECORATE(ptradd)(obj_out, pl->ext.un.tag_offset);
+                        tag_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_out, pl->ext.un.tag_offset);
                     } else {
-                        tag_p = ROSALIA__DECORATE(ptradd)(obj_in, pl->ext.un.tag_offset);
+                        tag_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->ext.un.tag_offset);
                     }
                     uint64_t un_tag;
                     switch (pl->ext.un.tag_size) {
@@ -1321,25 +1321,25 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
                     }
                     const serialization_layout* tag_selected_union_layout = pl->ext.un.tag_map[un_tag];
                     if (tag_selected_union_layout != NULL) {
-                        size_t csize = ROSALIA__INTERNAL(layout_serializer_impl)(itype, tag_selected_union_layout, in_p, out_p, cbuf, ebuf);
+                        size_t csize = ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)(itype, tag_selected_union_layout, in_p, out_p, cbuf, ebuf);
                         if (csize == LS_ERR) {
                             return LS_ERR;
                         }
                         rsize += csize;
                         if (use_buf == true) {
-                            cbuf = ROSALIA__DECORATE(ptradd)(cbuf, csize);
+                            cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, csize);
                         }
                     }
                 } break;
                 case SL_TYPE_COMPLEX: {
                     assert(pl->ext.layout != NULL);
-                    size_t csize = ROSALIA__INTERNAL(layout_serializer_impl)(itype, pl->ext.layout, in_p, out_p, cbuf, ebuf);
+                    size_t csize = ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)(itype, pl->ext.layout, in_p, out_p, cbuf, ebuf);
                     if (csize == LS_ERR) {
                         return LS_ERR;
                     }
                     rsize += csize;
                     if (use_buf == true) {
-                        cbuf = ROSALIA__DECORATE(ptradd)(cbuf, csize);
+                        cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, csize);
                     }
                 } break;
                 case SL_TYPE_CUSTOM: {
@@ -1350,35 +1350,35 @@ ROSALIA__DEF size_t ROSALIA__INTERNAL(layout_serializer_impl)(GSIT itype, const 
                     }
                     rsize += csize;
                     if (use_buf == true) {
-                        cbuf = ROSALIA__DECORATE(ptradd)(cbuf, csize);
+                        cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, csize);
                     }
                 } break;
             }
             if (in_ex == true) {
-                in_p = ROSALIA__DECORATE(ptradd)(in_p, typesize);
+                in_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(in_p, typesize);
             }
             if (out_ex == true) {
-                out_p = ROSALIA__DECORATE(ptradd)(out_p, typesize);
+                out_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(out_p, typesize);
             }
         }
         if (itype == GSIT_DESTROY && is_ptr == true) {
-            free(*(void**)ROSALIA__DECORATE(ptradd)(obj_in, pl->data_offset));
+            free(*(void**)ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->data_offset));
         }
         pl++;
     }
     return rsize;
 }
 
-ROSALIA__DEF size_t ROSALIA__DECORATE(layout_serializer)(GSIT itype, const serialization_layout* layout, void* obj_in, void* obj_out, void* buf, void* buf_end)
+ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(layout_serializer)(GSIT itype, const serialization_layout* layout, void* obj_in, void* obj_out, void* buf, void* buf_end)
 {
     // deserializing, first zero init the obj, and on copy/deserialization error, destroy it, so we don't leak memory
     if (itype == GSIT_COPY || itype == GSIT_DESERIALIZE) {
-        ROSALIA__INTERNAL(layout_serializer_impl)
+        ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)
         (GSIT_INITZERO, layout, obj_out, NULL, buf, buf_end);
     }
-    size_t ret = ROSALIA__INTERNAL(layout_serializer_impl)(itype, layout, obj_in, obj_out, buf, buf_end);
+    size_t ret = ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)(itype, layout, obj_in, obj_out, buf, buf_end);
     if ((itype == GSIT_COPY || itype == GSIT_DESERIALIZE) && ret == LS_ERR) {
-        ROSALIA__INTERNAL(layout_serializer_impl)
+        ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)
         (GSIT_DESTROY, layout, obj_out, NULL, buf, buf_end);
     }
     return ret;
@@ -1388,10 +1388,4 @@ ROSALIA__DEF size_t ROSALIA__DECORATE(layout_serializer)(GSIT itype, const seria
 }
 #endif
 
-#undef ROSALIA__INTERNAL
 #endif
-
-#undef ROSALIA__DEC
-#undef ROSALIA__DEC_EXT
-#undef ROSALIA__DEF
-#undef ROSALIA__DECORATE

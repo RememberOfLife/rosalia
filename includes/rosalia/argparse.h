@@ -4,24 +4,24 @@
 #include <stdbool.h>
 
 #ifdef ROSALIA_ARGPARSE_STATIC
-#define ROSALIA__DEC static
-#define ROSALIA__DEC_EXT static
-#define ROSALIA__DEF static
+#define ROSALIA__ARGPARSE_DEC static
+#define ROSALIA__ARGPARSE_DEC_EXT static
+#define ROSALIA__ARGPARSE_DEF static
 #else
-#define ROSALIA__DEC
-#define ROSALIA__DEC_EXT extern
-#define ROSALIA__DEF
+#define ROSALIA__ARGPARSE_DEC
+#define ROSALIA__ARGPARSE_DEC_EXT extern
+#define ROSALIA__ARGPARSE_DEF
 #endif
 
 #ifdef ROSALIA_ARGPARSE_DECORATE
-#define ROSALIA__DECORATE(ident) ROSALIA_ARGPARSE_DECORATE(ident)
+#define ROSALIA__ARGPARSE_DECORATE(ident) ROSALIA_ARGPARSE_DECORATE(ident)
 #else
-#define ROSALIA__DECORATE(ident) ident
+#define ROSALIA__ARGPARSE_DECORATE(ident) ident
 #endif
 
 #define ROSALIA_ARGPARSE_VERSION_MAJOR 0
 #define ROSALIA_ARGPARSE_VERSION_MINOR 1
-#define ROSALIA_ARGPARSE_VERSION_PATCH 1
+#define ROSALIA_ARGPARSE_VERSION_PATCH 3
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,15 +38,15 @@ typedef struct argp_basic_s {
     char* n_arg;
 } argp_basic;
 
-ROSALIA__DEC argp_basic ROSALIA__DECORATE(argp_basic_init)(int argc, char** argv);
+ROSALIA__ARGPARSE_DEC argp_basic ROSALIA__ARGPARSE_DECORATE(argp_basic_init)(int argc, char** argv);
 
-ROSALIA__DEC bool ROSALIA__DECORATE(argp_basic_process)(argp_basic* argp);
+ROSALIA__ARGPARSE_DEC bool ROSALIA__ARGPARSE_DECORATE(argp_basic_process)(argp_basic* argp);
 
 // arity 0, returns true if detected
-ROSALIA__DEC bool ROSALIA__DECORATE(argp_basic_arg_a0)(argp_basic* argp, const char* name);
+ROSALIA__ARGPARSE_DEC bool ROSALIA__ARGPARSE_DECORATE(argp_basic_arg_a0)(argp_basic* argp, const char* name);
 
 // arity 1, returns true if detected and set p_vstr to the supplied arg, p_vstr may result to NULL if there is no arg to use
-ROSALIA__DEC bool ROSALIA__DECORATE(argp_basic_arg_a1)(argp_basic* argp, const char* name, const char** p_vstr);
+ROSALIA__ARGPARSE_DEC bool ROSALIA__ARGPARSE_DECORATE(argp_basic_arg_a1)(argp_basic* argp, const char* name, const char** p_vstr);
 
 #ifdef __cplusplus
 }
@@ -57,7 +57,7 @@ ROSALIA__DEC bool ROSALIA__DECORATE(argp_basic_arg_a1)(argp_basic* argp, const c
 #if defined(ROSALIA_ARGPARSE_IMPLEMENTATION) && !defined(ROSALIA_ARGPARSE_H_IMPL)
 #define ROSALIA_ARGPARSE_H_IMPL
 
-#define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
+#define ROSALIA__ARGPARSE_INTERNAL(ident) rosalia__argparse_internal_##ident
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -67,7 +67,7 @@ ROSALIA__DEC bool ROSALIA__DECORATE(argp_basic_arg_a1)(argp_basic* argp, const c
 extern "C" {
 #endif
 
-ROSALIA__DEF argp_basic ROSALIA__DECORATE(argp_basic_init)(int argc, char** argv)
+ROSALIA__ARGPARSE_DEF argp_basic ROSALIA__ARGPARSE_DECORATE(argp_basic_init)(int argc, char** argv)
 {
     return (argp_basic){
         .argc = argc,
@@ -78,7 +78,7 @@ ROSALIA__DEF argp_basic ROSALIA__DECORATE(argp_basic_init)(int argc, char** argv
     };
 }
 
-ROSALIA__DEF bool ROSALIA__DECORATE(argp_basic_process)(argp_basic* argp)
+ROSALIA__ARGPARSE_DEF bool ROSALIA__ARGPARSE_DECORATE(argp_basic_process)(argp_basic* argp)
 {
     bool ret = (argp->w_argc > 0);
     argp->w_arg = argp->argv[argp->argc - (argp->w_argc--)];
@@ -87,13 +87,13 @@ ROSALIA__DEF bool ROSALIA__DECORATE(argp_basic_process)(argp_basic* argp)
 }
 
 // arity 0, returns true if detected
-ROSALIA__DEF bool ROSALIA__DECORATE(argp_basic_arg_a0)(argp_basic* argp, const char* name)
+ROSALIA__ARGPARSE_DEF bool ROSALIA__ARGPARSE_DECORATE(argp_basic_arg_a0)(argp_basic* argp, const char* name)
 {
     return (strcmp(argp->w_arg, name) == 0);
 }
 
 // arity 1, returns true if detected and set p_vstr to the supplied arg, p_vstr may result to NULL if there is no arg to use
-ROSALIA__DEF bool ROSALIA__DECORATE(argp_basic_arg_a1)(argp_basic* argp, const char* name, const char** p_vstr)
+ROSALIA__ARGPARSE_DEF bool ROSALIA__ARGPARSE_DECORATE(argp_basic_arg_a1)(argp_basic* argp, const char* name, const char** p_vstr)
 {
     bool ret = (strcmp(argp->w_arg, name) == 0);
     argp->w_argc--;
@@ -105,10 +105,4 @@ ROSALIA__DEF bool ROSALIA__DECORATE(argp_basic_arg_a1)(argp_basic* argp, const c
 }
 #endif
 
-#undef ROSALIA__INTERNAL
 #endif
-
-#undef ROSALIA__DEC
-#undef ROSALIA__DEC_EXT
-#undef ROSALIA__DEF
-#undef ROSALIA__DECORATE

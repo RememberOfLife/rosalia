@@ -5,24 +5,24 @@
 #include <stdint.h>
 
 #ifdef ROSALIA_NOISE_STATIC
-#define ROSALIA__DEC static
-#define ROSALIA__DEC_EXT static
-#define ROSALIA__DEF static
+#define ROSALIA__NOISE_DEC static
+#define ROSALIA__NOISE_DEC_EXT static
+#define ROSALIA__NOISE_DEF static
 #else
-#define ROSALIA__DEC
-#define ROSALIA__DEC_EXT extern
-#define ROSALIA__DEF
+#define ROSALIA__NOISE_DEC
+#define ROSALIA__NOISE_DEC_EXT extern
+#define ROSALIA__NOISE_DEF
 #endif
 
 #ifdef ROSALIA_NOISE_DECORATE
-#define ROSALIA__DECORATE(ident) ROSALIA_NOISE_DECORATE(ident)
+#define ROSALIA__NOISE_DECORATE(ident) ROSALIA_NOISE_DECORATE(ident)
 #else
-#define ROSALIA__DECORATE(ident) ident
+#define ROSALIA__NOISE_DECORATE(ident) ident
 #endif
 
 #define ROSALIA_NOISE_VERSION_MAJOR 0
 #define ROSALIA_NOISE_VERSION_MINOR 1
-#define ROSALIA_NOISE_VERSION_PATCH 2
+#define ROSALIA_NOISE_VERSION_PATCH 4
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,30 +77,30 @@ The revised SquirrelNoise5 function ensures all input bits affect all output bit
 */
 
 // fast hash of an int32 into a different (unrecognizable) uint32
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(squirrelnoise5)(int32_t positionX, uint32_t seed);
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(squirrelnoise5)(int32_t positionX, uint32_t seed);
 
 // raw pseudorandom noise functions (random-access / deterministic), basis of all other noise
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(get_1d_u32)(int32_t index, uint32_t seed);
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(get_2d_u32)(int32_t indexX, int32_t indexY, uint32_t seed);
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(get_3d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(get_4d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(get_1d_u32)(int32_t index, uint32_t seed);
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(get_2d_u32)(int32_t indexX, int32_t indexY, uint32_t seed);
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(get_3d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(get_4d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
 
 // same nois, mapped to floats in [0,1] for convenience
-ROSALIA__DEC float ROSALIA__DECORATE(get_1d_zto)(int32_t index, uint32_t seed);
-ROSALIA__DEC float ROSALIA__DECORATE(get_2d_zto)(int32_t indexX, int32_t indexY, uint32_t seed);
-ROSALIA__DEC float ROSALIA__DECORATE(get_3d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
-ROSALIA__DEC float ROSALIA__DECORATE(get_4d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_1d_zto)(int32_t index, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_2d_zto)(int32_t indexX, int32_t indexY, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_3d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_4d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
 
 // same nois, mapped to floats in [-1,1] for convenience
-ROSALIA__DEC float ROSALIA__DECORATE(get_1d_noto)(int32_t index, uint32_t seed);
-ROSALIA__DEC float ROSALIA__DECORATE(get_2d_noto)(int32_t indexX, int32_t indexY, uint32_t seed);
-ROSALIA__DEC float ROSALIA__DECORATE(get_3d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
-ROSALIA__DEC float ROSALIA__DECORATE(get_4d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_1d_noto)(int32_t index, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_2d_noto)(int32_t indexX, int32_t indexY, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_3d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
+ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_4d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
 
 // strhash function is not part of squirrelnoise
 // pass str_end NULL as default to use normal null character termination
 // str_end points to the first character NOT included in the hash
-ROSALIA__DEC uint32_t ROSALIA__DECORATE(strhash)(const char* str, const char* str_end);
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(strhash)(const char* str, const char* str_end);
 
 //TODO fix coherent noise using proper simplex noise
 // typedef struct coherent_noise_s {
@@ -112,7 +112,7 @@ ROSALIA__DEC uint32_t ROSALIA__DECORATE(strhash)(const char* str, const char* st
 // } coherent_noise;
 
 // // returns in [-1,1]
-// ROSALIA__DEC  float ROSALIA__DECORATE(coherent_noise_2d)(coherent_noise* cn, float x, float y);
+// ROSALIA__NOISE_DEC  float ROSALIA__NOISE_DECORATE(coherent_noise_2d)(coherent_noise* cn, float x, float y);
 
 //TODO get_2d_noto double and coherent noise double
 
@@ -139,7 +139,7 @@ Roll normal distributed float (i.e. only distribute between -1 and 1)
 #if defined(ROSALIA_NOISE_IMPLEMENTATION) && !defined(ROSALIA_NOISE_H_IMPL)
 #define ROSALIA_NOISE_H_IMPL
 
-#define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
+#define ROSALIA__NOISE_INTERNAL(ident) rosalia__noise_internal_##ident
 
 #include <stdint.h>
 #include <string.h>
@@ -148,7 +148,7 @@ Roll normal distributed float (i.e. only distribute between -1 and 1)
 extern "C" {
 #endif
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(squirrelnoise5)(int32_t positionX, uint32_t seed)
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(squirrelnoise5)(int32_t positionX, uint32_t seed)
 {
     const uint32_t SQ7_BIT_NOISE1 = 0xd2a80a3f; // 11010010101010000000101000111111
     const uint32_t SQ5_BIT_NOISE2 = 0xa884f197; // 10101000100001001111000110010111
@@ -170,95 +170,95 @@ ROSALIA__DEF uint32_t ROSALIA__DECORATE(squirrelnoise5)(int32_t positionX, uint3
     return mangledBits;
 }
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(get_1d_u32)(int32_t positionX, uint32_t seed)
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(get_1d_u32)(int32_t positionX, uint32_t seed)
 {
-    return ROSALIA__DECORATE(squirrelnoise5)(positionX, seed);
+    return ROSALIA__NOISE_DECORATE(squirrelnoise5)(positionX, seed);
 }
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(get_2d_u32)(int32_t indexX, int32_t indexY, uint32_t seed)
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(get_2d_u32)(int32_t indexX, int32_t indexY, uint32_t seed)
 {
     const int32_t PRIME_NUMBER = 198491317; // Large prime number with non-boring bits
-    return ROSALIA__DECORATE(squirrelnoise5)(indexX + (PRIME_NUMBER * indexY), seed);
+    return ROSALIA__NOISE_DECORATE(squirrelnoise5)(indexX + (PRIME_NUMBER * indexY), seed);
 }
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(get_3d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(get_3d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
 {
     const int32_t PRIME1 = 198491317; // Large prime number with non-boring bits
     const int32_t PRIME2 = 6542989; // Large prime number with distinct and non-boring bits
-    return ROSALIA__DECORATE(squirrelnoise5)(indexX + (PRIME1 * indexY) + (PRIME2 * indexZ), seed);
+    return ROSALIA__NOISE_DECORATE(squirrelnoise5)(indexX + (PRIME1 * indexY) + (PRIME2 * indexZ), seed);
 }
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(get_4d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(get_4d_u32)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const int32_t PRIME1 = 198491317; // Large prime number with non-boring bits
     const int32_t PRIME2 = 6542989; // Large prime number with distinct and non-boring bits
     const int32_t PRIME3 = 357239; // Large prime number with distinct and non-boring bits
-    return ROSALIA__DECORATE(squirrelnoise5)(indexX + (PRIME1 * indexY) + (PRIME2 * indexZ) + (PRIME3 * indexT), seed);
+    return ROSALIA__NOISE_DECORATE(squirrelnoise5)(indexX + (PRIME1 * indexY) + (PRIME2 * indexZ) + (PRIME3 * indexT), seed);
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_1d_zto)(int32_t index, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_1d_zto)(int32_t index, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
-    return (float)(ONE_OVER_MAX_UINT * (double)ROSALIA__DECORATE(squirrelnoise5)(index, seed));
+    return (float)(ONE_OVER_MAX_UINT * (double)ROSALIA__NOISE_DECORATE(squirrelnoise5)(index, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_2d_zto)(int32_t indexX, int32_t indexY, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_2d_zto)(int32_t indexX, int32_t indexY, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
     return (float)(ONE_OVER_MAX_UINT * (double)get_2d_u32(indexX, indexY, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_3d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_3d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
     return (float)(ONE_OVER_MAX_UINT * (double)get_3d_u32(indexX, indexY, indexZ, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_4d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_4d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
     return (float)(ONE_OVER_MAX_UINT * (double)get_4d_u32(indexX, indexY, indexZ, indexT, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_1d_noto)(int32_t index, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_1d_noto)(int32_t index, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
-    return (float)(ONE_OVER_MAX_INT * (double)(int)ROSALIA__DECORATE(squirrelnoise5)(index, seed));
+    return (float)(ONE_OVER_MAX_INT * (double)(int)ROSALIA__NOISE_DECORATE(squirrelnoise5)(index, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_2d_noto)(int32_t indexX, int32_t indexY, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_2d_noto)(int32_t indexX, int32_t indexY, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
     return (float)(ONE_OVER_MAX_INT * (double)(int)get_2d_u32(indexX, indexY, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_3d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_3d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
     return (float)(ONE_OVER_MAX_INT * (double)(int)get_3d_u32(indexX, indexY, indexZ, seed));
 }
 
-ROSALIA__DEF float ROSALIA__DECORATE(get_4d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
+ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_4d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
     return (float)(ONE_OVER_MAX_INT * (double)(int)get_4d_u32(indexX, indexY, indexZ, indexT, seed));
 }
 
-ROSALIA__DEF uint32_t ROSALIA__DECORATE(strhash)(const char* str, const char* str_end)
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(strhash)(const char* str, const char* str_end)
 {
     uint32_t acc = 0;
     if (!str_end) {
         str_end = str + strlen(str);
     }
     while (str < str_end) {
-        acc *= ROSALIA__DECORATE(squirrelnoise5)(acc, *str);
-        acc ^= ROSALIA__DECORATE(squirrelnoise5)(*str, acc);
+        acc *= ROSALIA__NOISE_DECORATE(squirrelnoise5)(acc, *str);
+        acc ^= ROSALIA__NOISE_DECORATE(squirrelnoise5)(*str, acc);
         str++;
     }
     return acc;
 }
 
-// ROSALIA__DEF float ROSALIA__DECORATE(coherent_noise_2d)(coherent_noise* cn, float x, float y)
+// ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(coherent_noise_2d)(coherent_noise* cn, float x, float y)
 // {
 //     float max_amp = 0;
 //     float amp = 1;
@@ -266,7 +266,7 @@ ROSALIA__DEF uint32_t ROSALIA__DECORATE(strhash)(const char* str, const char* st
 //     float sample = 0;
 //     // add successively smaller, higher-frequency terms
 //     for (uint8_t i = 0; i < cn->octaves; i++) {
-//         sample += ROSALIA__DECORATE(get_2d_noto)(x * freq, y * freq, cn->seed) * amp; //TODO use proper simplex noise, this doesnt work
+//         sample += ROSALIA__NOISE_DECORATE(get_2d_noto)(x * freq, y * freq, cn->seed) * amp; //TODO use proper simplex noise, this doesnt work
 //         max_amp += amp;
 //         amp *= cn->persistence;
 //         freq *= cn->lacunarity;
@@ -279,10 +279,4 @@ ROSALIA__DEF uint32_t ROSALIA__DECORATE(strhash)(const char* str, const char* st
 }
 #endif
 
-#undef ROSALIA__INTERNAL
 #endif
-
-#undef ROSALIA__DEC
-#undef ROSALIA__DEC_EXT
-#undef ROSALIA__DEF
-#undef ROSALIA__DECORATE
