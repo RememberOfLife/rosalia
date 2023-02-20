@@ -21,7 +21,7 @@
 #endif
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
-#define ROSALIA_VECTOR_VERSION_MINOR 3
+#define ROSALIA_VECTOR_VERSION_MINOR 4
 #define ROSALIA_VECTOR_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -55,6 +55,7 @@ extern "C" {
 #define VEC_REMOVE_SWAP ROSALIA_VECTOR_REMOVE_SWAP
 #define VEC_REMOVE_SWAP_N ROSALIA_VECTOR_REMOVE_SWAP_N
 #define VEC_LAST ROSALIA_VECTOR_LAST
+#define VEC_CLONE ROSALIA_VECTOR_CLONE
 #endif
 
 //TODO alloc.h compat
@@ -86,7 +87,7 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 
 // create(T** pp_vec, size_t cap)
 // allocate the vector with an initial capacity of cap
-#define ROSALIA_VECTOR_CREATE(pp_vec, cap) (ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
+#define ROSALIA_VECTOR_CREATE(pp_vec, cap) (*(pp_vec) = NULL, ROSALIA__INTERNAL_VECTOR_GROW((pp_vec), 0, (cap)))
 
 // destroy(T** pp_vec)
 // free the vector and set it to NULL
@@ -105,7 +106,7 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 // shrink to fit capacity:
 // len < cap : "expected natural shrink", fit=max(len*2,4)
 // len == cap : realloc to fit=len //TODO might want natural shrink here too
-// len > cap : truncate length, realloc to fit=len
+// len > cap : truncate length, realloc to fit=cap
 #define ROSALIA_VECTOR_FITCAP(pp_vec) (*(pp_vec) = rosalia__internal_vector_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec) < ROSALIA_VECTOR_CAP(pp_vec) ? 2 * ROSALIA_VECTOR_LEN(pp_vec) : ROSALIA_VECTOR_CAP(pp_vec)))
 
 // size_t len(T** pp_vec)
@@ -177,6 +178,8 @@ ROSALIA__DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
 // get the last element in the vector
 #define ROSALIA_VECTOR_LAST(pp_vec) ((*(pp_vec))[ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec)->length - 1])
 
+#define ROSALIA_VECTOR_CLONE(pp_vec_d, pp_vec_s) (ROSALIA_VECTOR_CREATE((pp_vec_d), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec_s)->length), ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec_d)->length = ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec_s)->length, memcpy(*(pp_vec_d), *(pp_vec_s), sizeof(**(pp_vec_s)) * ROSALIA__INTERNAL_VECTOR_HEADER(pp_vec_s)->length))
+
 #ifdef __cplusplus
 }
 #endif
@@ -238,7 +241,7 @@ ROSALIA__DEF void* rosalia__internal_vector_grow(void* p_vec, size_t elem_size, 
 
     size_t new_len = ROSALIA_VECTOR_LEN(&p_vec);
 
-    rosalia__internal_vector_info* new_vec = realloc(p_vec == NULL ? NULL : ROSALIA__INTERNAL_VECTOR_HEADER(&p_vec), sizeof(rosalia__internal_vector_info) + elem_size * min_cap);
+    rosalia__internal_vector_info* new_vec = (rosalia__internal_vector_info*)realloc(p_vec == NULL ? NULL : ROSALIA__INTERNAL_VECTOR_HEADER(&p_vec), sizeof(rosalia__internal_vector_info) + elem_size * min_cap);
 
     *new_vec = (rosalia__internal_vector_info){
         .length = new_len,
@@ -268,7 +271,7 @@ ROSALIA__DEF void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t el
         fit = 4;
     }
 
-    rosalia__internal_vector_info* new_vec = realloc(p_vec == NULL ? NULL : ROSALIA__INTERNAL_VECTOR_HEADER(&p_vec), sizeof(rosalia__internal_vector_info) + elem_size * fit);
+    rosalia__internal_vector_info* new_vec = (rosalia__internal_vector_info*)realloc(p_vec == NULL ? NULL : ROSALIA__INTERNAL_VECTOR_HEADER(&p_vec), sizeof(rosalia__internal_vector_info) + elem_size * fit);
 
     *new_vec = (rosalia__internal_vector_info){
         .length = len,
