@@ -25,7 +25,7 @@
 
 #define ROSALIA_SEMVER_VERSION_MAJOR 0
 #define ROSALIA_SEMVER_VERSION_MINOR 1
-#define ROSALIA_SEMVER_VERSION_PATCH 2
+#define ROSALIA_SEMVER_VERSION_PATCH 3
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,7 +73,8 @@ ROSALIA__DEC bool ROSALIA__DECORATE(SEMVER_satisfies)(semver required, semver pr
 
 //TODO serialization.h compatibility and semver+semver_ext serialization layout
 
-#ifdef ROSALIA_SEMVER_IMPLEMENTATION
+#if defined(ROSALIA_SEMVER_IMPLEMENTATION) && !defined(ROSALIA_SEMVER_H_IMPL)
+#define ROSALIA_SEMVER_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

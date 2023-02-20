@@ -12,3 +12,4 @@
 #include "rosalia/semver.h"
 #include "rosalia/serialization.h"
 #include "rosalia/timestamp.h"
+#include "rosalia/vector.h"

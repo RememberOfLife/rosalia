@@ -21,7 +21,7 @@
 
 #define ROSALIA_RAND_VERSION_MAJOR 0
 #define ROSALIA_RAND_VERSION_MINOR 1
-#define ROSALIA_RAND_VERSION_PATCH 1
+#define ROSALIA_RAND_VERSION_PATCH 2
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,7 +45,8 @@ ROSALIA__DEC uint32_t ROSALIA__DECORATE(fprng_rand)(fast_prng* fprng);
 
 //TODO serialization.h compatibility and fast_prng serialization layout
 
-#ifdef ROSALIA_RAND_IMPLEMENTATION
+#if defined(ROSALIA_RAND_IMPLEMENTATION) && !defined(ROSALIA_RAND_H_IMPL)
+#define ROSALIA_RAND_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

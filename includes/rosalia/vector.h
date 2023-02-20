@@ -22,7 +22,7 @@
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
 #define ROSALIA_VECTOR_VERSION_MINOR 4
-#define ROSALIA_VECTOR_VERSION_PATCH 0
+#define ROSALIA_VECTOR_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -199,7 +199,8 @@ serialization_layout sl_thing[] = {
 };
 */
 
-#ifdef ROSALIA_VECTOR_IMPLEMENTATION
+#if defined(ROSALIA_VECTOR_IMPLEMENTATION) && !defined(ROSALIA_VECTOR_H_IMPL)
+#define ROSALIA_VECTOR_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

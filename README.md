@@ -5,18 +5,18 @@ General purpose convencience APIs for C.
 |library|version|description|
 |---|---|---|
 |[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
-|[`argparse.h`](./includes/rosalia/argparse.h)|`0.1.0`|**CLI argument parsing** (//TODO: with different flavors).|
-|[`base64.h`](./includes/rosalia/base64.h)|`0.1.3`|**Base64** encode and decode capabilities.|
+|[`argparse.h`](./includes/rosalia/argparse.h)|`0.1.1`|**CLI argument parsing** (//TODO: with different flavors).|
+|[`base64.h`](./includes/rosalia/base64.h)|`0.1.4`|**Base64** encode and decode capabilities.|
 |[`config.h`](./includes/rosalia/config.h)||**JSON** representation and (de-)serialization.|
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
-|[`math.h`](./includes/rosalia/math.h)|`0.1.1`|**Math utils.**|
-|[`noise.h`](./includes/rosalia/noise.h)|`0.1.1`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
-|[`rand.h`](./includes/rosalia/rand.h)|`0.1.1`|**PCG32 PRNG** with acceptable speed.|
-|[`semver.h`](./includes/rosalia/semver.h)|`0.1.2`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
-|[`serialization.h`](./includes/rosalia/serialization.h)|`0.4.1`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.|
-|[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.1`|**Monotonic timestamps (with fractional seconds).**|
-|[`vector.h`](./includes/rosalia/vector.h)|`0.4.0`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
+|[`math.h`](./includes/rosalia/math.h)|`0.3.0`|**Math utils.**|
+|[`noise.h`](./includes/rosalia/noise.h)|`0.1.2`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
+|[`rand.h`](./includes/rosalia/rand.h)|`0.1.2`|**PCG32 PRNG** with acceptable speed.|
+|[`semver.h`](./includes/rosalia/semver.h)|`0.1.3`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
+|[`serialization.h`](./includes/rosalia/serialization.h)|`0.4.2`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.|
+|[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.2`|**Monotonic timestamps (with fractional seconds).**|
+|[`vector.h`](./includes/rosalia/vector.h)|`0.4.1`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 

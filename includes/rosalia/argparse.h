@@ -21,7 +21,7 @@
 
 #define ROSALIA_ARGPARSE_VERSION_MAJOR 0
 #define ROSALIA_ARGPARSE_VERSION_MINOR 1
-#define ROSALIA_ARGPARSE_VERSION_PATCH 0
+#define ROSALIA_ARGPARSE_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,7 +54,8 @@ ROSALIA__DEC bool ROSALIA__DECORATE(argp_basic_arg_a1)(argp_basic* argp, const c
 
 #endif
 
-#ifdef ROSALIA_ARGPARSE_IMPLEMENTATION
+#if defined(ROSALIA_ARGPARSE_IMPLEMENTATION) && !defined(ROSALIA_ARGPARSE_H_IMPL)
+#define ROSALIA_ARGPARSE_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

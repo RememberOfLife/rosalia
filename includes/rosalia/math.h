@@ -21,7 +21,7 @@
 #endif
 
 #define ROSALIA_MATH_VERSION_MAJOR 0
-#define ROSALIA_MATH_VERSION_MINOR 2
+#define ROSALIA_MATH_VERSION_MINOR 3
 #define ROSALIA_MATH_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -55,7 +55,8 @@ ROSALIA__DEC uint64_t ROSALIA__DECORATE(scale_i2i)(uint64_t in_v, uint64_t in_mi
 
 #endif
 
-#ifdef ROSALIA_MATH_IMPLEMENTATION
+#if defined(ROSALIA_MATH_IMPLEMENTATION) && !defined(ROSALIA_MATH_H_IMPL)
+#define ROSALIA_MATH_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

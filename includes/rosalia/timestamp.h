@@ -21,7 +21,7 @@
 
 #define ROSALIA_TIMESTAMP_VERSION_MAJOR 0
 #define ROSALIA_TIMESTAMP_VERSION_MINOR 1
-#define ROSALIA_TIMESTAMP_VERSION_PATCH 1
+#define ROSALIA_TIMESTAMP_VERSION_PATCH 2
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,7 +77,8 @@ ROSALIA__DEC timestamp ROSALIA__DECORATE(timestamp_add)(timestamp ts1, timestamp
 //     {SL_TYPE_STOP},
 // };
 
-#ifdef ROSALIA_TIMESTAMP_IMPLEMENTATION
+#if defined(ROSALIA_TIMESTAMP_IMPLEMENTATION) && !defined(ROSALIA_TIMESTAMP_H_IMPL)
+#define ROSALIA_TIMESTAMP_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 

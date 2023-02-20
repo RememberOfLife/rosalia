@@ -22,7 +22,7 @@
 
 #define ROSALIA_NOISE_VERSION_MAJOR 0
 #define ROSALIA_NOISE_VERSION_MINOR 1
-#define ROSALIA_NOISE_VERSION_PATCH 1
+#define ROSALIA_NOISE_VERSION_PATCH 2
 
 #ifdef __cplusplus
 extern "C" {
@@ -136,7 +136,8 @@ Roll normal distributed float (i.e. only distribute between -1 and 1)
 
 #endif
 
-#ifdef ROSALIA_NOISE_IMPLEMENTATION
+#if defined(ROSALIA_NOISE_IMPLEMENTATION) && !defined(ROSALIA_NOISE_H_IMPL)
+#define ROSALIA_NOISE_H_IMPL
 
 #define ROSALIA__INTERNAL(ident) rosalia__internal_##ident
 
