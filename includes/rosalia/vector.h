@@ -71,13 +71,13 @@ typedef struct rosalia__internal_vector_info_s {
 
 // takes a vector and returns a vector that:
 // has at least enough space to fit additional add_len elements and has a minimum capacity of min_cap
-ROSALIA__VECTOR_DEC void* rosalia__internal_vector_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap);
+ROSALIA__VECTOR_DEC void* rosalia__vector_internal_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap);
 
 // takes a vector and returns a vector that:
 // has enough space for fit many elements, unused capacity is released
-ROSALIA__VECTOR_DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit);
+ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit);
 
-#define ROSALIA__VECTOR_INTERNAL_VECTOR_GROW(pp_vec, len, cap) (*(pp_vec) = rosalia__internal_vector_grow(*(pp_vec), sizeof(**(pp_vec)), (len), (cap)))
+#define ROSALIA__VECTOR_INTERNAL_VECTOR_GROW(pp_vec, len, cap) (*((void**)(pp_vec)) = rosalia__vector_internal_grow(*(pp_vec), sizeof(**(pp_vec)), (len), (cap)))
 
 #define ROSALIA__VECTOR_INTERNAL_VECTOR_MGROW(pp_vec, len) ((*(pp_vec) == NULL || ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length + (len) > ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->capacity) ? (ROSALIA__VECTOR_INTERNAL_VECTOR_GROW((pp_vec), (len), 0), 0) : 0)
 
@@ -107,7 +107,7 @@ ROSALIA__VECTOR_DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, si
 // len < cap : "expected natural shrink", fit=max(len*2,4)
 // len == cap : realloc to fit=len //TODO might want natural shrink here too
 // len > cap : truncate length, realloc to fit=cap
-#define ROSALIA_VECTOR_FITCAP(pp_vec) (*(pp_vec) = rosalia__internal_vector_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec) < ROSALIA_VECTOR_CAP(pp_vec) ? 2 * ROSALIA_VECTOR_LEN(pp_vec) : ROSALIA_VECTOR_CAP(pp_vec)))
+#define ROSALIA_VECTOR_FITCAP(pp_vec) (*((void**)pp_vec) = rosalia__vector_internal_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec) < ROSALIA_VECTOR_CAP(pp_vec) ? 2 * ROSALIA_VECTOR_LEN(pp_vec) : ROSALIA_VECTOR_CAP(pp_vec)))
 
 // size_t len(T** pp_vec)
 // returns the number of elements currently in the vector
@@ -120,7 +120,7 @@ ROSALIA__VECTOR_DEC void* rosalia__internal_vector_shrink_to_fit(void* p_vec, si
 // fitlen(T** pp_vec)
 // shrink to fit length, this is the strictest shrinking
 // note a vector will never shrink below 4 elements
-#define ROSALIA_VECTOR_FITLEN(pp_vec) (*(pp_vec) = rosalia__internal_vector_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec)))
+#define ROSALIA_VECTOR_FITLEN(pp_vec) (*((void**)pp_vec) = rosalia__vector_internal_shrink_to_fit(*(pp_vec), sizeof(**(pp_vec)), ROSALIA_VECTOR_LEN(pp_vec)))
 
 // addlen_idx(T** pp_vec, size_t len)
 // add len uninitialized elements to the end of the vector and return the index of the first of them
@@ -218,7 +218,7 @@ extern "C" {
 
 //note: p_vec can be NULL in both but VEC_LEN and VEC_CAP can both be used on NULL vectors and return 0
 
-ROSALIA__VECTOR_DEF void* rosalia__internal_vector_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap)
+ROSALIA__VECTOR_DEF void* rosalia__vector_internal_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap)
 {
 
     size_t min_len = ROSALIA_VECTOR_LEN(&p_vec) + add_len;
@@ -257,7 +257,7 @@ ROSALIA__VECTOR_DEF void* rosalia__internal_vector_grow(void* p_vec, size_t elem
 // FITCAP: L < C : "expected natural shrink", fit=max(len*2,4)
 // FITCAP: L = C : realloc to fit=len
 // FITCAP: L > C : truncate length, realloc to fit
-ROSALIA__VECTOR_DEF void* rosalia__internal_vector_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit)
+ROSALIA__VECTOR_DEF void* rosalia__vector_internal_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit)
 {
     if (p_vec == NULL) {
         return NULL;
