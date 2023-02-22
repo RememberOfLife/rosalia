@@ -8,5 +8,5 @@
 
 void run_test_timestamp()
 {
-    printf("timestamp - empty\n");
+    //TODO
 }

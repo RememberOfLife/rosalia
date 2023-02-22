@@ -20,5 +20,5 @@ void run_test_vector()
     VEC_DESTROY(&v1);
     assert(v1 == NULL);
 
-    printf("vector - ok\n");
+    printf(". vector\n");
 }

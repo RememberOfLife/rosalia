@@ -6,18 +6,33 @@
 extern "C" {
 #endif
 
-typedef enum __attribute__((__packed__)) ROSA_LOG_TYPE_E {
-    ROSA_LOG_TYPE_NONE = 0,
+/*TODO api? whats the intended usage/pattern here?
+- need opt-in thread safety across single logger
+- backends for writing to files, printing, in-memory cycle buffer, //TODO composable??
+- debug log statements that compile out of release builds, but can be on demand disabled
 
-    ROSA_LOG_TYPE_DEBUG,
-    ROSA_LOG_TYPE_INFO,
-    ROSA_LOG_TYPE_WARN,
-    ROSA_LOG_TYPE_ERROR,
-    ROSA_LOG_TYPE_FATAL,
 
-    ROSA_LOG_TYPE_COUNT,
-    ROSA_LOG_TYPE_SIZE_MAX = UINT8_MAX,
-} ROSA_LOG_TYPE;
+usage examples:
+logger* log;
+LOG_CREATE(&log);
+LOG_DESTROY(&log);
+LOGF(log, LOGL_INFO, "thing");
+LOGF_FATAL(log, "thing")
+
+*/
+
+typedef enum __attribute__((__packed__)) LOGL_E {
+    LOGL_NONE = 0,
+
+    LOGL_DEBUG,
+    LOGL_INFO,
+    LOGL_WARN,
+    LOGL_ERROR,
+    LOGL_FATAL,
+
+    LOGL_COUNT,
+    LOGL_SIZE_MAX = UINT8_MAX,
+} LOGL;
 
 #ifdef __cplusplus
 }

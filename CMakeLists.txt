@@ -36,6 +36,7 @@ set(SOURCES
     src/tests/argparse.c
     src/tests/base64.c
     src/tests/heapstackify.c
+    src/tests/json.c
     src/tests/math.c
     src/tests/noise.c
     src/tests/rand.c

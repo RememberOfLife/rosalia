@@ -8,5 +8,5 @@
 
 void run_test_noise()
 {
-    printf("noise - empty\n");
+    //TODO
 }

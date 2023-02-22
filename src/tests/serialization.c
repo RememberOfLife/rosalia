@@ -244,5 +244,5 @@ void run_test_serialization()
     check_deserialize_equal(&t2_o1, &t2_o2, sl_tu_any);
     check_copy_equal(&t2_o2, &t2_o3, sl_tu_any);
 
-    printf("serialization - ok\n");
+    printf(". serialization\n");
 }

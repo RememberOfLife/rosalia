@@ -11,5 +11,5 @@
 
 void run_test_semver()
 {
-    printf("semver - empty\n");
+    //TODO
 }

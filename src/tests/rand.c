@@ -14,5 +14,5 @@ void run_test_rand()
     for (int i = 0; i < 100; i++) {
         acc += fprng_rand(&rng);
     }
-    printf("rand - ok\n");
+    printf(". rand\n");
 }

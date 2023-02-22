@@ -12,6 +12,7 @@ int main()
     run_test_argparse();
     run_test_base64();
     run_test_heapstackify();
+    run_test_json();
     run_test_math();
     run_test_noise();
     run_test_rand();

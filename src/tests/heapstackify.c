@@ -81,7 +81,7 @@ void run_test_heapstackify()
 {
     uint64_t start;
     uint64_t stop;
-    uint64_t req_fib = 35;
+    uint64_t req_fib = 10; //35;
     uint64_t result1;
     uint64_t result2;
     allocator lina;
@@ -89,43 +89,43 @@ void run_test_heapstackify()
     start = timestamp_get_ms64();
     result1 = canon_fib(req_fib);
     stop = timestamp_get_ms64();
-    printf("+ canon fib %lu: %lu in %lums\n", req_fib, result1, stop - start);
+    // printf("+ canon fib %lu: %lu in %lums\n", req_fib, result1, stop - start);
 
     start = timestamp_get_ms64();
     HS_ENTRY_CALL_EMPLACE(&allocator_libc, &result2, fib, req_fib);
     stop = timestamp_get_ms64();
-    printf("+ libc heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
+    // printf("+ libc heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
 
     lina = create_allocator_linear((size_t)1 << 32);
     start = timestamp_get_ms64();
     HS_ENTRY_CALL_EMPLACE(&lina, &result2, fib, req_fib);
     stop = timestamp_get_ms64();
-    printf("+ linear heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
+    // printf("+ linear heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
     destroy_allocator_linear(&lina);
 
-    printf("+ ---\n");
+    // printf("+ ---\n");
 
-    uint64_t req_rs_m = 3;
-    uint64_t req_rs_n = 11;
+    uint64_t req_rs_m = 2; //3;
+    uint64_t req_rs_n = 2; //11;
 
     start = timestamp_get_ms64();
     HS_ENTRY_CALL_EMPLACE(&allocator_libc, &result1, ackerman, req_rs_m, req_rs_n);
     stop = timestamp_get_ms64();
-    printf("+ libc heapstackify ackerman %lu %lu: %lu in %lums\n", req_rs_m, req_rs_n, result1, stop - start);
+    // printf("+ libc heapstackify ackerman %lu %lu: %lu in %lums\n", req_rs_m, req_rs_n, result1, stop - start);
 
     lina = create_allocator_linear((size_t)1 << 34);
     start = timestamp_get_ms64();
     HS_ENTRY_CALL_EMPLACE(&lina, &result1, ackerman, req_rs_m, req_rs_n);
     stop = timestamp_get_ms64();
-    printf("+ linear heapstackify ackerman %lu %lu: %lu in %lums\n", req_rs_m, req_rs_n, result1, stop - start);
+    // printf("+ linear heapstackify ackerman %lu %lu: %lu in %lums\n", req_rs_m, req_rs_n, result1, stop - start);
     destroy_allocator_linear(&lina);
 
-    printf("+ canon ackerman %lu %lu: ", req_rs_m, req_rs_n);
+    // printf("+ canon ackerman %lu %lu: ", req_rs_m, req_rs_n);
     fflush(stdout);
     start = timestamp_get_ms64();
     result2 = canon_ackerman(req_rs_m, req_rs_n);
     stop = timestamp_get_ms64();
-    printf("+ %lu in %lums\n", result2, stop - start);
+    // printf("+ %lu in %lums\n", result2, stop - start);
 
-    printf("heapstackify - ok\n");
+    printf(". heapstackify\n");
 }

@@ -10,6 +10,8 @@ void run_test_base64();
 
 void run_test_heapstackify();
 
+void run_test_json();
+
 void run_test_math();
 
 void run_test_noise();

@@ -35,5 +35,5 @@ void run_test_base64()
 
     assert(memcmp(bytes1, bytes2, bytes_len) == 0);
 
-    printf("base64 - ok\n");
+    printf(". base64\n");
 }

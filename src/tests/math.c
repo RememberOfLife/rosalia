@@ -8,5 +8,5 @@
 
 void run_test_math()
 {
-    printf("math - empty\n");
+    //TODO
 }
