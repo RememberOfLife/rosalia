@@ -22,8 +22,8 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 4
-#define ROSALIA_SERIALIZATION_VERSION_PATCH 4
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 5
+#define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
 extern "C" {
@@ -118,6 +118,8 @@ ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_create)(blo
 ROSALIA__SERIALIZATION_DEC bool ROSALIA__SERIALIZATION_DECORATE(blob_is_null)(blob* b);
 
 ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_resize)(blob* b, size_t len, bool preserve_data);
+
+ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_copy)(blob* t, blob* s);
 
 ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_destroy)(blob* b);
 
@@ -592,6 +594,14 @@ ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(blob_resize)(blo
     ROSALIA__SERIALIZATION_DECORATE(blob_destroy)
     (b);
     *b = new_blob;
+}
+
+ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(blob_copy)(blob* t, blob* s)
+{
+    blob_create(t, s->len);
+    if (t->len > 0) {
+        memcpy(t->data, s->data, t->len);
+    }
 }
 
 ROSALIA__SERIALIZATION_DEF void ROSALIA__SERIALIZATION_DECORATE(blob_destroy)(blob* b)
