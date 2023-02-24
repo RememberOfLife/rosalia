@@ -22,7 +22,7 @@
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
 #define ROSALIA_VECTOR_VERSION_MINOR 4
-#define ROSALIA_VECTOR_VERSION_PATCH 3
+#define ROSALIA_VECTOR_VERSION_PATCH 4
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,6 +61,8 @@ extern "C" {
 //TODO alloc.h compat
 
 //TODO check all of these for correct behaviour
+
+//TODO things like push n with len 0 should not fail on NULL vectors
 
 typedef struct rosalia__internal_vector_info_s {
     size_t length;
@@ -172,7 +174,7 @@ ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, si
 
 // remove_swap_n(T** pp_vec, size_t idx, size_t len)
 // remove len elements at idx forward and swap in element from the back (if required), order is not stable, but is much faster than copying
-#define ROSALIA_VECTOR_REMOVE_SWAP_N(pp_vec, idx, len) (memmove(&(*(pp_vec))[idx], &(*(pp_vec))[ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - ((idx) + (len) > ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len))], (idx) + (len) > ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len)), ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length -= (len))
+#define ROSALIA_VECTOR_REMOVE_SWAP_N(pp_vec, idx, len) (memmove(&(*(pp_vec))[idx], &(*(pp_vec))[ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - ((idx) + (len) > ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len))], sizeof(**(pp_vec)) * ((idx) + (len) > ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (len) ? ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - (idx) - (len) : (len))), ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length -= (len))
 
 // T last(T** pp_vec)
 // get the last element in the vector

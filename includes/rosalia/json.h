@@ -48,8 +48,6 @@ typedef enum __attribute__((__packed__)) CJ_TYPE_E {
     CJ_TYPE_BOOL,
     CJ_TYPE_STRING,
     CJ_TYPE_ERROR,
-    // CJ_TYPE_COL4U, //REMOVE
-    // CJ_TYPE_COL4F,
     CJ_TYPE_COUNT,
     CJ_TYPE_MAX = UINT8_MAX,
 } CJ_TYPE;
@@ -174,11 +172,12 @@ bool cj_get_u64(cj_ovac* root, const char* data_path, uint64_t* rv, bool* vnull)
 bool cj_get_f32(cj_ovac* root, const char* data_path, float* rv, bool* vnull);
 bool cj_get_bool(cj_ovac* root, const char* data_path, bool* rv, bool* vnull);
 bool cj_get_str(cj_ovac* root, const char* data_path, cj_sb_string** rv, bool* vnull);
-// shallow color get assumes data_path leads to a string ovac, this is then parsed as a color //TODO want color funcs?
+// shallow color get assumes data_path leads to a string ovac, this is then parsed as a color
 bool cj_get_c4u(cj_ovac* root, const char* data_path, cj_color4u* rv, bool* vnull);
 bool cj_get_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, bool* vnull);
 
 // default get, same as get but returns the supplied default value if the datapath does not return a valid result
+// i.e. if this returns false there was no value, and the value in rv is dv
 bool cj_dget_u64(cj_ovac* root, const char* data_path, uint64_t* rv, uint64_t dv, bool* vnull);
 bool cj_dget_f32(cj_ovac* root, const char* data_path, float* rv, float dv, bool* vnull);
 bool cj_dget_bool(cj_ovac* root, const char* data_path, bool* rv, bool dv, bool* vnull);
@@ -186,11 +185,17 @@ bool cj_dget_str(cj_ovac* root, const char* data_path, cj_sb_string** rv, cj_sb_
 bool cj_dget_c4u(cj_ovac* root, const char* data_path, cj_color4u* rv, cj_color4u dv, bool* vnull);
 bool cj_dget_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, cj_color4f dv, bool* vnull);
 
-//TODO create datapath method and set for array indices creates objects and vnull array entries for things made available at idx (same for normal insert at)
-
-// shallow value set, return true if the data path existed and was of the correct type, false otherwise
-// bool cj_set_u64(cj_ovac* root, const char* data_path, uint64_t v); //TODO want shallow value set?
-//...
+//TODO impl
+// force value set, makes v available under data_path, if required, new objects will be inserted and arrays filled with vnulls
+// careful: this destroys and overrides previous data available at the data_path or partials of it
+// returns false if the data_path did not already match the desired types
+// bool cj_fset_vnull(cj_ovac* root, const char* data_path);
+// bool cj_fset_u64(cj_ovac* root, const char* data_path, uint64_t v);
+// bool cj_fset_f32(cj_ovac* root, const char* data_path, uint64_t v);
+// bool cj_fset_bool(cj_ovac* root, const char* data_path, uint64_t v);
+// bool cj_fset_str(cj_ovac* root, const char* data_path, uint64_t v);
+// bool cj_fset_c4u(cj_ovac* root, const char* data_path, uint64_t v);
+// bool cj_fset_c4f(cj_ovac* root, const char* data_path, uint64_t v);
 
 #ifdef __cplusplus
 }
