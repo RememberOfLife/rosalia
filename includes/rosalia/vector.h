@@ -22,7 +22,7 @@
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
 #define ROSALIA_VECTOR_VERSION_MINOR 4
-#define ROSALIA_VECTOR_VERSION_PATCH 4
+#define ROSALIA_VECTOR_VERSION_PATCH 5
 
 #ifdef __cplusplus
 extern "C" {
@@ -162,7 +162,7 @@ ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, si
 
 // remove(T** pp_vec, size_t idx)
 // remove element at idx and copy the rest so the order stays stable
-#define ROSALIA_VECTOR_REMOVE(pp_vec, idx) (ROSALIA_VECTOR_REMOVE((pp_vec), (idx), 1))
+#define ROSALIA_VECTOR_REMOVE(pp_vec, idx) (ROSALIA_VECTOR_REMOVE_N((pp_vec), (idx), 1))
 
 // remove_n(T** pp_vec, size_t idx, size_t len)
 // remove len elements at idx forward and copy the rest so the order stays stable
