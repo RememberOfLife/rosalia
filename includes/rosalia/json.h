@@ -23,7 +23,7 @@
 
 #define ROSALIA_JSON_VERSION_MAJOR 0
 #define ROSALIA_JSON_VERSION_MINOR 1
-#define ROSALIA_JSON_VERSION_PATCH 0
+#define ROSALIA_JSON_VERSION_PATCH 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,7 +43,7 @@ typedef enum __attribute__((__packed__)) CJ_TYPE_E {
     CJ_TYPE_OBJECT,
     CJ_TYPE_ARRAY,
     CJ_TYPE_VNULL, // this is json null, read value-null
-    CJ_TYPE_U64,
+    CJ_TYPE_U64, //TODO should be signed int64
     CJ_TYPE_F32,
     CJ_TYPE_BOOL,
     CJ_TYPE_STRING,
@@ -148,7 +148,7 @@ void cj_ovac_destroy(cj_ovac* ovac); // if ovac is in a parent container, it wil
 
 // if str_hint is true then "\!XXX" and "\0" are enabled for use in strings
 size_t cj_measure(cj_ovac* ovac, bool packed, bool str_hint); // includes a final zero terminator, returns 0 if a measure error occured, or ovac is NULL
-char* cj_serialize(char* buf, cj_ovac* ovac, bool packed, bool str_hint); // returns a pointer just beyond the last written character, or NULL if a serialization error occured (e.g. invalid types)
+char* cj_serialize(char* buf, cj_ovac* ovac, bool packed, bool str_hint); // returns a pointer just beyond the last written character, or NULL if a serialization error occured (e.g. invalid types) //TODO NO trailing commas!!
 cj_ovac* cj_deserialize(const char* buf, bool str_hint); // must be zero terminated, returns an obj ovac if successful, otherwise an ovac of type CJ_TYPE_ERROR, which has a string value containing the error string, or NULL if no error specified
 
 // cj_find uses a data path api to find the specified entry in the ovac (json) tree
@@ -219,9 +219,9 @@ bool cj_dget_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, cj_color4
 #include <stdlib.h>
 #include <string.h>
 
-//TODO this will break in certain include order scenarios
 #define ROSALIA_NOISE_STATIC
 #define ROSALIA_NOISE_IMPLEMENTATION
+#define ROSALIA_NOISE_DECORATE(ident) rosalia__JSON_internal_NOISE_##ident //WARNING this will overwrite previous decorate for noise, maybe just check if it already exists and then dont include it anymore?
 #include "rosalia/noise.h"
 
 #ifdef __cplusplus
@@ -361,17 +361,18 @@ void cj_object_append(cj_ovac* obj, const char* key, cj_ovac* ovac)
         obj->child_cap *= 2;
         cj_ovac** children_new = (cj_ovac**)malloc(sizeof(cj_ovac*) * obj->child_cap);
         memcpy(children_new, obj->children, sizeof(cj_ovac*) * obj->child_count);
+        free(obj->children);
         obj->children = children_new;
     }
     obj->children[obj->child_count++] = ovac;
     ovac->parent = obj;
-    ovac->label_hash = strhash(key, NULL);
+    ovac->label_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
     ovac->label_str = strdup(key);
 }
 
 cj_ovac* cj_object_get(cj_ovac* obj, const char* key)
 {
-    uint32_t key_hash = strhash(key, NULL);
+    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
     for (uint32_t idx = 0; idx < obj->child_count; idx++) {
         cj_ovac* cp = obj->children[idx];
         if (cp->label_hash == key_hash && strcmp(cp->label_str, key) == 0) {
@@ -388,7 +389,7 @@ void cj_object_replace(cj_ovac* obj, const char* key, cj_ovac* new_ovac)
 
 cj_ovac* cj_object_detach(cj_ovac* obj, const char* key)
 {
-    uint32_t key_hash = strhash(key, NULL);
+    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
     for (uint32_t idx = 0; idx < obj->child_count; idx++) {
         cj_ovac* cp = obj->children[idx];
         if (cp->label_hash == key_hash && strcmp(cp->label_str, key) == 0) {
@@ -409,7 +410,7 @@ cj_ovac* cj_object_detach(cj_ovac* obj, const char* key)
 
 void cj_object_remove(cj_ovac* obj, const char* key)
 {
-    uint32_t key_hash = strhash(key, NULL);
+    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
     for (uint32_t idx = 0; idx < obj->child_count; idx++) {
         cj_ovac* cp = obj->children[idx];
         if (cp->label_hash == key_hash && strcmp(cp->label_str, key) == 0) {
@@ -544,6 +545,7 @@ void cj_array_append(cj_ovac* arr, cj_ovac* ovac)
         arr->child_cap *= 2;
         cj_ovac** children_new = (cj_ovac**)malloc(sizeof(cj_ovac*) * arr->child_cap);
         memcpy(children_new, arr->children, sizeof(cj_ovac*) * arr->child_count);
+        free(arr->children);
         arr->children = children_new;
     }
     arr->children[arr->child_count++] = ovac;
@@ -1380,7 +1382,7 @@ cj_ovac* cj_find(cj_ovac* root, const char* data_path)
                 cj_ovac* new_con = NULL;
                 {
                     //WARNING this break with new obj find key impls
-                    uint32_t key_hash = strhash(rbuf, key_end);
+                    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(rbuf, key_end);
                     for (uint32_t idx = 0; idx < ccon->child_count; idx++) {
                         cj_ovac* cp = ccon->children[idx];
                         if (cp->label_hash == key_hash && strncmp(cp->label_str, rbuf, key_end - rbuf) == 0) {

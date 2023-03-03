@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef ROSALIA_VECTOR_STATIC
 #define ROSALIA__VECTOR_DEC static
@@ -22,7 +24,7 @@
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
 #define ROSALIA_VECTOR_VERSION_MINOR 4
-#define ROSALIA_VECTOR_VERSION_PATCH 5
+#define ROSALIA_VECTOR_VERSION_PATCH 6
 
 #ifdef __cplusplus
 extern "C" {
@@ -180,7 +182,9 @@ ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, si
 // get the last element in the vector
 #define ROSALIA_VECTOR_LAST(pp_vec) ((*(pp_vec))[ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec)->length - 1])
 
-#define ROSALIA_VECTOR_CLONE(pp_vec_d, pp_vec_s) (ROSALIA_VECTOR_CREATE((pp_vec_d), ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_s)->length), ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_d)->length = ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_s)->length, memcpy(*(pp_vec_d), *(pp_vec_s), sizeof(**(pp_vec_s)) * ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_s)->length))
+// clone(T** pp_vec_destination, T** pp_vec_source)
+// shallow clones source vector into destination, if source is NULL or empty, then so will the destination be afterwards
+#define ROSALIA_VECTOR_CLONE(pp_vec_d, pp_vec_s) (ROSALIA_VECTOR_CREATE((pp_vec_d), ROSALIA_VECTOR_LEN(pp_vec_s)), *(pp_vec_s) != NULL ? (ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_d)->length = ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_s)->length, memcpy(*(pp_vec_d), *(pp_vec_s), sizeof(**(pp_vec_s)) * ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(pp_vec_s)->length), 0) : (*(pp_vec_d) = NULL, 0))
 
 #ifdef __cplusplus
 }

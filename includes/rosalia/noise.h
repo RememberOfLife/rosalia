@@ -22,7 +22,7 @@
 
 #define ROSALIA_NOISE_VERSION_MAJOR 0
 #define ROSALIA_NOISE_VERSION_MINOR 1
-#define ROSALIA_NOISE_VERSION_PATCH 4
+#define ROSALIA_NOISE_VERSION_PATCH 5
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,7 +97,12 @@ ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_2d_noto)(int32_t indexX, in
 ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_3d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed);
 ROSALIA__NOISE_DEC float ROSALIA__NOISE_DECORATE(get_4d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed);
 
-// strhash function is not part of squirrelnoise
+// end of squirrelnoise licensed code, following are additions
+
+// returns a uint32 in range [0,max_n) i.e. max_n is NOT included in the possible results
+// this function eliminates modulo bias
+ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(noise_get_uintn)(int32_t position, uint32_t seed, uint32_t max_n);
+
 // pass str_end NULL as default to use normal null character termination
 // str_end points to the first character NOT included in the hash
 ROSALIA__NOISE_DEC uint32_t ROSALIA__NOISE_DECORATE(strhash)(const char* str, const char* str_end);
@@ -205,19 +210,19 @@ ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_1d_zto)(int32_t index, uint
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_2d_zto)(int32_t indexX, int32_t indexY, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
-    return (float)(ONE_OVER_MAX_UINT * (double)get_2d_u32(indexX, indexY, seed));
+    return (float)(ONE_OVER_MAX_UINT * (double)ROSALIA__NOISE_DECORATE(get_2d_u32)(indexX, indexY, seed));
 }
 
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_3d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
-    return (float)(ONE_OVER_MAX_UINT * (double)get_3d_u32(indexX, indexY, indexZ, seed));
+    return (float)(ONE_OVER_MAX_UINT * (double)ROSALIA__NOISE_DECORATE(get_3d_u32)(indexX, indexY, indexZ, seed));
 }
 
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_4d_zto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
-    return (float)(ONE_OVER_MAX_UINT * (double)get_4d_u32(indexX, indexY, indexZ, indexT, seed));
+    return (float)(ONE_OVER_MAX_UINT * (double)ROSALIA__NOISE_DECORATE(get_4d_u32)(indexX, indexY, indexZ, indexT, seed));
 }
 
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_1d_noto)(int32_t index, uint32_t seed)
@@ -229,19 +234,30 @@ ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_1d_noto)(int32_t index, uin
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_2d_noto)(int32_t indexX, int32_t indexY, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
-    return (float)(ONE_OVER_MAX_INT * (double)(int)get_2d_u32(indexX, indexY, seed));
+    return (float)(ONE_OVER_MAX_INT * (double)(int)ROSALIA__NOISE_DECORATE(get_2d_u32)(indexX, indexY, seed));
 }
 
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_3d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
-    return (float)(ONE_OVER_MAX_INT * (double)(int)get_3d_u32(indexX, indexY, indexZ, seed));
+    return (float)(ONE_OVER_MAX_INT * (double)(int)ROSALIA__NOISE_DECORATE(get_3d_u32)(indexX, indexY, indexZ, seed));
 }
 
 ROSALIA__NOISE_DEF float ROSALIA__NOISE_DECORATE(get_4d_noto)(int32_t indexX, int32_t indexY, int32_t indexZ, int32_t indexT, uint32_t seed)
 {
     const double ONE_OVER_MAX_INT = (1.0 / (double)0x7FFFFFFF);
-    return (float)(ONE_OVER_MAX_INT * (double)(int)get_4d_u32(indexX, indexY, indexZ, indexT, seed));
+    return (float)(ONE_OVER_MAX_INT * (double)(int)ROSALIA__NOISE_DECORATE(get_4d_u32)(indexX, indexY, indexZ, indexT, seed));
+}
+
+ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(noise_get_uintn)(int32_t position, uint32_t seed, uint32_t max_n)
+{
+    // https://funloop.org/post/2015-02-27-removing-modulo-bias-redux.html
+    uint32_t r;
+    uint32_t threshold = -max_n % max_n;
+    do {
+        r = ROSALIA__NOISE_DECORATE(squirrelnoise5)(position, seed);
+    } while (r < threshold);
+    return r % max_n;
 }
 
 ROSALIA__NOISE_DEF uint32_t ROSALIA__NOISE_DECORATE(strhash)(const char* str, const char* str_end)

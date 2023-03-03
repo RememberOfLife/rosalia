@@ -5,22 +5,23 @@ General purpose convencience APIs for C.
 |library|version|description|
 |---|---|---|
 |[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
-|[`argparse.h`](./includes/rosalia/argparse.h)|`0.1.2`|**CLI argument parsing** (//TODO: with different flavors).|
+|[`argparse.h`](./includes/rosalia/argparse.h)|`0.1.4`|**CLI argument parsing** (//TODO: with different flavors).|
 |[`base64.h`](./includes/rosalia/base64.h)|`0.1.6`|**Base64** encode and decode capabilities.|
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
-|[`json.h`](./includes/rosalia/json.h)|`0.1.0`|**JSON** representation and (de-)serialization. *There are many other, more stable, json libraries out there.*|
+|[`json.h`](./includes/rosalia/json.h)|`0.1.1`|**JSON** representation and (de-)serialization. *There are many other, more stable, json libraries out there.*|
 |[`math.h`](./includes/rosalia/math.h)|`0.3.2`|**Math utils.**|
-|[`noise.h`](./includes/rosalia/noise.h)|`0.1.4`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
+|[`noise.h`](./includes/rosalia/noise.h)|`0.1.5`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./includes/rosalia/rand.h)|`0.1.4`|**PCG32 PRNG** with acceptable speed.|
 |[`semver.h`](./includes/rosalia/semver.h)|`0.1.5`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 |[`serialization.h`](./includes/rosalia/serialization.h)|`0.5.0`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.|
 |[`timestamp.h`](./includes/rosalia/timestamp.h)|`0.1.4`|**Monotonic timestamps (with fractional seconds).**|
-|[`vector.h`](./includes/rosalia/vector.h)|`0.4.5`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
+|[`vector.h`](./includes/rosalia/vector.h)|`0.4.6`|**Typed dynamic vectors.** Slight adaptation of the stb classic.|
 
 Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 
 ## Notes and Todos
+* problem with undefined functions when importing: json and then noise, because noise has static impl, but not non static then
 * decide if it is ok for libs here to depend on another, e.g. json uses vector and noise
 * Bump versions to 1.0.0 once all libs are header only
 * decorate structs/enums/functypes in single headers

@@ -21,7 +21,7 @@
 
 #define ROSALIA_ARGPARSE_VERSION_MAJOR 0
 #define ROSALIA_ARGPARSE_VERSION_MINOR 1
-#define ROSALIA_ARGPARSE_VERSION_PATCH 3
+#define ROSALIA_ARGPARSE_VERSION_PATCH 4
 
 #ifdef __cplusplus
 extern "C" {
@@ -96,8 +96,10 @@ ROSALIA__ARGPARSE_DEF bool ROSALIA__ARGPARSE_DECORATE(argp_basic_arg_a0)(argp_ba
 ROSALIA__ARGPARSE_DEF bool ROSALIA__ARGPARSE_DECORATE(argp_basic_arg_a1)(argp_basic* argp, const char* name, const char** p_vstr)
 {
     bool ret = (strcmp(argp->w_arg, name) == 0);
-    argp->w_argc--;
-    *p_vstr = argp->n_arg;
+    if (ret == true) {
+        argp->w_argc--;
+        *p_vstr = argp->n_arg;
+    }
     return ret;
 }
 
