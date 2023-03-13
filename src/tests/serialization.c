@@ -197,6 +197,10 @@ void check_copy_equal(void* obj1, void* obj2, const serialization_layout* layout
 
 void run_test_serialization()
 {
+
+    // TODO
+    // raw_stream (serialize random types and check that deserialize produces expected output)
+
     //TODO test string, blob, arr, ptr, ptrarr
 
     // test simple struct

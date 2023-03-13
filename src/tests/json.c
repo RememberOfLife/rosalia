@@ -26,5 +26,7 @@ void run_test_json()
     cj_object_append(root, "mybool", cj_create_bool(false));
     cj_ovac_destroy(root);
 
+    //TODO (de)serialize etc
+
     printf(". json\n");
 }

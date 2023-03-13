@@ -79,6 +79,8 @@ HS_FUNC_DEF(ackerman, runsum_local, uint64_t, uint64_t m, uint64_t n)
 
 void run_test_heapstackify()
 {
+    //TODO trim down for proper usage example
+
     uint64_t start;
     uint64_t stop;
     uint64_t req_fib = 10; //35;

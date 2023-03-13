@@ -26,17 +26,10 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 * Bump versions to 1.0.0 once all libs are header only
 * decorate structs/enums/functypes in single headers
   * can name decorators be split from how the impl has to be named?
+  * drop decoration? since it doesnt work with macros anyway?
 * decorate macro calls are split on 2 lines if not assigned! fix clang format file is possible
-* possibly rename config to json
 * add tests for the things that can be tested:
-  * argparse (once it has flavors, show them working)
-  * config (basic static example for deserialization)
-  * heapstackify (something that properly shows the use)
   * jobs (mostly about resizing, cancellation and queue wakeup)
-  * noise (specifically test some string hash collisions and generate a few statistics about bit correlations)
-  * raw_stream (serialize random types and check that deserialize produces expected output)
-  * semver (parse and print and satisfy)
-  * timestamp (show monotonicity and fractional use)
 * possibly work through and adapt some things from the [stb_howto](https://github.com/nothings/stb/blob/master/docs/stb_howto.txt)
 * feature todos:
   * include original opensimplex noise

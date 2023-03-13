@@ -9,4 +9,5 @@
 void run_test_noise()
 {
     //TODO
+    // noise (specifically test some string hash collisions and generate a few statistics about bit correlations)
 }
