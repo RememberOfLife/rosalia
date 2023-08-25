@@ -26,7 +26,7 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
 * Bump versions to 1.0.0 once all libs are header only
 * decorate structs/enums/functypes in single headers
   * can name decorators be split from how the impl has to be named?
-  * drop decoration? since it doesnt work with macros anyway?
+  * !! drop decoration? since it doesnt work with macros anyway?
 * decorate macro calls are split on 2 lines if not assigned! fix clang format file is possible
 * add tests for the things that can be tested:
   * jobs (mostly about resizing, cancellation and queue wakeup)
@@ -55,3 +55,6 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * in-place version for hm set etc.. (so a struct can be both in a linked list and a search tree and more without being just a pointer in each)
   * mini readline alike thing just for history and tab completion
   * locks and atomics also with windows specifics
+  * csv lib with user supplied structure and types for data
+  * ini lib
+  * terminal colors with ansi escape codes (easily deactivatable), commands for set color and also get string for printf usage

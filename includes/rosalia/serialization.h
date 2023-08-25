@@ -218,7 +218,7 @@ struct serialization_layout_s {
     union {
         size_t immediate;
         size_t offset;
-        size_t max; // optional, only for ptrarray, ignored if 0
+        size_t max; // optional, only for ptrarray, ignored if 0 //TODO this should be outside of the union!
     } len; // req'd only if PTR || ARRAY
 
     //TODO typeopts void* which is passed verbatim to the type serializer, e.g. for int min max or blob max size etc

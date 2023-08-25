@@ -27,6 +27,24 @@
 extern "C" {
 #endif
 
+/*TODO
+formats:
+. flag style ( -a --color -df -t 3 )
+. value style ( in=15 out=./file.log ) like in `dd`
+. verb style ( show thing list ) like in `ip`, this can support the top two styles interwoven
+
+api styles ( both should be provided ):
+. preregistered ( first register all accepted flags/values/verbpaths with defaults and help etc, this can auto generate help and a usage command, then provide args to argparse object and check the values of the preregistered things when required, like python argparse )
+. switched create processing struct from args and then if else ask it one by one what arg it is, optimized by a strhash, then go to next arg and or extract param for arg, this can also auto generate gelp but wizh a lot more effort )
+. autotyped ( like preregistered but nothing is preregistered, instead supplied args are assumed valid and stored, then just access flags/values via implicit api )
+
+every value can be typed if wanted, str is the most generic and default type here
+
+needs to perform arg quote and escape string escaping..
+
+verb format is a more complicated interaction path..
+*/
+
 // https://github.com/floooh/sokol/blob/master/sokol_args.h
 
 //TODO decorate struct
