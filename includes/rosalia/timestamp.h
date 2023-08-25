@@ -88,7 +88,22 @@ ROSALIA__TIMESTAMP_DEC timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_add)(time
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+#if !defined(ISMSVC)
+#if (defined(_WIN32) && !(defined(__MINGW32__) || defined(__MINGW64__)))
+#define ISMSVC 1
+#else
+#define ISMSVC 0
+#endif
+#endif
+
+#if ISMSVC
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include "windows.h"
+#else
 #include <time.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -112,12 +127,23 @@ ROSALIA__TIMESTAMP_DEF uint64_t ROSALIA__TIMESTAMP_DECORATE(timestamp_get_ns64)(
 
 ROSALIA__TIMESTAMP_DEF timestamp ROSALIA__TIMESTAMP_DECORATE(timestamp_get)()
 {
+    timestamp ret;
+#if ISMSVC
+    FILETIME ft;
+    GetSystemTimeAsFileTime(&ft);
+    uint64_t ticks = (((uint64_t)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+    // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+    // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+    Timestamp timestamp;
+    ret.time = (ticks / 10000000) - 11644473600LL;
+    ret.fraction = ((ticks % 10000000) * 100;
+#else
     struct timespec record;
     clock_gettime(CLOCK_REALTIME, &record);
-    return (timestamp){
-        .time = record.tv_sec,
-        .fraction = record.tv_nsec,
-    };
+    ret.time = record.tv_sec;
+    ret.fraction = record.tv_nsec;
+#endif
+    return ret;
 }
 
 ROSALIA__TIMESTAMP_DEF int ROSALIA__TIMESTAMP_DECORATE(timestamp_compare)(timestamp lhs, timestamp rhs)
