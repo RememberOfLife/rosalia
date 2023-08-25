@@ -38,7 +38,7 @@ https://github.com/json-parser/json-parser + builder
 
 //NOTE: this depends on noise.h, as "rosalia/noise.h"
 
-typedef enum __attribute__((__packed__)) CJ_TYPE_E {
+typedef enum CJ_TYPE_E {
     CJ_TYPE_NONE = 0,
     CJ_TYPE_OBJECT,
     CJ_TYPE_ARRAY,

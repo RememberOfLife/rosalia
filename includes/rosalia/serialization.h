@@ -128,7 +128,7 @@ ROSALIA__SERIALIZATION_DEC void ROSALIA__SERIALIZATION_DECORATE(blob_destroy)(bl
 
 //NOTE: complex types like uint32_t** ptr_to_ptrarray; require a separate layout for the uint32_t* serialization of the uint32_t* elems in the ptrarray
 
-typedef enum __attribute__((__packed__)) SL_TYPE_E {
+typedef enum SL_TYPE_E {
     SL_TYPE_NULL = 0,
 
     // primitives
@@ -175,7 +175,7 @@ typedef enum __attribute__((__packed__)) SL_TYPE_E {
 } SL_TYPE;
 
 // general serializer invocation type
-typedef enum __attribute__((__packed__)) GSIT_E {
+typedef enum GSIT_E {
     GSIT_NONE,
     GSIT_INITZERO, // supply obj_in as object to initalize to zero (similar to destroy)
     GSIT_SIZE, // size from obj_in

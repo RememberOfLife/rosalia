@@ -22,7 +22,7 @@ const serialization_layout sl_cs[] = {
     {SL_TYPE_STOP},
 };
 
-typedef enum __attribute__((__packed__)) MYTAG_E {
+typedef enum MYTAG_E {
     MYTAG_NONE = 0,
     MYTAG_NO_MEMBER,
     MYTAG_CS,
@@ -68,7 +68,7 @@ const serialization_layout sl_hut[] = {
     {SL_TYPE_STOP},
 };
 
-typedef enum __attribute__((__packed__)) IUTAG_E {
+typedef enum IUTAG_E {
     IUTAG_NONE = 0,
     IUTAG_FOO,
     IUTAG_BAR,

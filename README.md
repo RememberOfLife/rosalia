@@ -58,3 +58,4 @@ Or just include [`rosalia.h`](./includes/rosalia/rosalia.h) to get everything.
   * csv lib with user supplied structure and types for data
   * ini lib
   * terminal colors with ansi escape codes (easily deactivatable), commands for set color and also get string for printf usage
+  * reintroduce enum packing / provide some other way to ensure that serializing enums is possible with their varying sizes..
