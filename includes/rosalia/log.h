@@ -21,7 +21,7 @@ LOGF_FATAL(log, "thing")
 
 */
 
-typedef enum __attribute__((__packed__)) LOGL_E {
+typedef enum LOGL_E {
     LOGL_NONE = 0,
 
     LOGL_DEBUG,
