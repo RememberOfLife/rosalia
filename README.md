@@ -10,6 +10,7 @@ General purpose convencience APIs for C.
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|
 |[`json.h`](./includes/rosalia/json.h)|`0.1.1`|**JSON** representation and (de-)serialization. *There are many other, more stable, json libraries out there.*|
+|[`log.h`](./includes/rosalia/log.h)|`0.1.0`|**LOG** to your own outputs with customizable layouts.|
 |[`math.h`](./includes/rosalia/math.h)|`0.3.2`|**Math utils.**|
 |[`noise.h`](./includes/rosalia/noise.h)|`0.1.5`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./includes/rosalia/rand.h)|`0.1.4`|**PCG32 PRNG** with acceptable speed.|
