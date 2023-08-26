@@ -50,6 +50,7 @@ struct rosa_logger_output_s {
 };
 
 typedef struct rosa_logger_s {
+    uint64_t creation_ms;
     char* log_name;
     char* pre_layout;
     char* post_layout;
@@ -59,7 +60,8 @@ typedef struct rosa_logger_s {
     rosa_logger_output* outputs; // rosa_vec<rosa_logger_output>
 } rosa_logger;
 
-void rosa_log_create(rosa_logger** log, const char* log_name, bool concurrent_usage, const char* pre_layout, const char* post_layout);
+// true on success, false on fail and auto destructs
+bool rosa_log_create(rosa_logger** log, const char* log_name, bool concurrent_usage, const char* pre_layout, const char* post_layout);
 
 void rosa_log_destroy(rosa_logger** log);
 
@@ -67,7 +69,8 @@ uint32_t rosa_log_output_add(rosa_logger* log, rosa_logger_output output);
 
 bool rosa_log_output_remove(rosa_logger* log, uint32_t output_id, rosa_logger_output* output);
 
-size_t rosa__log_internal_layout(char* buf, size_t len, rosa_logger* log, const char* layout);
+static const size_t ROSA__LOG_INTERNAL_LAYOUT_ERR = SIZE_MAX;
+size_t rosa__log_internal_layout(char* buf, size_t len, rosa_logger* log, LOGL lvl, const char* layout);
 
 void rosa__log_internal_log(rosa_logger* log, LOGL lvl, const char* str, const char* str_end);
 
