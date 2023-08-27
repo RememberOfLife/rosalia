@@ -22,7 +22,7 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 5
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 6
 #define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -173,6 +173,13 @@ typedef enum SL_TYPE_E {
 
     SL_TYPE_SIZE_MAX = UINT16_MAX,
 } SL_TYPE;
+
+#define SIZEOF_MEMBER(s, m) sizeof(((s*)0)->m)
+// clang-format off
+// use SL_TYPE_UAUTOP2 to deduce unsigned power of two sizes, e.g. for enum values which are not packed as expected
+#define SL_TYPE_UAUTOP2(s, m) (SIZEOF_MEMBER(s, m) == 8 ? SL_TYPE_U64 : SIZEOF_MEMBER(s, m) == 4 ? SL_TYPE_U32 : SIZEOF_MEMBER(s, m) == 2 ? SL_TYPE_U16 : SIZEOF_MEMBER(s, m) == 1 ? SL_TYPE_U8 : SL_TYPE_SIZE_MAX)
+
+// clang-format on
 
 // general serializer invocation type
 typedef enum GSIT_E {
