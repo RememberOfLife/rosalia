@@ -1235,6 +1235,7 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_seriali
         for (size_t idx = 0; idx < arr_len; idx++) {
             SL_TYPE serialize_type = pl->type & SL_TYPE_TYPEMASK;
             assert(serialize_type > SL_TYPE_NULL && serialize_type < SL_TYPE_STOP); // cannot serialize unknown type
+            //TODO assert: if ptr then is non null
             switch (serialize_type) {
                 default: {
                     // use primitive serializer func
