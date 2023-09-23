@@ -22,7 +22,7 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 6
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 7
 #define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -180,6 +180,13 @@ typedef enum SL_TYPE_E {
 #define SL_TYPE_UAUTOP2(s, m) (SIZEOF_MEMBER(s, m) == 8 ? SL_TYPE_U64 : SIZEOF_MEMBER(s, m) == 4 ? SL_TYPE_U32 : SIZEOF_MEMBER(s, m) == 2 ? SL_TYPE_U16 : SIZEOF_MEMBER(s, m) == 1 ? SL_TYPE_U8 : SL_TYPE_SIZE_MAX)
 
 // clang-format on
+
+//TODO shorthand for sl primitve as layout to avoid:
+// const serialization_layout sl_s[] = {
+//     {SL_TYPE_SIZE, 0},
+//     {SL_TYPE_STOP},
+// };
+// for merely serializing a type in a union
 
 // general serializer invocation type
 typedef enum GSIT_E {
@@ -1131,6 +1138,8 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_seriali
     const bool use_buf = (itype == GSIT_SERIALIZE || itype == GSIT_DESERIALIZE);
     assert(!(use_buf == true && buf == NULL));
     assert(!(itype == GSIT_DESERIALIZE && buf_end == NULL));
+    assert(!(itype == GSIT_INITZERO && (obj_in == NULL || obj_out != NULL || buf != NULL || buf_end != NULL))); // usage pattern for initzero
+    assert(!(itype == GSIT_DESTROY && (obj_in == NULL || obj_out != NULL || buf != NULL || buf_end != NULL))); // usage pattern for destroy
     size_t rsize = 0;
     const serialization_layout* pl = layout;
     void* cbuf = buf;
@@ -1223,13 +1232,19 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_seriali
             }
             rsize += 1;
         }
+        if (itype == GSIT_INITZERO) {
+            arr_len = 0;
+            if (is_ptr == true) {
+                *(void**)in_p = NULL;
+            }
+        }
         if (is_ptr == true) {
             if (in_ex == true && arr_len > 0) {
                 in_p = *(void**)in_p;
             }
             if (out_ex == true) {
                 *(void**)out_p = (arr_len > 0 ? malloc(typesize * arr_len) : NULL);
-                out_p = *(void**)out_p;
+                out_p = *(void**)out_p; //TODO this can fail if arr_len was 0?
             }
         }
         for (size_t idx = 0; idx < arr_len; idx++) {
@@ -1392,12 +1407,12 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_DECORATE(layout_seriali
     // deserializing, first zero init the obj, and on copy/deserialization error, destroy it, so we don't leak memory
     if (itype == GSIT_COPY || itype == GSIT_DESERIALIZE) {
         ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)
-        (GSIT_INITZERO, layout, obj_out, NULL, buf, buf_end);
+        (GSIT_INITZERO, layout, obj_out, NULL, NULL, NULL);
     }
     size_t ret = ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)(itype, layout, obj_in, obj_out, buf, buf_end);
     if ((itype == GSIT_COPY || itype == GSIT_DESERIALIZE) && ret == LS_ERR) {
         ROSALIA__SERIALIZATION_INTERNAL(layout_serializer_impl)
-        (GSIT_DESTROY, layout, obj_out, NULL, buf, buf_end);
+        (GSIT_DESTROY, layout, obj_out, NULL, NULL, NULL);
     }
     return ret;
 }

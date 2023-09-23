@@ -168,6 +168,10 @@ const serialization_layout sl_cwspa[] = {
     {SL_TYPE_STOP},
 };
 
+//TODO test normal just ptr
+//TODO test normal just array
+//TODO test normal ptr array
+
 ///////
 // testing helpers
 
@@ -321,13 +325,17 @@ void run_test_serialization()
 
     // test string ptrarray
     complex_with_string_ptrarray t5_o1;
-    t5_o1.str_c = 1;
-    t5_o1.str = malloc(sizeof(char*) * t5_o1.str_c);
+    t5_o1.str_c = 2;
+    if (t5_o1.str_c == 0) {
+        t5_o1.str = NULL;
+    } else {
+        t5_o1.str = malloc(sizeof(char*) * t5_o1.str_c);
+    }
     for (size_t i = 0; i < t5_o1.str_c; i++) {
         size_t assign_len = 4;
         t5_o1.str[i] = malloc(sizeof(char) * (assign_len + 1));
         for (size_t j = 0; j < assign_len; j++) {
-            t5_o1.str[i][j] = 'a' + j;
+            t5_o1.str[i][j] = 'a' + i; // look for HEX 61 + j in the debug print output
         }
         t5_o1.str[i][assign_len] = '\0';
     }
