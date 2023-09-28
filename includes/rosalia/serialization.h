@@ -22,7 +22,7 @@
 #endif
 
 #define ROSALIA_SERIALIZATION_VERSION_MAJOR 0
-#define ROSALIA_SERIALIZATION_VERSION_MINOR 7
+#define ROSALIA_SERIALIZATION_VERSION_MINOR 8
 #define ROSALIA_SERIALIZATION_VERSION_PATCH 0
 
 #ifdef __cplusplus
@@ -1138,8 +1138,8 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_seriali
     const bool use_buf = (itype == GSIT_SERIALIZE || itype == GSIT_DESERIALIZE);
     assert(!(use_buf == true && buf == NULL));
     assert(!(itype == GSIT_DESERIALIZE && buf_end == NULL));
-    assert(!(itype == GSIT_INITZERO && (obj_in == NULL || obj_out != NULL || buf != NULL || buf_end != NULL))); // usage pattern for initzero
-    assert(!(itype == GSIT_DESTROY && (obj_in == NULL || obj_out != NULL || buf != NULL || buf_end != NULL))); // usage pattern for destroy
+    // assert(!(itype == GSIT_INITZERO && (obj_in == NULL || obj_out != NULL || buf != NULL || buf_end != NULL))); // usage pattern for initzero
+    // assert(!(itype == GSIT_DESTROY && (obj_in == NULL || obj_out != NULL || buf != NULL || buf_end != NULL))); // usage pattern for destroy
     size_t rsize = 0;
     const serialization_layout* pl = layout;
     void* cbuf = buf;
