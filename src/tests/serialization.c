@@ -147,10 +147,12 @@ const serialization_layout sl_tu_any[] = {
 
 typedef struct complex_with_string_s {
     char* str;
+    char* str2;
 } complex_with_string;
 
 const serialization_layout sl_cws[] = {
     {SL_TYPE_STRING, offsetof(complex_with_string, str)},
+    {SL_TYPE_STRING, offsetof(complex_with_string, str2)},
     {SL_TYPE_STOP},
 };
 
@@ -313,6 +315,7 @@ void run_test_serialization()
     // test string
     complex_with_string t4_o1 = (complex_with_string){
         .str = strdup("abc"),
+        .str2 = NULL,
     };
     complex_with_string t4_o2;
     complex_with_string t4_o3;
@@ -333,11 +336,15 @@ void run_test_serialization()
     }
     for (size_t i = 0; i < t5_o1.str_c; i++) {
         size_t assign_len = 4;
-        t5_o1.str[i] = malloc(sizeof(char) * (assign_len + 1));
-        for (size_t j = 0; j < assign_len; j++) {
-            t5_o1.str[i][j] = 'a' + i; // look for HEX 61 + j in the debug print output
+        if (assign_len > 0) {
+            t5_o1.str[i] = malloc(sizeof(char) * (assign_len + 1));
+            for (size_t j = 0; j < assign_len; j++) {
+                t5_o1.str[i][j] = 'a' + i; // look for HEX 61 + j in the debug print output
+            }
+            t5_o1.str[i][assign_len] = '\0';
+        } else {
+            t5_o1.str[i] = NULL;
         }
-        t5_o1.str[i][assign_len] = '\0';
     }
     complex_with_string_ptrarray t5_o2;
     complex_with_string_ptrarray t5_o3;

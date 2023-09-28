@@ -165,7 +165,7 @@ typedef enum SL_TYPE_E {
     // these are flags applicable to all serializable types
     // if not otherwise noted these flags are mututally exclusive with each other to provide ease of use
     SL_TYPE_PTR = 1 << (8 + 0), // this and SL_TYPE_ARRAY are compatible with each other
-    SL_TYPE_ARRAY = 1 << (8 + 1), // if ptr: use len.offset else: len.immediate, to get size of the array, len.offset always locates a size_t
+    SL_TYPE_ARRAY = 1 << (8 + 1), // if ptr: use len.offset else: len.immediate, to get size of the array, len.offset always locates a uint64_t
     SL_TYPE_PTRARRAY = SL_TYPE_PTR | SL_TYPE_ARRAY, // convenience type for sl definitions
     // pseudo flags
     // SL_TYPE_VECTOR = 1 << (8 + 2), //TODO impl
@@ -231,7 +231,7 @@ struct serialization_layout_s {
 
     union {
         size_t immediate;
-        size_t offset;
+        size_t offset; // offset length members must be 64 bit sized!
         size_t max; // optional, only for ptrarray, ignored if 0 //TODO this should be outside of the union!
     } len; // req'd only if PTR || ARRAY
 
@@ -1197,7 +1197,7 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_seriali
                     arr_len = rs_r_size(&rs);
                     cbuf = ROSALIA__SERIALIZATION_DECORATE(ptradd)(cbuf, 8);
                 } else {
-                    arr_len = *(size_t*)ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->len.offset);
+                    arr_len = *(uint64_t*)ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->len.offset);
                     if (use_buf == true) {
                         raw_stream rs = rs_init(cbuf);
                         rs_w_size(&rs, arr_len);
@@ -1394,7 +1394,7 @@ ROSALIA__SERIALIZATION_DEF size_t ROSALIA__SERIALIZATION_INTERNAL(layout_seriali
                 out_p = ROSALIA__SERIALIZATION_DECORATE(ptradd)(out_p, typesize);
             }
         }
-        if (itype == GSIT_DESTROY && is_ptr == true) {
+        if (itype == GSIT_DESTROY && is_ptr == true && arr_len > 0) {
             free(*(void**)ROSALIA__SERIALIZATION_DECORATE(ptradd)(obj_in, pl->data_offset));
         }
         pl++;
