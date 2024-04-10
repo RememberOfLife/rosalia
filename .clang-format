@@ -48,7 +48,7 @@ IndentPPDirectives: None
 IndentWidth: 4
 InsertTrailingCommas: Wrapped
 MacroBlockBegin: "^BEGIN_.*"
-MacroBlockBegin: "^END_.*"
+MacroBlockEnd: "^END_.*"
 NamespaceIndentation: All
 PackConstructorInitializers: CurrentLine
 PenaltyReturnTypeOnItsOwnLine: 100
