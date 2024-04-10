@@ -16,12 +16,6 @@
 #define ROSALIA__LOG_DEF
 #endif
 
-#ifdef ROSALIA_LOG_DECORATE
-#define ROSALIA__LOG_DECORATE(ident) ROSALIA_LOG_DECORATE(ident)
-#else
-#define ROSALIA__LOG_DECORATE(ident) ident
-#endif
-
 #define ROSALIA_LOG_VERSION_MAJOR 0
 #define ROSALIA_LOG_VERSION_MINOR 1
 #define ROSALIA_LOG_VERSION_PATCH 0
@@ -129,8 +123,6 @@ ROSALIA__LOG_DEC void rosa__log_internal_logfv(rosa_logger* log, LOGL lvl, const
 
 #if defined(ROSALIA_LOG_IMPLEMENTATION) && !defined(ROSALIA_LOG_H_IMPL)
 #define ROSALIA_LOG_H_IMPL
-
-#define ROSALIA__LOG_INTERNAL(ident) rosalia__log_internal_##ident
 
 #include <assert.h>
 #include <stdarg.h>

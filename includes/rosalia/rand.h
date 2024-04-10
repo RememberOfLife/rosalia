@@ -13,12 +13,6 @@
 #define ROSALIA__RAND_DEF
 #endif
 
-#ifdef ROSALIA_RAND_DECORATE
-#define ROSALIA__RAND_DECORATE(ident) ROSALIA_RAND_DECORATE(ident)
-#else
-#define ROSALIA__RAND_DECORATE(ident) ident
-#endif
-
 #define ROSALIA_RAND_VERSION_MAJOR 0
 #define ROSALIA_RAND_VERSION_MINOR 1
 #define ROSALIA_RAND_VERSION_PATCH 4
@@ -27,15 +21,14 @@
 extern "C" {
 #endif
 
-//TODO decorate struct
 // using PCG32 minimal seeded via splitmix64
 typedef struct fast_prng_t {
     uint64_t state;
     uint64_t inc;
 } fast_prng;
 
-ROSALIA__RAND_DEC void ROSALIA__RAND_DECORATE(fprng_srand)(fast_prng* fprng, uint64_t seed);
-ROSALIA__RAND_DEC uint32_t ROSALIA__RAND_DECORATE(fprng_rand)(fast_prng* fprng);
+ROSALIA__RAND_DEC void fprng_srand(fast_prng* fprng, uint64_t seed);
+ROSALIA__RAND_DEC uint32_t fprng_rand(fast_prng* fprng);
 
 #ifdef __cplusplus
 }
@@ -48,15 +41,13 @@ ROSALIA__RAND_DEC uint32_t ROSALIA__RAND_DECORATE(fprng_rand)(fast_prng* fprng);
 #if defined(ROSALIA_RAND_IMPLEMENTATION) && !defined(ROSALIA_RAND_H_IMPL)
 #define ROSALIA_RAND_H_IMPL
 
-#define ROSALIA__RAND_INTERNAL(ident) rosalia__rand_internal_##ident
-
 #include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ROSALIA__RAND_DEF void ROSALIA__RAND_DECORATE(fprng_srand)(fast_prng* fprng, uint64_t seed)
+ROSALIA__RAND_DEF void fprng_srand(fast_prng* fprng, uint64_t seed)
 {
     // splitmix pre-seed
     uint64_t z = (seed + UINT64_C(0x9E3779B97F4A7C15));
@@ -66,7 +57,7 @@ ROSALIA__RAND_DEF void ROSALIA__RAND_DECORATE(fprng_srand)(fast_prng* fprng, uin
     fprng->inc = 1;
 }
 
-ROSALIA__RAND_DEF uint32_t ROSALIA__RAND_DECORATE(fprng_rand)(fast_prng* fprng)
+ROSALIA__RAND_DEF uint32_t fprng_rand(fast_prng* fprng)
 {
     uint64_t oldstate = fprng->state;
     // Advance internal state

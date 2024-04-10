@@ -15,12 +15,6 @@
 #define ROSALIA__JSON_DEF
 #endif
 
-#ifdef ROSALIA_JSON_DECORATE
-#define ROSALIA__JSON_DECORATE(ident) ROSALIA_JSON_DECORATE(ident)
-#else
-#define ROSALIA__JSON_DECORATE(ident) ident
-#endif
-
 #define ROSALIA_JSON_VERSION_MAJOR 0
 #define ROSALIA_JSON_VERSION_MINOR 1
 #define ROSALIA_JSON_VERSION_PATCH 1
@@ -33,8 +27,6 @@ extern "C" {
 https://github.com/DaveGamble/cJSON
 https://github.com/json-parser/json-parser + builder
 */
-
-//TODO decorate everything
 
 //NOTE: this depends on noise.h, as "rosalia/noise.h"
 
@@ -208,8 +200,6 @@ bool cj_dget_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, cj_color4
 #if defined(ROSALIA_JSON_IMPLEMENTATION) && !defined(ROSALIA_JSON_H_IMPL)
 #define ROSALIA_JSON_H_IMPL
 
-#define ROSALIA__JSON_INTERNAL(ident) rosalia__JSON_internal_##ident
-
 #include <assert.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -221,7 +211,6 @@ bool cj_dget_c4f(cj_ovac* root, const char* data_path, cj_color4f* rv, cj_color4
 
 #define ROSALIA_NOISE_STATIC
 #define ROSALIA_NOISE_IMPLEMENTATION
-#define ROSALIA_NOISE_DECORATE(ident) rosalia__JSON_internal_NOISE_##ident //WARNING this will overwrite previous decorate for noise, maybe just check if it already exists and then dont include it anymore?
 #include "rosalia/noise.h"
 
 #ifdef __cplusplus
@@ -366,13 +355,13 @@ void cj_object_append(cj_ovac* obj, const char* key, cj_ovac* ovac)
     }
     obj->children[obj->child_count++] = ovac;
     ovac->parent = obj;
-    ovac->label_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
+    ovac->label_hash = strhash(key, NULL);
     ovac->label_str = strdup(key);
 }
 
 cj_ovac* cj_object_get(cj_ovac* obj, const char* key)
 {
-    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
+    uint32_t key_hash = strhash(key, NULL);
     for (uint32_t idx = 0; idx < obj->child_count; idx++) {
         cj_ovac* cp = obj->children[idx];
         if (cp->label_hash == key_hash && strcmp(cp->label_str, key) == 0) {
@@ -389,7 +378,7 @@ void cj_object_replace(cj_ovac* obj, const char* key, cj_ovac* new_ovac)
 
 cj_ovac* cj_object_detach(cj_ovac* obj, const char* key)
 {
-    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
+    uint32_t key_hash = strhash(key, NULL);
     for (uint32_t idx = 0; idx < obj->child_count; idx++) {
         cj_ovac* cp = obj->children[idx];
         if (cp->label_hash == key_hash && strcmp(cp->label_str, key) == 0) {
@@ -410,7 +399,7 @@ cj_ovac* cj_object_detach(cj_ovac* obj, const char* key)
 
 void cj_object_remove(cj_ovac* obj, const char* key)
 {
-    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(key, NULL);
+    uint32_t key_hash = strhash(key, NULL);
     for (uint32_t idx = 0; idx < obj->child_count; idx++) {
         cj_ovac* cp = obj->children[idx];
         if (cp->label_hash == key_hash && strcmp(cp->label_str, key) == 0) {
@@ -1382,7 +1371,7 @@ cj_ovac* cj_find(cj_ovac* root, const char* data_path)
                 cj_ovac* new_con = NULL;
                 {
                     //WARNING this break with new obj find key impls
-                    uint32_t key_hash = ROSALIA_NOISE_DECORATE(strhash)(rbuf, key_end);
+                    uint32_t key_hash = strhash(rbuf, key_end);
                     for (uint32_t idx = 0; idx < ccon->child_count; idx++) {
                         cj_ovac* cp = ccon->children[idx];
                         if (cp->label_hash == key_hash && strncmp(cp->label_str, rbuf, key_end - rbuf) == 0) {

@@ -16,12 +16,6 @@
 #define ROSALIA__VECTOR_DEF
 #endif
 
-#ifdef ROSALIA_VECTOR_DECORATE
-#define ROSALIA__VECTOR_DECORATE(ident) ROSALIA_VECTOR_DECORATE(ident)
-#else
-#define ROSALIA__VECTOR_DECORATE(ident) ident
-#endif
-
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
 #define ROSALIA_VECTOR_VERSION_MINOR 4
 #define ROSALIA_VECTOR_VERSION_PATCH 6
@@ -207,8 +201,6 @@ serialization_layout sl_thing[] = {
 
 #if defined(ROSALIA_VECTOR_IMPLEMENTATION) && !defined(ROSALIA_VECTOR_H_IMPL)
 #define ROSALIA_VECTOR_H_IMPL
-
-#define ROSALIA__VECTOR_INTERNAL(ident) rosalia__vector_internal_##ident
 
 #include <assert.h>
 #include <stdbool.h>

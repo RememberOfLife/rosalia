@@ -17,12 +17,6 @@
 #define ROSALIA__SEMVER_DEF
 #endif
 
-#ifdef ROSALIA_SEMVER_DECORATE
-#define ROSALIA__SEMVER_DECORATE(ident) ROSALIA_SEMVER_DECORATE(ident)
-#else
-#define ROSALIA__SEMVER_DECORATE(ident) ident
-#endif
-
 #define ROSALIA_SEMVER_VERSION_MAJOR 0
 #define ROSALIA_SEMVER_VERSION_MINOR 1
 #define ROSALIA_SEMVER_VERSION_PATCH 5
@@ -31,7 +25,6 @@
 extern "C" {
 #endif
 
-//TODO ROSALIA__SEMVER_DECORATE for this struct and _ext
 typedef struct semver_s {
     uint32_t major;
     uint32_t minor;
@@ -50,20 +43,20 @@ typedef struct semver_s {
 //     char** build_v;
 // } semver_ext;
 
-// ROSALIA__SEMVER_DEC semver_ext ROSALIA__SEMVER_DECORATE(SEMVER_parse)(semver* sv, const char* str); //TODO
-// ROSALIA__SEMVER_DEC semver_ext ROSALIA__SEMVER_DECORATE(SEMVER_parse_ext)(semver_ext* sve, const char* str); //TODO
+// ROSALIA__SEMVER_DEC semver_ext SEMVER_parse(semver* sv, const char* str); //TODO
+// ROSALIA__SEMVER_DEC semver_ext SEMVER_parse_ext(semver_ext* sve, const char* str); //TODO
 
 //TODO some way to copy/free, preferably without serializer?
 
-// ROSALIA__SEMVER_DEC size_t ROSALIA__SEMVER_DECORATE(SEMVER_size)(semver* sv); //TODO
-// ROSALIA__SEMVER_DEC size_t ROSALIA__SEMVER_DECORATE(SEMVER_size_ext)(semver_ext* sv); //TODO
+// ROSALIA__SEMVER_DEC size_t SEMVER_size(semver* sv); //TODO
+// ROSALIA__SEMVER_DEC size_t SEMVER_size_ext(semver_ext* sv); //TODO
 
-// ROSALIA__SEMVER_DEC size_t ROSALIA__SEMVER_DECORATE(SEMVER_print)(const char* str, semver* sv); //TODO
-// ROSALIA__SEMVER_DEC size_t ROSALIA__SEMVER_DECORATE(SEMVER_print_ext)(const char* str, semver_ext* sv); //TODO
+// ROSALIA__SEMVER_DEC size_t SEMVER_print(const char* str, semver* sv); //TODO
+// ROSALIA__SEMVER_DEC size_t SEMVER_print_ext(const char* str, semver_ext* sv); //TODO
 
-ROSALIA__SEMVER_DEC bool ROSALIA__SEMVER_DECORATE(SEMVER_equal)(semver l, semver r);
+ROSALIA__SEMVER_DEC bool SEMVER_equal(semver l, semver r);
 
-ROSALIA__SEMVER_DEC bool ROSALIA__SEMVER_DECORATE(SEMVER_satisfies)(semver required, semver provided);
+ROSALIA__SEMVER_DEC bool SEMVER_satisfies(semver required, semver provided);
 
 #ifdef __cplusplus
 }
@@ -76,8 +69,6 @@ ROSALIA__SEMVER_DEC bool ROSALIA__SEMVER_DECORATE(SEMVER_satisfies)(semver requi
 #if defined(ROSALIA_SEMVER_IMPLEMENTATION) && !defined(ROSALIA_SEMVER_H_IMPL)
 #define ROSALIA_SEMVER_H_IMPL
 
-#define ROSALIA__SEMVER_INTERNAL(ident) rosalia__semver_internal_##ident
-
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -85,12 +76,12 @@ ROSALIA__SEMVER_DEC bool ROSALIA__SEMVER_DECORATE(SEMVER_satisfies)(semver requi
 extern "C" {
 #endif
 
-ROSALIA__SEMVER_DEF bool ROSALIA__SEMVER_DECORATE(SEMVER_equal)(semver l, semver r)
+ROSALIA__SEMVER_DEF bool SEMVER_equal(semver l, semver r)
 {
     return l.major == r.major && l.minor == r.minor && l.patch == r.patch;
 }
 
-ROSALIA__SEMVER_DEF bool ROSALIA__SEMVER_DECORATE(SEMVER_satisfies)(semver required, semver provided)
+ROSALIA__SEMVER_DEF bool SEMVER_satisfies(semver required, semver provided)
 {
     return provided.major == required.major && (provided.minor > required.minor || (provided.minor == required.minor && provided.patch >= required.patch));
 }
