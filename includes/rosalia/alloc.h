@@ -7,12 +7,21 @@
 extern "C" {
 #endif
 
+// consider block based allocations?
+/*
+typedef struct {
+    void* data;
+    size_t len;
+} mblk;
+*/
+
 typedef struct allocator_s allocator;
 
 struct allocator_s {
     void* (*malloc)(allocator* a, size_t s);
+    // void* (*realloc)(allocator* a, void* p, size_t s);
     void (*free)(allocator* a, void* p);
-    uint8_t reserved[48];
+    void* context;
 };
 
 extern allocator allocator_libc;
