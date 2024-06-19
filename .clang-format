@@ -71,5 +71,6 @@ SpaceBeforeParensOptions:
   AfterOverloadedOperator: false
   BeforeNonEmptyParentheses: false
 SpacesInContainerLiterals: false
+TypenameMacros: [PROTO_ARRAYLIST, PROTO_HASHMAP, PROTO_HASHSET, PROTO_TREEMAP, PROTO_TREESET] #TODO use IF accepted
 UseCRLF: false
 UseTab: Never

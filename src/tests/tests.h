@@ -28,6 +28,8 @@ void run_test_timestamp();
 
 void run_test_vector();
 
+void run_test_prototyping();
+
 #ifdef __cplusplus
 }
 #endif

@@ -22,7 +22,7 @@ find_package(Threads REQUIRED)
 # find_package(OpenSSL 3 REQUIRED)
 
 set(INCLUDES
-    includes
+    include
     src
     "${CMAKE_BINARY_DIR}/build_generated"
 )
@@ -45,6 +45,8 @@ set(SOURCES
     src/tests/serialization.c
     src/tests/timestamp.c
     src/tests/vector.c
+
+    src/tests/prototyping.c
 
     src/main.c
 )

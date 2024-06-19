@@ -22,5 +22,7 @@ int main()
     run_test_timestamp();
     run_test_vector();
 
+    run_test_prototyping();
+
     return 0;
 }

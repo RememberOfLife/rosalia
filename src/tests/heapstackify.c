@@ -98,7 +98,7 @@ void run_test_heapstackify()
     stop = timestamp_get_ms64();
     // printf("+ libc heapstackify fib %lu: %lu in %lums\n", req_fib, result2, stop - start);
 
-    lina = create_allocator_linear((size_t)1 << 32);
+    lina = create_allocator_linear((size_t)1 << 30);
     start = timestamp_get_ms64();
     HS_ENTRY_CALL_EMPLACE(&lina, &result2, fib, req_fib);
     stop = timestamp_get_ms64();

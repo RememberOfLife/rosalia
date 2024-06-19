@@ -32,7 +32,7 @@ typedef struct linear_alloc_s {
 
 void* linear_alloc_malloc(allocator* a, size_t s)
 {
-    linear_alloc* ai = (linear_alloc*)&a->reserved;
+    linear_alloc* ai = (linear_alloc*)a->context;
     if (ptrdiff(ai->stop, ai->next) < s) {
         return NULL;
     }
@@ -51,8 +51,9 @@ allocator create_allocator_linear(size_t total)
     allocator a = (allocator){
         .malloc = linear_alloc_malloc,
         .free = linear_alloc_free,
+        .context = malloc(sizeof(linear_alloc)),
     };
-    linear_alloc* ai = (linear_alloc*)&a.reserved;
+    linear_alloc* ai = (linear_alloc*)a.context;
     ai->base = malloc(total);
     ai->stop = ptradd(ai->base, total);
     ai->next = ai->base;
@@ -61,10 +62,11 @@ allocator create_allocator_linear(size_t total)
 
 void destroy_allocator_linear(allocator* a)
 {
-    linear_alloc* ai = (linear_alloc*)&a->reserved;
+    linear_alloc* ai = (linear_alloc*)a->context;
     free(ai->base);
     a->malloc = NULL;
     a->free = NULL;
+    free(ai);
 }
 
 #ifdef __cplusplus
