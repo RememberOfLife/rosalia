@@ -2,6 +2,7 @@
 #define ROSALIA_ARGPARSE_H_INCLUDE
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifdef ROSALIA_ARGPARSE_STATIC
 #define ROSALIA__ARGPARSE_DEC static
@@ -41,23 +42,40 @@ verb format is a more complicated interaction path..
 
 // https://github.com/floooh/sokol/blob/master/sokol_args.h
 
-typedef struct argp_basic_s {
+typedef struct rosa_argpv_entry_s {
+    uint32_t key_hash;
+    const char* key;
+    const char* val;
+} rosa_argpv_entry;
+
+typedef struct rosa_argpv_s {
+    //TODO do we want to modify the input argv or store our own str arena?
     int argc;
     char** argv;
-    int w_argc;
-    char* w_arg;
-    char* n_arg;
-} argp_basic;
+    rosa_argpv_entry* entries; // rosa vec
+} rosa_argpv;
 
-ROSALIA__ARGPARSE_DEC argp_basic argp_basic_init(int argc, char** argv);
+//TODO what behaviour do we want on multiple same named keys? should be illegal or offer all of them
 
-ROSALIA__ARGPARSE_DEC bool argp_basic_process(argp_basic* argp);
+// returns true if successful
+ROSALIA__ARGPARSE_DEC bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv);
 
-// arity 0, returns true if detected
-ROSALIA__ARGPARSE_DEC bool argp_basic_arg_a0(argp_basic* argp, const char* name);
+ROSALIA__ARGPARSE_DEC void rosa_argpv_destroy(rosa_argpv* argp);
 
-// arity 1, returns true if detected and set p_vstr to the supplied arg, p_vstr may result to NULL if there is no arg to use
-ROSALIA__ARGPARSE_DEC bool argp_basic_arg_a1(argp_basic* argp, const char* name, const char** p_vstr);
+// returns true if an entry with the key exists
+ROSALIA__ARGPARSE_DEC bool rosa_argpv_exists(rosa_argpv* argp, const char* key);
+
+ROSALIA__ARGPARSE_DEC const char* rosa_argpv_val(rosa_argpv* argp, const char* key);
+
+ROSALIA__ARGPARSE_DEC const char* rosa_argpv_val_def(rosa_argpv* argp, const char* key, const char* def);
+
+ROSALIA__ARGPARSE_DEC bool rosa_argpv_val_eq(rosa_argpv* argp, const char* key, const char* val);
+
+ROSALIA__ARGPARSE_DEC int32_t rosa_argpv_find(rosa_argpv* argp, const char* key);
+
+ROSALIA__ARGPARSE_DEC rosa_argpv_entry* rosa_argpv_entry_at(rosa_argpv* argp, int32_t idx);
+
+ROSALIA__ARGPARSE_DEC int32_t rosa_argpv_entry_count(rosa_argpv* argp);
 
 #ifdef __cplusplus
 }
@@ -68,48 +86,93 @@ ROSALIA__ARGPARSE_DEC bool argp_basic_arg_a1(argp_basic* argp, const char* name,
 #if defined(ROSALIA_ARGPARSE_IMPLEMENTATION) && !defined(ROSALIA_ARGPARSE_H_IMPL)
 #define ROSALIA_ARGPARSE_H_IMPL
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <string.h>
+
+#include "rosalia/noise.h"
+#include "rosalia/vector.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ROSALIA__ARGPARSE_DEF argp_basic argp_basic_init(int argc, char** argv)
+ROSALIA__ARGPARSE_DEF bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv)
 {
-    return (argp_basic){
+    *argp = (rosa_argpv){
         .argc = argc,
         .argv = argv,
-        .w_argc = argc - 1,
-        .w_arg = NULL,
-        .n_arg = NULL,
     };
-}
+    VEC_CREATE(&argp->entries, 16);
 
-ROSALIA__ARGPARSE_DEF bool argp_basic_process(argp_basic* argp)
-{
-    bool ret = (argp->w_argc > 0);
-    argp->w_arg = argp->argv[argp->argc - (argp->w_argc--)];
-    argp->n_arg = ((argp->w_argc > 0) ? argp->argv[argp->argc - argp->w_argc] : NULL);
-    return ret;
-}
-
-// arity 0, returns true if detected
-ROSALIA__ARGPARSE_DEF bool argp_basic_arg_a0(argp_basic* argp, const char* name)
-{
-    return (strcmp(argp->w_arg, name) == 0);
-}
-
-// arity 1, returns true if detected and set p_vstr to the supplied arg, p_vstr may result to NULL if there is no arg to use
-ROSALIA__ARGPARSE_DEF bool argp_basic_arg_a1(argp_basic* argp, const char* name, const char** p_vstr)
-{
-    bool ret = (strcmp(argp->w_arg, name) == 0);
-    if (ret == true) {
-        argp->w_argc--;
-        *p_vstr = argp->n_arg;
+    //TODO for now modify argv, later str arena it
+    for (int i = 0; i < argp->argc; i++) {
+        char* warg = argv[i];
+        //TODO search until first =
+        //TODO create key cutoff in argv and key str hash
+        //TODO parse rest as value, respecting quotes, i.e. might go on to next argument
     }
-    return ret;
+
+    return true;
+}
+
+ROSALIA__ARGPARSE_DEC void rosa_argpv_destroy(rosa_argpv* argp)
+{
+    VEC_DESTROY(&argp->entries);
+}
+
+ROSALIA__ARGPARSE_DEC bool rosa_argpv_exists(rosa_argpv* argp, const char* key)
+{
+    return rosa_argpv_find(argp, key) >= 0;
+}
+
+ROSALIA__ARGPARSE_DEC const char* rosa_argpv_val(rosa_argpv* argp, const char* key)
+{
+    int32_t idx = rosa_argpv_find(argp, key);
+    if (idx < 0) {
+        return NULL;
+    }
+    return argp->entries[idx].val;
+}
+
+ROSALIA__ARGPARSE_DEC const char* rosa_argpv_val_def(rosa_argpv* argp, const char* key, const char* def)
+{
+    const char* rval = rosa_argpv_val(argp, key);
+    if (rval == NULL) {
+        rval = def;
+    }
+    return rval;
+}
+
+ROSALIA__ARGPARSE_DEC bool rosa_argpv_val_eq(rosa_argpv* argp, const char* key, const char* val)
+{
+    int32_t idx = rosa_argpv_find(argp, key);
+    return idx >= 0 && strcmp(argp->entries[idx].val, val) == 0;
+}
+
+ROSALIA__ARGPARSE_DEC int32_t rosa_argpv_find(rosa_argpv* argp, const char* key)
+{
+    uint32_t key_hash = strhash(key, NULL);
+    for (uint32_t i = 0; i < VEC_LEN(&argp->entries); i++) {
+        if (argp->entries[i].key_hash == key_hash && strcmp(argp->entries[i].key, key) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+ROSALIA__ARGPARSE_DEC rosa_argpv_entry* rosa_argpv_entry_at(rosa_argpv* argp, int32_t idx)
+{
+    if (idx >= 0 && idx < VEC_LEN(&argp->entries)) {
+        return &(argp->entries[idx]);
+    }
+    return NULL;
+}
+
+ROSALIA__ARGPARSE_DEC int32_t rosa_argpv_entry_count(rosa_argpv* argp)
+{
+    return VEC_LEN(&argp->entries);
 }
 
 #ifdef __cplusplus

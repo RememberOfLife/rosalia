@@ -8,5 +8,19 @@
 
 void run_test_argparse()
 {
-    //TODO basic and other flavors once they exist
+    char* argv[] = {
+        "program-name",
+        "key1",
+        "key2=val",
+    };
+    int argc = sizeof(argv) / sizeof(char*);
+
+    rosa_argpv argpv;
+    rosa_argpv_create(&argpv, argc, argv);
+
+    //TODO
+
+    rosa_argpv_destroy(&argpv);
+
+    printf(". argparse\n");
 }
