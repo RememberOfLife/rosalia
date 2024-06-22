@@ -5,7 +5,7 @@ General purpose convencience APIs for C.
 |library|version|description|
 |---|---|---|
 |[`alloc.h`](./includes/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
-|[`argparse.h`](./includes/rosalia/argparse.h)|`0.1.4`|**CLI argument parsing** (//TODO: with different flavors).|
+|[`argparse.h`](./includes/rosalia/argparse.h)|`0.2.0`|**Key-Value Pair CLI argument parsing**.|
 |[`base64.h`](./includes/rosalia/base64.h)|`0.1.6`|**Base64** encode and decode capabilities.|
 |[`heapstackify.h`](./includes/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.|
 |[`jobs.h`](./includes/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*|

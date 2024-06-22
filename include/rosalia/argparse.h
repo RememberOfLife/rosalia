@@ -15,8 +15,8 @@
 #endif
 
 #define ROSALIA_ARGPARSE_VERSION_MAJOR 0
-#define ROSALIA_ARGPARSE_VERSION_MINOR 1
-#define ROSALIA_ARGPARSE_VERSION_PATCH 4
+#define ROSALIA_ARGPARSE_VERSION_MINOR 2
+#define ROSALIA_ARGPARSE_VERSION_PATCH 0
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,14 +44,21 @@ verb format is a more complicated interaction path..
 
 typedef struct rosa_argpv_entry_s {
     uint32_t key_hash;
-    const char* key;
-    const char* val;
+
+    union {
+
+        char* key;
+        uint32_t key_off;
+    };
+
+    union {
+
+        char* val;
+        uint32_t val_off;
+    };
 } rosa_argpv_entry;
 
 typedef struct rosa_argpv_s {
-    //TODO do we want to modify the input argv or store our own str arena?
-    int argc;
-    char** argv;
     rosa_argpv_entry* entries; // rosa vec
 } rosa_argpv;
 
@@ -93,25 +100,89 @@ ROSALIA__ARGPARSE_DEC int32_t rosa_argpv_entry_count(rosa_argpv* argp);
 
 #include "rosalia/noise.h"
 #include "rosalia/vector.h"
+#include "rosalia/util.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+//TODO handle errors by putting them into the str arena and then it has to be destructed..
+
 ROSALIA__ARGPARSE_DEF bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv)
 {
-    *argp = (rosa_argpv){
-        .argc = argc,
-        .argv = argv,
-    };
+    argp->entries = NULL;
+    if (argc == 0) {
+        return true;
+    }
     VEC_CREATE(&argp->entries, 16);
 
-    //TODO for now modify argv, later str arena it
-    for (int i = 0; i < argp->argc; i++) {
-        char* warg = argv[i];
-        //TODO search until first =
-        //TODO create key cutoff in argv and key str hash
-        //TODO parse rest as value, respecting quotes, i.e. might go on to next argument
+    char* str_arena;
+    VEC_CREATE(&str_arena, 256);
+
+    typedef enum PARSE_STATE_E {
+        PARSE_STATE_KEY = 0,
+        PARSE_STATE_VALUE,
+        PARSE_STATE_NEXT,
+    } PARSE_STATE;
+
+    const uint32_t NO_VAL = UINT32_MAX;
+    uint32_t str_store_idx = 0;
+    for (int i = 0; i < argc; i++) {
+        rosa_argpv_entry entry;
+        entry.key_off = str_store_idx;
+        entry.val_off = NO_VAL;
+        PARSE_STATE ps = PARSE_STATE_KEY;
+        char* str_in = argv[i];
+        while (ps != PARSE_STATE_NEXT) {
+            char cc = *(str_in++);
+            switch (cc) {
+                case '\0': {
+                    ps = PARSE_STATE_NEXT;
+                } break;
+                case '\\': {
+                    cc = *(str_in++);
+                    switch (cc) {
+                        case 'n': {
+                            cc = '\n';
+                        } break;
+                        case 'r': {
+                            cc = '\r';
+                        } break;
+                        case 't': {
+                            cc = '\t';
+                        } break;
+                        case '\\': {
+                            cc = '\\';
+                        } break;
+                        default: {
+                            //TODO FAIL: unclosed
+                            cc = '\\'; // for now just assume this
+                        } break;
+                    }
+                } break;
+                case '=': {
+                    ps = PARSE_STATE_VALUE;
+                    entry.val_off = str_store_idx + 1;
+                    cc = '\0';
+                } break;
+                default: {
+                    //pass
+                } break;
+            }
+            VEC_PUSH(&str_arena, cc);
+            str_store_idx++;
+        }
+        VEC_PUSH(&argp->entries, entry);
+    }
+
+    for (int i = 0; i < VEC_LEN(&argp->entries); i++) {
+        argp->entries[i].key = &str_arena[argp->entries[i].key_off];
+        if (argp->entries[i].val_off == NO_VAL) {
+            argp->entries[i].val = NULL;
+        } else {
+            argp->entries[i].val = &str_arena[argp->entries[i].val_off];
+        }
+        argp->entries[i].key_hash = strhash(argp->entries[i].key, NULL);
     }
 
     return true;
@@ -119,6 +190,7 @@ ROSALIA__ARGPARSE_DEF bool rosa_argpv_create(rosa_argpv* argp, int argc, char** 
 
 ROSALIA__ARGPARSE_DEC void rosa_argpv_destroy(rosa_argpv* argp)
 {
+    VEC_DESTROY(&argp->entries[0].key);
     VEC_DESTROY(&argp->entries);
 }
 
@@ -148,7 +220,22 @@ ROSALIA__ARGPARSE_DEC const char* rosa_argpv_val_def(rosa_argpv* argp, const cha
 ROSALIA__ARGPARSE_DEC bool rosa_argpv_val_eq(rosa_argpv* argp, const char* key, const char* val)
 {
     int32_t idx = rosa_argpv_find(argp, key);
-    return idx >= 0 && strcmp(argp->entries[idx].val, val) == 0;
+    if (idx < 0) {
+        return false;
+    }
+    if (argp->entries[idx].val == NULL && val == NULL) {
+        return true;
+    }
+    if (val == NULL && argp->entries[idx].val != NULL) {
+        return false;
+    }
+    if (argp->entries[idx].val == NULL && val != NULL) {
+        return false;
+    }
+    if (strcmp(argp->entries[idx].val, val) != 0) {
+        return false;
+    }
+    return true;
 }
 
 ROSALIA__ARGPARSE_DEC int32_t rosa_argpv_find(rosa_argpv* argp, const char* key)
