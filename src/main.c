@@ -2,6 +2,9 @@
 
 #include "generated/git_commit_hash.h"
 
+#define ROSALIA_UTIL_IMPLEMENTATION
+#include "rosalia/util.h"
+
 #include "tests/tests.h"
 
 int main()

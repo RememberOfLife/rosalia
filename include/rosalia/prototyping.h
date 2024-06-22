@@ -91,58 +91,66 @@ typedef struct {
 #define OBJ_CONTAINER_SPEC_ORD_PRE
 #define OBJ_CONTAINER_SPEC_ORD_POST _ROSA_ZST _rosalia_smf_##OBJ_CONTAINER_SMF_OBJ_NOR_ORD
 
-#define OBJ_CONTAINER(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, obj_type) \
-    struct {                                                             \
-        _ROSA_ZST _rosalia_sm_container;                                 \
-        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_SPEC##_PRE;                   \
-        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_ORDER##_PRE;                  \
-        union {                                                          \
-            obj_type** obj_p;                                            \
-            obj_type* obj;                                               \
-        } u;                                                             \
-        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_SPEC##_POST;                  \
-        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_ORDER##_POST;                 \
+#define CATI(x, y) x##y
+#define MCAT(x, y) CATI(x, y)
+
+// use this to do struct description disambiguation if two files use the exactly same thing in the same counter order at the same line
+// should be rather unlikely but you can disambiguate your file like this if you want
+#define STRUCT_DESC_DISAMBIGUATION
+
+#define OBJ_CONTAINER(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, obj_type, struct_desc)         \
+    struct MCAT(MCAT(MCAT(struct_desc, __COUNTER__), __LINE__), STRUCT_DESC_DISAMBIGUATION) { \
+        _ROSA_ZST _rosalia_sm_container;                                                      \
+        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_SPEC##_PRE;                                        \
+        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_ORDER##_PRE;                                       \
+        union {                                                                               \
+            obj_type* obj_p;                                                                  \
+            obj_type obj;                                                                     \
+        } u;                                                                                  \
+        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_SPEC##_POST;                                       \
+        OBJ_CONTAINER_SPEC_##OBJ_CONTAINER_ORDER##_POST;                                      \
     }
 
-#define PROTO_ARRAYLIST(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, val_type) \
-    OBJ_CONTAINER(                                                         \
-        OBJ_CONTAINER_SPEC,                                                \
-        OBJ_CONTAINER_ORDER,                                               \
-        val_type*                                                          \
+#define PROTO_ARRAYLIST(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, val_type)        \
+    OBJ_CONTAINER(                                                                \
+        OBJ_CONTAINER_SPEC,                                                       \
+        OBJ_CONTAINER_ORDER,                                                      \
+        val_type*,                                                                \
+        arraylist_##OBJ_CONTAINER_SPEC##_##OBJ_CONTAINER_ORDER##_##val_type##__IC \
     )
 
-#define PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type) \
-    OBJ_CONTAINER(                                                                 \
-        OBJ_CONTAINER_SPEC,                                                        \
-        OBJ_CONTAINER_ORDER,                                                       \
-        struct {                                                                   \
-            key_type key;                                                          \
-            val_type val;                                                          \
-        }                                                                          \
-    )
+// #define PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type) \
+//     OBJ_CONTAINER(                                                                 \
+//         OBJ_CONTAINER_SPEC,                                                        \
+//         OBJ_CONTAINER_ORDER,                                                       \
+//         struct {                                                                   \
+//             key_type key;                                                          \
+//             val_type val;                                                          \
+//         }                                                                          \
+//     )
 
-#define PROTO_HASHSET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type) \
-    PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, _ROSA_ZST)
+// #define PROTO_HASHSET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type) \
+//     PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, _ROSA_ZST)
 
-#define PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type) \
-    OBJ_CONTAINER(                                                                 \
-        OBJ_CONTAINER_SPEC,                                                        \
-        OBJ_CONTAINER_ORDER,                                                       \
-        struct {                                                                   \
-            key_type key;                                                          \
-            val_type val;                                                          \
-        }                                                                          \
-    )
+// #define PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type) \
+//     OBJ_CONTAINER(                                                                 \
+//         OBJ_CONTAINER_SPEC,                                                        \
+//         OBJ_CONTAINER_ORDER,                                                       \
+//         struct {                                                                   \
+//             key_type key;                                                          \
+//             val_type val;                                                          \
+//         }                                                                          \
+//     )
 
-#define PROTO_TREESET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type) \
-    PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, _ROSA_ZST)
+// #define PROTO_TREESET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type) \
+//     PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, _ROSA_ZST)
 
-#define ITERATOR(container_type)        \
-    struct {                            \
-        _ROSA_ZST _rosalia_sm_iterator; \
-        container_type container;       \
-        size_t position;                \
-    }
+// #define ITERATOR(container_type)        \
+//     struct {                            \
+//         _ROSA_ZST _rosalia_sm_iterator; \
+//         container_type container;       \
+//         size_t position;                \
+//     }
 
 #ifdef __cplusplus
 }
