@@ -34,7 +34,11 @@ typedef int64_t s64;
 
 typedef float f32;
 typedef double f64;
+
 // #define F32_MAX FLT_MAX
 // #define F64_MAX DBL_MAX
 
 //TODO more if useful
+
+typedef struct {
+} _ROSA_ZST;

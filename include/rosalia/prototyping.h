@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 #include "rosalia/util.h"
+#include "rosalia/types.h"
 
 // #define VEC(type) type*
 
@@ -52,17 +53,14 @@ problems:
 /*
 check zig for cool containers!
 
-ARRAYLIST (vector)
-INDIRECT_ARRAYLIST (dqueue)
-SORTED_ARRAYLIST (sorted vector)
-SORTED_INDIRECT_ARRAYLIST (sorted dqueue)
+for sorting
+typedef bool compare_less(void* less, void* more)
 
-HASH_MAP
-TREE_MAP
-both available as multi, these are implicitly the types for ordered and unordered, use zero sized value for a set
-
-SLINKLIST
-DLINKLIST
+arraylist.h : ROSA_ARRAYLIST(nor/ord)
+// segmentedarraylist.h : ROSA_SEGMENTED_ARRAYLIST
+hashmap.h : (unordered) ROSA_HASHMAP + ROSA_HASHSET
+treemap.h : (ordered) ROSA_TREEMAP + ROSA_TREESET
+linklist.h : ROSA_LINKLIST(singly/doubly, nor/ord)
 
 REF_CELL
 
@@ -73,9 +71,6 @@ SPAN
 STREAM
 
 */
-
-typedef struct {
-} _ROSA_ZST;
 
 // obj is either by val or by ref
 #define OBJ_CONTAINER_SMF_OBJ_VAL_REF obj_val_ref
@@ -90,9 +85,6 @@ typedef struct {
 #define OBJ_CONTAINER_SPEC_NOR_POST
 #define OBJ_CONTAINER_SPEC_ORD_PRE
 #define OBJ_CONTAINER_SPEC_ORD_POST _ROSA_ZST _rosalia_smf_##OBJ_CONTAINER_SMF_OBJ_NOR_ORD
-
-#define CATI(x, y) x##y
-#define MCAT(x, y) CATI(x, y)
 
 // use this to do struct description disambiguation if two files use the exactly same thing in the same counter order at the same line
 // should be rather unlikely but you can disambiguate your file like this if you want
@@ -119,31 +111,49 @@ typedef struct {
         arraylist_##OBJ_CONTAINER_SPEC##_##OBJ_CONTAINER_ORDER##_##val_type##__IC \
     )
 
-// #define PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type) \
-//     OBJ_CONTAINER(                                                                 \
-//         OBJ_CONTAINER_SPEC,                                                        \
-//         OBJ_CONTAINER_ORDER,                                                       \
-//         struct {                                                                   \
-//             key_type key;                                                          \
-//             val_type val;                                                          \
-//         }                                                                          \
-//     )
+#define PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type)           \
+    OBJ_CONTAINER(                                                                           \
+        OBJ_CONTAINER_SPEC,                                                                  \
+        OBJ_CONTAINER_ORDER,                                                                 \
+        struct {                                                                             \
+            key_type key;                                                                    \
+            val_type val;                                                                    \
+        },                                                                                   \
+        hashmap_##OBJ_CONTAINER_SPEC##_##OBJ_CONTAINER_ORDER##_##key_type##_##val_type##__IC \
+    )
 
-// #define PROTO_HASHSET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type) \
-//     PROTO_HASHMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, _ROSA_ZST)
+#define PROTO_HASHSET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type)        \
+    OBJ_CONTAINER(                                                              \
+        OBJ_CONTAINER_SPEC,                                                     \
+        OBJ_CONTAINER_ORDER,                                                    \
+        struct {                                                                \
+            key_type key;                                                       \
+            _ROSA_ZST val;                                                      \
+        },                                                                      \
+        hashset_##OBJ_CONTAINER_SPEC##_##OBJ_CONTAINER_ORDER##_##key_type##__IC \
+    )
 
-// #define PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type) \
-//     OBJ_CONTAINER(                                                                 \
-//         OBJ_CONTAINER_SPEC,                                                        \
-//         OBJ_CONTAINER_ORDER,                                                       \
-//         struct {                                                                   \
-//             key_type key;                                                          \
-//             val_type val;                                                          \
-//         }                                                                          \
-//     )
+#define PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, val_type)           \
+    OBJ_CONTAINER(                                                                           \
+        OBJ_CONTAINER_SPEC,                                                                  \
+        OBJ_CONTAINER_ORDER,                                                                 \
+        struct {                                                                             \
+            key_type key;                                                                    \
+            val_type val;                                                                    \
+        },                                                                                   \
+        treemap_##OBJ_CONTAINER_SPEC##_##OBJ_CONTAINER_ORDER##_##key_type##_##val_type##__IC \
+    )
 
-// #define PROTO_TREESET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type) \
-//     PROTO_TREEMAP(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type, _ROSA_ZST)
+#define PROTO_TREESET(OBJ_CONTAINER_SPEC, OBJ_CONTAINER_ORDER, key_type)        \
+    OBJ_CONTAINER(                                                              \
+        OBJ_CONTAINER_SPEC,                                                     \
+        OBJ_CONTAINER_ORDER,                                                    \
+        struct {                                                                \
+            key_type key;                                                       \
+            _ROSA_ZST val;                                                      \
+        },                                                                      \
+        treeset_##OBJ_CONTAINER_SPEC##_##OBJ_CONTAINER_ORDER##_##key_type##__IC \
+    )
 
 // #define ITERATOR(container_type)        \
 //     struct {                            \

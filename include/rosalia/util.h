@@ -28,6 +28,9 @@ extern "C" {
 
 #define container_of(ptr, type, member) ((type*)((char*)(1 ? (ptr) : &((type*)0)->member) - offsetof(type, member)))
 
+#define CATI(x, y) x##y
+#define MCAT(x, y) CATI(x, y)
+
 //TODO ptradd should go here
 
 #ifndef NDEBUG
