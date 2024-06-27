@@ -18,7 +18,7 @@
 
 #define ROSALIA_VECTOR_VERSION_MAJOR 0
 #define ROSALIA_VECTOR_VERSION_MINOR 4
-#define ROSALIA_VECTOR_VERSION_PATCH 6
+#define ROSALIA_VECTOR_VERSION_PATCH 7
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,6 +29,7 @@ extern "C" {
 
 // short names enabled by default
 #ifndef ROSALIA_VECTOR_NO_SHORT_NAMES
+#define VECTOR ROSALIA_VECTOR
 #define VEC_CREATE ROSALIA_VECTOR_CREATE
 #define VEC_DESTROY ROSALIA_VECTOR_DESTROY // this one doesn't need to be a macro
 #define VEC_CAP ROSALIA_VECTOR_CAP // this one doesn't need to be a macro
@@ -82,6 +83,10 @@ ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, si
 //////
 // for a vector of type T
 // T* myvec = NULL;
+// or
+// VECTOR(T) myvec;
+
+#define ROSALIA_VECTOR(type) type*
 
 // create(T** pp_vec, size_t cap)
 // allocate the vector with an initial capacity of cap

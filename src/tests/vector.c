@@ -8,7 +8,8 @@
 
 void run_test_vector()
 {
-    uint32_t* v1 = NULL;
+    VECTOR(uint32_t) v1;
+    VEC_CREATE(&v1, 0);
     for (int i = 0; i < 10; i++) {
         VEC_PUSH(&v1, i);
     }
