@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "rosalia/types.h"
 
 #define ROSALIA_PROTOTYPING_IMPLEMENTATION
@@ -19,5 +21,8 @@ void obj_passing_test(PROTO_ARRAYLIST(VAL, NOR, u32)* a)
 void run_test_prototyping()
 {
     my_struc a;
-    obj_passing_test((void*)&a.arrlist_one);
+    // obj_passing_test((void*)&a.arrlist_one);
+
+    typedef PROTO_ARRAYLIST(VAL, ORD, u32) myfancylist;
+    typedef PROTO_HASHMAP(VAL, NOR, u32, myfancylist) mycoolmap;
 }
