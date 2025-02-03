@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-const static rosa_semver rosa_semver_timestamp = (rosa_semver){0, 2, 0};
+const static rosa_semver rosa_timestamp_version = (rosa_semver){0, 2, 0};
 
 //TODO work through https://github.com/floooh/sokol/blob/master/sokol_time.h
 
