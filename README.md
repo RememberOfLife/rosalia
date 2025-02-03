@@ -17,7 +17,7 @@ Everything is prefixed with `rosalia` or `rosa` so there should be no collisions
 <!-- |[`linklist.h`](./include/rosalia/linklist.h)|`0.0.0`|**Typed singly- and doubly-linked lists.** Sorted and unsorted.| -->
 <!-- |[`log.h`](./include/rosalia/log.h)|`0.1.0`|**LOG** to your own outputs with customizable layouts.| -->
 <!-- |[`math.h`](./include/rosalia/math.h)|`0.3.2`|**Math utils.**| -->
-<!-- |[`noise.h`](./include/rosalia/noise.h)|`0.1.5`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.| -->
+|[`noise.h`](./include/rosalia/noise.h)|`0.2.0`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./include/rosalia/rand.h)|`0.2.0`|**PCG32 PRNG** with acceptable speed.|
 |[`semver.h`](./include/rosalia/semver.h)|`0.2.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 <!-- |[`serialization.h`](./include/rosalia/serialization.h)|`0.8.1`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.| -->

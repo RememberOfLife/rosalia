@@ -28,6 +28,8 @@ set(INCLUDES
 )
 
 set(SOURCES
+    src/noise.c
+    src/rand.c
     src/semver.c
     src/timestamp.c
 
