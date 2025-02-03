@@ -29,6 +29,7 @@ set(INCLUDES
 
 set(SOURCES
     src/argparse.c
+    src/base64.c
     src/noise.c
     src/rand.c
     src/semver.c

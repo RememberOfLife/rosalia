@@ -9,7 +9,7 @@ Almost everything is prefixed with `rosa` or `rosalia` so there should be no col
 <!-- |[`alloc.h`](./include/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.| -->
 |[`argparse.h`](./include/rosalia/argparse.h)|`0.3.0`|**Key-Value Pair CLI argument parsing**.|
 <!-- |[`arraylist.h`](./include/rosalia/arraylist.h)|`0.0.0`|**Typed dynamically sized arrays.** Unsorted.| -->
-<!-- |[`base64.h`](./include/rosalia/base64.h)|`0.1.6`|**Base64** encode and decode capabilities.| -->
+|[`base64.h`](./include/rosalia/base64.h)|`0.2.1`|**Base64** encode and decode.|
 <!-- |[`hashmap.h`](./include/rosalia/hashmap.h)|`0.0.0`|**Typed hashmap and hashset.** Unsorted.| -->
 <!-- |[`heapstackify.h`](./include/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.| -->
 <!-- |[`jobs.h`](./include/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*| -->

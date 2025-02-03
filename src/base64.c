@@ -1,0 +1,153 @@
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
+
+#include "rosalia/base64.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+//TODO should probably switch to: https://github.com/superwills/NibbleAndAHalf
+
+// code adapted for readability from: https://nachtimwald.com/2017/11/18/base64-encode-and-decode-in-c/
+
+const rosa_b64_charset rosa_b64_default_charset = {
+    .chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-",
+    .inverse = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, 63, -1, -1, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
+};
+
+const rosa_b64_charset rosa_b64_spec_charset = {
+    .chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+    .inverse = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
+};
+
+void rosa_b64_compute_charset(rosa_b64_charset* charset, char char_62, char char_63)
+{
+    const char default_prefix[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    memcpy(charset->chars, default_prefix, 62);
+    charset->chars[62] = char_62;
+    charset->chars[63] = char_63;
+    memset(charset->inverse, -1, 256);
+    for (int i = 0; i < 64; i++) {
+        char c = charset->chars[i];
+        charset->inverse[c] = i;
+    }
+}
+
+size_t rosa_b64_encode_size(size_t size_bytes)
+{
+    // round to nearest multiple of 3 then multiply by 4
+    size_t ret_padded = size_bytes;
+    if (size_bytes % 3 != 0) {
+        ret_padded += 3 - (size_bytes % 3);
+    }
+    return (ret_padded / 3) * 4;
+}
+
+size_t rosa_b64_decode_size(const char* data, const char* data_end)
+{
+    if (data == NULL) {
+        return 0;
+    }
+    size_t ret_size = 0;
+    size_t pad = 0;
+    if (data_end != NULL) {
+        ret_size = data_end - data;
+        if (ret_size >= 1 && data_end[-1] == '=') {
+            pad++;
+            if (ret_size >= 2 && data_end[-2] == '=') {
+                pad++;
+            }
+        }
+    } else {
+        const char* bp = data;
+        while (*bp != '\0') {
+            if (*(bp++) == '=') {
+                pad++;
+            }
+            ret_size++;
+        }
+    }
+    if ((ret_size + pad) % 4 != 0) {
+        return 0;
+    }
+    return ((ret_size / 4) * 3) - pad;
+}
+
+size_t rosa_b64_encode(const rosa_b64_charset* cs, char* data_chars, const uint8_t* data_bytes, size_t data_bytes_len)
+{
+    if (cs == NULL || data_chars == NULL || data_bytes == NULL || data_bytes_len == 0) {
+        if (data_chars) {
+            *data_chars = '\0';
+        }
+        return 0;
+    }
+    size_t bi = 0; // byte triple idx
+    size_t ci = 0; // char quartet idx
+    while (bi < data_bytes_len) {
+        // accumulate 3 bytes of data
+        uint32_t acc = (data_bytes[bi] << 16);
+        if (bi + 1 < data_bytes_len) {
+            acc |= (data_bytes[bi + 1] << 8);
+        }
+        if (bi + 2 < data_bytes_len) {
+            acc |= data_bytes[bi + 2];
+        }
+        // produces at least 2 chars of data
+        data_chars[ci] = cs->chars[(acc >> 18) & 0b111111];
+        data_chars[ci + 1] = cs->chars[(acc >> 12) & 0b111111];
+        // check if data exists or needs padding
+        data_chars[ci + 2] = ((bi + 1 < data_bytes_len) ? cs->chars[(acc >> 6) & 0b111111] : '=');
+        data_chars[ci + 3] = ((bi + 2 < data_bytes_len) ? cs->chars[acc & 0b111111] : '=');
+        bi += 3;
+        ci += 4;
+    }
+    data_chars[ci] = '\0';
+    return ci + 1;
+}
+
+size_t rosa_b64_decode(const rosa_b64_charset* cs, uint8_t* data_bytes, const char* data_chars)
+{
+    if (cs == NULL || data_bytes == NULL || data_chars == NULL) {
+        return 0;
+    }
+    //TODO move string_len and valid char into the decoding loop
+    size_t string_len = 0;
+    const char* cp = data_chars;
+    while (*cp != '\0') {
+        //TODO kind of invalid since this allows padding chars within the normal data flow
+        if (*cp != '=' && cs->inverse[(unsigned char)*cp] == -1) {
+            return 0;
+        }
+        cp++;
+        string_len++;
+    }
+    if (string_len % 4 != 0) {
+        return 0;
+    }
+    size_t in_chars_read = 0;
+    size_t ret_bytes_written = 0;
+    while (in_chars_read < string_len) {
+        bool padding_c = data_chars[in_chars_read + 2] == '=';
+        bool padding_d = data_chars[in_chars_read + 3] == '=';
+        uint32_t byte_triple_val = 0;
+        byte_triple_val |= (cs->inverse[data_chars[in_chars_read]]) << 18;
+        byte_triple_val |= (cs->inverse[data_chars[in_chars_read + 1]]) << 12;
+        data_bytes[ret_bytes_written++] = (byte_triple_val >> 16) & 0xFF;
+        if (!padding_c) {
+            byte_triple_val |= (cs->inverse[data_chars[in_chars_read + 2]]) << 6;
+            data_bytes[ret_bytes_written++] = (byte_triple_val >> 8) & 0xFF;
+        }
+        if (!padding_d) {
+            byte_triple_val |= cs->inverse[data_chars[in_chars_read + 3]];
+            data_bytes[ret_bytes_written++] = byte_triple_val & 0xFF;
+        }
+        in_chars_read += 4;
+    }
+    return ret_bytes_written;
+}
+
+#ifdef __cplusplus
+}
+#endif
