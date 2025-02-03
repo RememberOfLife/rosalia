@@ -28,10 +28,12 @@ set(INCLUDES
 )
 
 set(SOURCES
+    src/argparse.c
     src/noise.c
     src/rand.c
     src/semver.c
     src/timestamp.c
+    src/util.c
 
     src/tests/main.c
 )

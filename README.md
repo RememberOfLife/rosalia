@@ -2,12 +2,12 @@
 
 General purpose convencience APIs for C.
 
-Everything is prefixed with `rosalia` or `rosa` so there should be no collisions with common libraries.
+Almost everything is prefixed with `rosa` or `rosalia` so there should be no collisions with common libraries.
 
 |library|version|description|
 |---|---|---|
 <!-- |[`alloc.h`](./include/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.| -->
-<!-- |[`argparse.h`](./include/rosalia/argparse.h)|`0.2.0`|**Key-Value Pair CLI argument parsing**.| -->
+|[`argparse.h`](./include/rosalia/argparse.h)|`0.3.0`|**Key-Value Pair CLI argument parsing**.|
 <!-- |[`arraylist.h`](./include/rosalia/arraylist.h)|`0.0.0`|**Typed dynamically sized arrays.** Unsorted.| -->
 <!-- |[`base64.h`](./include/rosalia/base64.h)|`0.1.6`|**Base64** encode and decode capabilities.| -->
 <!-- |[`hashmap.h`](./include/rosalia/hashmap.h)|`0.0.0`|**Typed hashmap and hashset.** Unsorted.| -->
@@ -23,11 +23,12 @@ Everything is prefixed with `rosalia` or `rosa` so there should be no collisions
 <!-- |[`serialization.h`](./include/rosalia/serialization.h)|`0.8.1`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.| -->
 |[`timestamp.h`](./include/rosalia/timestamp.h)|`0.2.0`|**Monotonic timestamps (with fractional seconds).**|
 <!-- |[`treemap.h`](./include/rosalia/treemap.h)|`0.0.0`|**Typed treemap and treeset.** Sorted.| -->
+<!-- |[`util.h`](./include/rosalia/util.h)|`0.2.0`|**Stuff.**| -->
 <!-- |[`vector.h`](./include/rosalia/vector.h)|`0.4.7`|**Typed dynamic vectors.** Slight adaptation of the stb classic.| -->
 
 Or just include [`rosalia.h`](./include/rosalia/rosalia.h) to get everything.
 
 ### Why no Single-Headers?
 
-I tried doing it in single header style once, but I do not like it. I never used this as a single header library and I never will, for just me as the only user that is unmaintainable. And if I don't use it because it feels icky, it's useless to me. So now it's back to header+impl.  
-Maybe I will change it back *one day*.
+I tried doing it in single header style once, but I did not like it. I never used this as a single header library and I never would have. For just me, as the only user, that is unmaintainable. And if I don't use it because it feels icky, it's useless to me. So now it's back to header+impl.  
+Maybe I will change it again, *one day*.
