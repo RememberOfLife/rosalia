@@ -28,27 +28,10 @@ set(INCLUDES
 )
 
 set(SOURCES
-    src/impl/alloc.c
-    src/impl/config.c
-    src/impl/heapstackify.c
-    src/impl/jobs.cpp
+    src/semver.c
+    src/timestamp.c
 
-    src/tests/argparse.c
-    src/tests/base64.c
-    src/tests/heapstackify.c
-    src/tests/json.c
-    src/tests/log.c
-    src/tests/math.c
-    src/tests/noise.c
-    src/tests/rand.c
-    src/tests/semver.c
-    src/tests/serialization.c
-    src/tests/timestamp.c
-    src/tests/vector.c
-
-    src/tests/prototyping.c
-
-    src/main.c
+    src/tests/main.c
 )
 
 add_executable(rosalia_test "${SOURCES}" "${CMAKE_BINARY_DIR}/build_generated/generated/git_commit_hash.h")
