@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-const static rosa_semver rosa_rand_version = (rosa_semver){0, 2, 0};
+static const rosa_semver rosa_rand_version = (rosa_semver){0, 2, 0};
 
 // using PCG32 minimal seeded via splitmix64
 typedef struct rosa_fast_prng_t {
