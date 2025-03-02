@@ -6,7 +6,7 @@ Almost everything is prefixed with `rosa` or `rosalia` so there should be no col
 
 |library|version|description|
 |---|---|---|
-<!-- |[`alloc.h`](./include/rosalia/alloc.h)||**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.| -->
+|[`alloc.h`](./include/rosalia/alloc.h)|`0.1.0`|**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
 |[`argparse.h`](./include/rosalia/argparse.h)|`0.3.0`|**Key-Value Pair CLI argument parsing**.|
 <!-- |[`arraylist.h`](./include/rosalia/arraylist.h)|`0.0.0`|**Typed dynamically sized arrays.** Unsorted.| -->
 |[`base64.h`](./include/rosalia/base64.h)|`0.2.1`|**Base64** encode and decode.|

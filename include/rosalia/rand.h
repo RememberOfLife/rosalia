@@ -18,6 +18,9 @@ typedef struct rosa_fast_prng_t {
 
 void rosa_fprng_srand(rosa_fast_prng* fprng, uint64_t seed);
 uint32_t rosa_fprng_rand(rosa_fast_prng* fprng);
+//TODO rand64
+//TODO u32n
+//TODO u64n
 
 #ifdef __cplusplus
 }
