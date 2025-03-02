@@ -9,19 +9,36 @@ extern "C" {
 
 //TODO use log callback instead of fprintf
 
-void panic_unreachable_reached(const char* file, int line)
+void panic_unreachable_reached(const char* file, int line, int counter)
 {
-    // log_cb(LOGS_FATAL, "unreachable code reached: %s:%i\n", file, line);
-    fprintf(stderr, "unreachable code reached: %s:%i\n", file, line);
+    // log_cb(LOGS_FATAL, "unreachable code reached: %s:%i #%i\n", file, line, counter);
+    fprintf(stderr, "unreachable code reached: %s:%i #%i\n", file, line, counter);
     exit(1);
 }
 
-void panic_rtassert_failed(bool cond, const char* msg, const char* file, int line)
+void panic_rtassert_failed(bool cond, const char* msg, const char* file, int line, int counter)
 {
     if (cond) {
         return;
     }
-    fprintf(stderr, "assert failed: %s:%i%s%s\n", file, line, msg != NULL ? " --: " : "", msg != NULL ? msg : "");
+    fprintf(stderr, "rt-assert failed: %s:%i #%i", file, line, counter);
+    if (msg != NULL) {
+        fprintf(stderr, " \"%s\"", msg);
+    }
+    fprintf(stderr, "\n");
+    exit(1);
+}
+
+void panic_cassert_failed(bool cond, const char* msg, const char* file, int line, int counter)
+{
+    if (cond) {
+        return;
+    }
+    fprintf(stderr, "debug-assert failed: %s:%i #%i\n", file, line, counter);
+    if (msg != NULL) {
+        fprintf(stderr, " \"%s\"", msg);
+    }
+    fprintf(stderr, "\n");
     exit(1);
 }
 

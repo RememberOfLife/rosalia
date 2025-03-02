@@ -23,7 +23,7 @@ Almost everything is prefixed with `rosa` or `rosalia` so there should be no col
 <!-- |[`serialization.h`](./include/rosalia/serialization.h)|`0.8.1`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.| -->
 |[`timestamp.h`](./include/rosalia/timestamp.h)|`0.2.0`|**Monotonic timestamps (with fractional seconds).**|
 <!-- |[`treemap.h`](./include/rosalia/treemap.h)|`0.0.0`|**Typed treemap and treeset.** Sorted.| -->
-<!-- |[`util.h`](./include/rosalia/util.h)|`0.2.0`|**Stuff.**| -->
+|[`util.h`](./include/rosalia/util.h)|`0.2.1`|**Stuff.**|
 <!-- |[`vector.h`](./include/rosalia/vector.h)|`0.4.7`|**Typed dynamic vectors.** Slight adaptation of the stb classic.| -->
 
 Or just include [`rosalia.h`](./include/rosalia/rosalia.h) to get everything.

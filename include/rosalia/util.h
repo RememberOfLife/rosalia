@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-static const rosa_semver rosalia_util_version = (rosa_semver){0, 2, 0};
+static const rosa_semver rosalia_util_version = (rosa_semver){0, 2, 1};
 
 #ifndef offsetof
 #define offsetof(st, m) \
@@ -23,20 +23,25 @@ static const rosa_semver rosalia_util_version = (rosa_semver){0, 2, 0};
 //TODO ptradd should go here
 
 #ifndef NDEBUG
-#define unreachable panic_unreachable_reached(__FILE__, __LINE__)
+#define unreachable panic_unreachable_reached(__FILE__, __LINE__, __COUNTER__)
 #else
-#define unreachable panic_unreachable_reached("<src-unavailable>", __COUNTER__)
+#define unreachable panic_unreachable_reached("<no-src>", __LINE__, __COUNTER__)
 #endif
-
-void panic_unreachable_reached(const char* file, int line);
+void panic_unreachable_reached(const char* file, int line, int counter);
 
 #ifndef NDEBUG
-#define rtassert(cond, msg) panic_rtassert_failed((cond), (msg), __FILE__, __LINE__)
+#define rtassert(cond, msg) panic_rtassert_failed((cond), (msg), __FILE__, __LINE__, __COUNTER__)
 #else
-#define rtassert(cond, msg) panic_rtassert_failed((cond), (msg), "<src-unavailable>", __COUNTER__)
+#define rtassert(cond, msg) panic_rtassert_failed((cond), (msg), "<no-src>", __LINE__, __COUNTER__)
 #endif
+void panic_rtassert_failed(bool cond, const char* msg, const char* file, int line, int counter);
 
-void panic_rtassert_failed(bool cond, const char* msg, const char* file, int line);
+#ifndef NDEBUG
+#define dassert(cond, msg) panic_dassert_failed((cond), (msg), "<no-src>", __LINE__, __COUNTER__)
+#else
+#define dassert(cond, msg) (void)__COUNTER__;
+#endif
+void panic_dassert_failed(bool cond, const char* msg, const char* file, int line, int counter);
 
 #ifdef __cplusplus
 }
