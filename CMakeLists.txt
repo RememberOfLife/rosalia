@@ -29,15 +29,18 @@ set(INCLUDES
 
 set(SOURCES
     src/alloc.c
-    src/arraylist.c
     src/argparse.c
+    src/arraylist.c
     src/base64.c
     src/math.c
     src/noise.c
     src/rand.c
     src/semver.c
+    src/test.c
     src/timestamp.c
     src/util.c
+
+    src/tests/test.c
 
     src/tests/main.c
 )

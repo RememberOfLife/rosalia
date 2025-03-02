@@ -20,6 +20,8 @@ static const rosa_semver rosalia_util_version = (rosa_semver){0, 2, 1};
 #define CATI(x, y) x##y
 #define MCAT(x, y) CATI(x, y)
 
+#define MSTR(x) #x
+
 //TODO ptradd should go here
 
 #ifndef NDEBUG

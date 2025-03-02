@@ -21,6 +21,7 @@ This library is highly opinionated, to fit my personal use.
 |[`rand.h`](./include/rosalia/rand.h)|`0.2.0`|**PCG32 PRNG** with acceptable speed.|
 |[`semver.h`](./include/rosalia/semver.h)|`0.2.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
 <!-- |[`serialization.h`](./include/rosalia/serialization.h)|`0.8.1`|**Composable layout based serialization** of arbitrary datatypes using user supplied runtime information. Crash resistant deserialization and fully extensible by custom types. As well as a *low overhead serialization for primitive datatypes* without safeties or guarantees.| -->
+|[`test.h`](./include/rosalia/test.h)|`0.1.0`|**Testing utils.**|
 |[`timestamp.h`](./include/rosalia/timestamp.h)|`0.2.0`|**Monotonic timestamps (with fractional seconds).**|
 <!-- |[`treemap.h`](./include/rosalia/treemap.h)|`0.0.0`|**Typed treemap and treeset.** Sorted.| -->
 |[`util.h`](./include/rosalia/util.h)|`0.2.1`|**Stuff.**|

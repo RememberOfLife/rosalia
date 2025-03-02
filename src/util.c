@@ -13,7 +13,7 @@ void panic_unreachable_reached(const char* file, int line, int counter)
 {
     // log_cb(LOGS_FATAL, "unreachable code reached: %s:%i #%i\n", file, line, counter);
     fprintf(stderr, "unreachable code reached: %s:%i #%i\n", file, line, counter);
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 void panic_rtassert_failed(bool cond, const char* msg, const char* file, int line, int counter)
@@ -26,7 +26,7 @@ void panic_rtassert_failed(bool cond, const char* msg, const char* file, int lin
         fprintf(stderr, " \"%s\"", msg);
     }
     fprintf(stderr, "\n");
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 void panic_cassert_failed(bool cond, const char* msg, const char* file, int line, int counter)
@@ -39,7 +39,7 @@ void panic_cassert_failed(bool cond, const char* msg, const char* file, int line
         fprintf(stderr, " \"%s\"", msg);
     }
     fprintf(stderr, "\n");
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 #ifdef __cplusplus
