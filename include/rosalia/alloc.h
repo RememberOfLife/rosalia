@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-static const rosa_semver rosalia_argparse_version = (rosa_semver){0, 1, 0};
+static const rosa_semver rosalia_alloc_version = (rosa_semver){0, 1, 0};
 
 //TODO shorten name to alloc?
 

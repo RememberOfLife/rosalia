@@ -10,15 +10,13 @@ This library is highly opinionated, to fit my personal use.
 |---|---|---|
 |[`alloc.h`](./include/rosalia/alloc.h)|`0.1.0`|**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
 |[`argparse.h`](./include/rosalia/argparse.h)|`0.3.0`|**Key-Value Pair CLI argument parsing**.|
-<!-- |[`arraylist.h`](./include/rosalia/arraylist.h)|`0.0.0`|**Typed dynamically sized arrays.** Unsorted.| -->
+|[`arraylist.h`](./include/rosalia/arraylist.h)|`0.5.0`|**Typed dynamically sized arrays.** Unsorted. Adaptation of `stb_ds.h`.|
 |[`base64.h`](./include/rosalia/base64.h)|`0.2.1`|**Base64** encode and decode.|
-<!-- |[`hashmap.h`](./include/rosalia/hashmap.h)|`0.0.0`|**Typed hashmap and hashset.** Unsorted.| -->
+<!-- |[`hashmap.h`](./include/rosalia/hashmap.h)|`0.0.0`|**Typed hashmap and hashset.** Unsorted. Adaptation of `stb_ds.h`.| -->
 <!-- |[`heapstackify.h`](./include/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.| -->
-<!-- |[`jobs.h`](./include/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*| -->
 <!-- |[`json.h`](./include/rosalia/json.h)|`0.1.1`|**JSON** representation and (de-)serialization. *There are many other, more stable, json libraries out there.*| -->
 <!-- |[`linklist.h`](./include/rosalia/linklist.h)|`0.0.0`|**Typed singly- and doubly-linked lists.** Sorted and unsorted.| -->
-<!-- |[`log.h`](./include/rosalia/log.h)|`0.1.0`|**LOG** to your own outputs with customizable layouts.| -->
-|[`math.h`](./include/rosalia/math.h)|`0.4.0`|**Math utils.**|
+|[`math.h`](./include/rosalia/math.h)|`0.4.1`|**Math utils.**|
 |[`noise.h`](./include/rosalia/noise.h)|`0.2.0`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./include/rosalia/rand.h)|`0.2.0`|**PCG32 PRNG** with acceptable speed.|
 |[`semver.h`](./include/rosalia/semver.h)|`0.2.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
@@ -26,7 +24,10 @@ This library is highly opinionated, to fit my personal use.
 |[`timestamp.h`](./include/rosalia/timestamp.h)|`0.2.0`|**Monotonic timestamps (with fractional seconds).**|
 <!-- |[`treemap.h`](./include/rosalia/treemap.h)|`0.0.0`|**Typed treemap and treeset.** Sorted.| -->
 |[`util.h`](./include/rosalia/util.h)|`0.2.1`|**Stuff.**|
-<!-- |[`vector.h`](./include/rosalia/vector.h)|`0.4.7`|**Typed dynamic vectors.** Slight adaptation of the stb classic.| -->
+
+<!-- |[`jobs.h`](./include/rosalia/jobs.h)||**Job queue** (or task queue or thread pool) with the ability to request and honor cancellation. *Beware this has a **C++** implementation currently.*| -->
+<!-- |[`log.h`](./include/rosalia/log.h)|`0.1.0`|**LOG** to your own outputs with customizable layouts.| -->
+<!-- |[`string.h`](./include/rosalia/string.h)|`0.0.0`|**Strings**, efficient and versatile. *(Extremely opinionated.)*| -->
 
 Or just include [`rosalia.h`](./include/rosalia/rosalia.h) to get everything.
 

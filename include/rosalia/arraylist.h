@@ -1,28 +1,19 @@
-#ifndef ROSALIA_VECTOR_H_INCLUDE
-#define ROSALIA_VECTOR_H_INCLUDE
+#pragma once
 
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef ROSALIA_VECTOR_STATIC
-#define ROSALIA__VECTOR_DEC static
-#define ROSALIA__VECTOR_DEC_EXT static
-#define ROSALIA__VECTOR_DEF static
-#else
-#define ROSALIA__VECTOR_DEC
-#define ROSALIA__VECTOR_DEC_EXT extern
-#define ROSALIA__VECTOR_DEF
-#endif
-
-#define ROSALIA_VECTOR_VERSION_MAJOR 0
-#define ROSALIA_VECTOR_VERSION_MINOR 4
-#define ROSALIA_VECTOR_VERSION_PATCH 7
+#include "rosalia/semver.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+//TODO test the whole thing and adapt for new prototype layouts.. this will change a lot, and RENAME for actual arraylist names
+
+static const rosa_semver rosalia_arraylist_version = (rosa_semver){0, 5, 0};
 
 // typed vector macro api taken from: https://github.com/nothings/stb/blob/master/stb_ds.h in the public domain
 // api is slightly adapted, make sure to read each the macros usage instructions after the short names
@@ -70,11 +61,11 @@ typedef struct rosalia__internal_vector_info_s {
 
 // takes a vector and returns a vector that:
 // has at least enough space to fit additional add_len elements and has a minimum capacity of min_cap
-ROSALIA__VECTOR_DEC void* rosalia__vector_internal_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap);
+void* rosalia__vector_internal_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap);
 
 // takes a vector and returns a vector that:
 // has enough space for fit many elements, unused capacity is released
-ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit);
+void* rosalia__vector_internal_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit);
 
 #define ROSALIA__VECTOR_INTERNAL_VECTOR_GROW(pp_vec, len, cap) (*((void**)(pp_vec)) = rosalia__vector_internal_grow(*(pp_vec), sizeof(**(pp_vec)), (len), (cap)))
 
@@ -187,106 +178,4 @@ ROSALIA__VECTOR_DEC void* rosalia__vector_internal_shrink_to_fit(void* p_vec, si
 
 #ifdef __cplusplus
 }
-#endif
-
-#endif
-
-//TODO serialization.h compatibility, layout must be given each time on serialization
-/*
-usage should look like:
-typedef struct thing_s {
-    uint32_t* vec1;
-} thing;
-
-serialization_layout sl_thing[] = {
-    {SL_TYPE_32 | SL_TYPE_VECTOR, offsetof(thing, vec1)},
-    {SL_TYPE_STOP},
-};
-*/
-
-#if defined(ROSALIA_VECTOR_IMPLEMENTATION) && !defined(ROSALIA_VECTOR_H_IMPL)
-#define ROSALIA_VECTOR_H_IMPL
-
-#include <assert.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-//note: p_vec can be NULL in both but VEC_LEN and VEC_CAP can both be used on NULL vectors and return 0
-
-ROSALIA__VECTOR_DEF void* rosalia__vector_internal_grow(void* p_vec, size_t elem_size, size_t add_len, size_t min_cap)
-{
-
-    size_t min_len = ROSALIA_VECTOR_LEN(&p_vec) + add_len;
-
-    // capacity has to fit at least all elements
-    if (min_len > min_cap) {
-        min_cap = min_len;
-    }
-
-    // if required capacity is satisfied, pass
-    if (min_cap <= ROSALIA_VECTOR_CAP(&p_vec)) {
-        return p_vec;
-    }
-
-    // doubling capacity, at least 4
-    if (min_cap < 2 * ROSALIA_VECTOR_CAP(&p_vec)) {
-        min_cap = 2 * ROSALIA_VECTOR_CAP(&p_vec);
-    } else if (min_cap < 4) {
-        min_cap = 4;
-    }
-
-    size_t new_len = ROSALIA_VECTOR_LEN(&p_vec);
-
-    rosalia__internal_vector_info* new_vec = (rosalia__internal_vector_info*)realloc(p_vec == NULL ? NULL : ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(&p_vec), sizeof(rosalia__internal_vector_info) + elem_size * min_cap);
-
-    *new_vec = (rosalia__internal_vector_info){
-        .length = new_len,
-        .capacity = min_cap,
-    };
-
-    return new_vec + 1;
-}
-
-// FITLEN: L < C : realloc to fit
-// FITLEN: L > C : realloc to fit
-// FITCAP: L < C : "expected natural shrink", fit=max(len*2,4)
-// FITCAP: L = C : realloc to fit=len
-// FITCAP: L > C : truncate length, realloc to fit
-ROSALIA__VECTOR_DEF void* rosalia__vector_internal_shrink_to_fit(void* p_vec, size_t elem_size, size_t fit)
-{
-    if (p_vec == NULL) {
-        return NULL;
-    }
-
-    size_t len = ROSALIA_VECTOR_LEN(&p_vec);
-
-    if (len > fit) {
-        len = fit;
-    }
-    if (fit < 4) {
-        fit = 4;
-    }
-
-    rosalia__internal_vector_info* new_vec = (rosalia__internal_vector_info*)realloc(p_vec == NULL ? NULL : ROSALIA__VECTOR_INTERNAL_VECTOR_HEADER(&p_vec), sizeof(rosalia__internal_vector_info) + elem_size * fit);
-
-    *new_vec = (rosalia__internal_vector_info){
-        .length = len,
-        .capacity = fit,
-    };
-
-    return new_vec + 1;
-}
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif

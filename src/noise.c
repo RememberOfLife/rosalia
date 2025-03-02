@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "rosalia/noise.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

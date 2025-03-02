@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-static const rosa_semver rosalia_noise_version = (rosa_semver){0, 2, 1};
+static const rosa_semver rosalia_base64_version = (rosa_semver){0, 2, 1};
 
 // maps from 6 bit to chars and from any byte to 6-bit (or -1 if unused)
 typedef struct rosa_b64_charset_s {

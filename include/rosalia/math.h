@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-static const rosa_semver rosalia_noise_version = (rosa_semver){0, 4, 0};
+static const rosa_semver rosalia_math_version = (rosa_semver){0, 4, 1};
 
 uint64_t rosa_uint_log2(uint64_t v);
 

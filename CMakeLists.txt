@@ -29,8 +29,10 @@ set(INCLUDES
 
 set(SOURCES
     src/alloc.c
+    src/arraylist.c
     src/argparse.c
     src/base64.c
+    src/math.c
     src/noise.c
     src/rand.c
     src/semver.c
@@ -39,6 +41,10 @@ set(SOURCES
 
     src/tests/main.c
 )
+
+#TODO add library so its usable for others via cmake add_subdirectory
+#TODO for that, option for NO_STD_LIB, needs to be reflected in the entire codebase
+#TODO for that, option for DROP_PREFIX, needs to be relfectred in the entire codebase, also available as a separate per-use basis, and has a reverse
 
 add_executable(rosalia_test "${SOURCES}" "${CMAKE_BINARY_DIR}/build_generated/generated/git_commit_hash.h")
 

@@ -90,6 +90,7 @@ float rosa_get_4d_noto(int32_t index_x, int32_t index_y, int32_t index_z, int32_
 // this function eliminates modulo bias
 uint32_t rosa_noise_get_uintn(int32_t position, uint32_t seed, uint32_t max_n);
 
+//TODO improve and replace
 // pass str_end NULL as default to use normal null character termination
 // str_end points to the first character NOT included in the hash
 uint32_t rosa_strhash(const char* str, const char* str_end);

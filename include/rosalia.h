@@ -1,9 +1,18 @@
 #pragma once
 
+#include "rosalia/alloc.h"
 #include "rosalia/argparse.h"
+#include "rosalia/arraylist.h"
 #include "rosalia/base64.h"
+// #include "rosalia/hashmap.h"
+// #include "rosalia/heapstackify.h"
+// #include "rosalia/json.h"
+// #include "rosalia/linklist.h"
+#include "rosalia/math.h"
 #include "rosalia/noise.h"
 #include "rosalia/rand.h"
 #include "rosalia/semver.h"
+// #include "rosalia/serialization.h"
 #include "rosalia/timestamp.h"
+// #include "rosalia/treemap.h"
 #include "rosalia/util.h"

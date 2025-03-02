@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "rosalia/arraylist.h"
 #include "rosalia/noise.h"
-#include "rosalia/vector.h"
 #include "rosalia/util.h"
 
 #include "rosalia/argparse.h"
@@ -89,7 +89,7 @@ bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv)
         } else {
             argp->entries[i].val = &str_arena[argp->entries[i].val_off];
         }
-        argp->entries[i].key_hash = strhash(argp->entries[i].key, NULL);
+        argp->entries[i].key_hash = rosa_strhash(argp->entries[i].key, NULL);
     }
 
     return true;
@@ -147,7 +147,7 @@ bool rosa_argpv_val_eq(rosa_argpv* argp, const char* key, const char* val)
 
 int32_t rosa_argpv_find(rosa_argpv* argp, const char* key)
 {
-    uint32_t key_hash = strhash(key, NULL);
+    uint32_t key_hash = rosa_strhash(key, NULL);
     for (uint32_t i = 0; i < VEC_LEN(&argp->entries); i++) {
         if (argp->entries[i].key_hash == key_hash && strcmp(argp->entries[i].key, key) == 0) {
             return i;
