@@ -1,17 +1,14 @@
 #pragma once
-// provides very limited subset of semver
 
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
-#define ROSALIA_SEMVER_VERSION_MAJOR 0
-#define ROSALIA_SEMVER_VERSION_MINOR 1
-#define ROSALIA_SEMVER_VERSION_PATCH 5
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// provides very limited subset of semver
 
 typedef struct rosa_semver_s {
     uint32_t major;

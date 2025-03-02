@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-static const rosa_semver rosa_noise_version = (rosa_semver){0, 2, 0};
+static const rosa_semver rosalia_noise_version = (rosa_semver){0, 2, 0};
 
 /////
 // using squirrelnoise licensed as follows:

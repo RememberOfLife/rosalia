@@ -28,6 +28,7 @@ set(INCLUDES
 )
 
 set(SOURCES
+    src/alloc.c
     src/argparse.c
     src/base64.c
     src/noise.c

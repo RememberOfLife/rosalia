@@ -4,6 +4,8 @@ General purpose convencience APIs for C.
 
 Almost everything is prefixed with `rosa` or `rosalia` so there should be no collisions with common libraries.
 
+This library is highly opinionated, to fit my personal use.
+
 |library|version|description|
 |---|---|---|
 |[`alloc.h`](./include/rosalia/alloc.h)|`0.1.0`|**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
@@ -16,7 +18,7 @@ Almost everything is prefixed with `rosa` or `rosalia` so there should be no col
 <!-- |[`json.h`](./include/rosalia/json.h)|`0.1.1`|**JSON** representation and (de-)serialization. *There are many other, more stable, json libraries out there.*| -->
 <!-- |[`linklist.h`](./include/rosalia/linklist.h)|`0.0.0`|**Typed singly- and doubly-linked lists.** Sorted and unsorted.| -->
 <!-- |[`log.h`](./include/rosalia/log.h)|`0.1.0`|**LOG** to your own outputs with customizable layouts.| -->
-<!-- |[`math.h`](./include/rosalia/math.h)|`0.3.2`|**Math utils.**| -->
+|[`math.h`](./include/rosalia/math.h)|`0.4.0`|**Math utils.**|
 |[`noise.h`](./include/rosalia/noise.h)|`0.2.0`|**Stateless pseudorandom INT->INT mapping** using prime numbers and a little bit of magic.|
 |[`rand.h`](./include/rosalia/rand.h)|`0.2.0`|**PCG32 PRNG** with acceptable speed.|
 |[`semver.h`](./include/rosalia/semver.h)|`0.2.0`|**Very basic semver wrapper.** Just Major-Minor-Patch and comparisons, nothing else.|
