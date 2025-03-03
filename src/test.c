@@ -39,6 +39,9 @@ void rosa__tester_add_impl(rosa_tester* t, rosa_test_t* test_func, const char* t
 
 size_t rosa_tester_run(rosa_tester* t)
 {
+    //TODO print test only if it or any case fails
+    //TODO only print failing cases
+    //TODO print nr of tests and cases stats, both success and failing
     size_t failed_tests = 0;
     size_t failed_cases = 0;
     for (size_t test_idx = 0; test_idx < t->test_count; test_idx++) {

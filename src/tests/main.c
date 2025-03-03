@@ -16,6 +16,8 @@ int main()
     rosa_tester t;
     rosa_tester_create(&t, 64, 512);
     //TESTS-BEGIN
+    ROSA_TESTER_ADD(&t, base64);
+    ROSA_TESTER_ADD(&t, timestamp);
     ROSA_TESTER_ADD(&t, test);
     //TESTS-END
     size_t fail_count = rosa_tester_run(&t);

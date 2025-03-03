@@ -40,7 +40,9 @@ set(SOURCES
     src/timestamp.c
     src/util.c
 
+    src/tests/base64.c
     src/tests/test.c
+    src/tests/timestamp.c
 
     src/tests/main.c
 )
