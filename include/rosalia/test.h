@@ -63,6 +63,18 @@ bool rosa__tester_test_case(rosa_tester* t, size_t test_nr, size_t test_case, co
 #define ROSA_TEST_CASE(test_case_name) \
     if (rosa__tester_test_case(t, test_nr, test_case, test_case_name, __FILE__, __LINE__))
 
+//TODO want to offer a tassert for asserting while testing?
+/*
+#define tassert0(cond)
+
+#define tassert1(cond, msg)
+
+//TODO this would go into utils likely..
+#define GET_MACRO_0_1(_1, _2, name, ...) name
+
+#define tassert(...) GET_MACRO_0_1(__VA_ARGS__, tassert1, tassert0)(__VA_ARGS__)
+*/
+
 #ifdef __cplusplus
 }
 #endif

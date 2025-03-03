@@ -16,9 +16,11 @@ int main()
     rosa_tester t;
     rosa_tester_create(&t, 64, 512);
     //TESTS-BEGIN
+    ROSA_TESTER_ADD(&t, argparse);
     ROSA_TESTER_ADD(&t, base64);
-    ROSA_TESTER_ADD(&t, timestamp);
+    ROSA_TESTER_ADD(&t, rand);
     ROSA_TESTER_ADD(&t, test);
+    ROSA_TESTER_ADD(&t, timestamp);
     //TESTS-END
     size_t fail_count = rosa_tester_run(&t);
     printf("failed cases: %zu\n", fail_count);
