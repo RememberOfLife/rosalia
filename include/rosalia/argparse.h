@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "rosalia/arraylist.h"
 #include "rosalia/semver.h"
 
 #ifdef __cplusplus
@@ -48,7 +49,7 @@ typedef struct rosa_argpv_entry_s {
 } rosa_argpv_entry;
 
 typedef struct rosa_argpv_s {
-    rosa_argpv_entry* entries; // rosa vec
+    ROSA_ARRAYLIST(rosa_argpv_entry) entries;
 } rosa_argpv;
 
 //TODO what behaviour do we want on multiple same named keys? should be illegal or offer all of them

@@ -17,6 +17,7 @@ int main()
     rosa_tester_create(&t, 64, 512);
     //TESTS-BEGIN
     ROSA_TESTER_ADD(&t, argparse);
+    ROSA_TESTER_ADD(&t, arraylist);
     ROSA_TESTER_ADD(&t, base64);
     ROSA_TESTER_ADD(&t, rand);
     ROSA_TESTER_ADD(&t, test);

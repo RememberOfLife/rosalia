@@ -71,6 +71,6 @@ SpaceBeforeParensOptions:
   AfterOverloadedOperator: false
   BeforeNonEmptyParentheses: false
 SpacesInContainerLiterals: false
-TypenameMacros: [VECTOR, PROTO_ARRAYLIST, PROTO_HASHMAP, PROTO_HASHSET, PROTO_TREEMAP, PROTO_TREESET] #TODO use IF accepted
+TypenameMacros: [ROSA_ARRAYLIST]
 UseCRLF: false
 UseTab: Never

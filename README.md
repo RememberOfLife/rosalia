@@ -10,7 +10,7 @@ This library is highly opinionated, to fit my personal use.
 |---|---|---|
 |[`alloc.h`](./include/rosalia/alloc.h)|`0.1.0`|**Composable allocators**, general and specific purpose, or create your own. Ready for use with allocator agnostic (rosalia) datastructures.|
 |[`argparse.h`](./include/rosalia/argparse.h)|`0.3.0`|**Key-Value Pair CLI argument parsing**.|
-|[`arraylist.h`](./include/rosalia/arraylist.h)|`0.5.0`|**Typed dynamically sized arrays.** Unsorted. Adaptation of `stb_ds.h`.|
+|[`arraylist.h`](./include/rosalia/arraylist.h)|`0.5.1`|**Typed dynamically sized arrays.** Unsorted. Adaptation of `stb_ds.h`.|
 |[`base64.h`](./include/rosalia/base64.h)|`0.2.1`|**Base64** encode and decode.|
 <!-- |[`hashmap.h`](./include/rosalia/hashmap.h)|`0.0.0`|**Typed hashmap and hashset.** Unsorted. Adaptation of `stb_ds.h`.| -->
 <!-- |[`heapstackify.h`](./include/rosalia/heapstackify.h)||**Heap based arbitrary depth recursion** across different functions using natural feeling macros to easily simulate co-routines on a heap based stack. Bring the allocator of your choice.| -->

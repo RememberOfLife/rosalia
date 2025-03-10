@@ -21,10 +21,10 @@ bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv)
     if (argc == 0) {
         return true;
     }
-    VEC_CREATE(&argp->entries, 16);
+    ROSA_ARRAYLIST_CREATE(&argp->entries, 16);
 
     char* str_arena;
-    VEC_CREATE(&str_arena, 256);
+    ROSA_ARRAYLIST_CREATE(&str_arena, 256);
 
     typedef enum PARSE_STATE_E {
         PARSE_STATE_KEY = 0,
@@ -76,13 +76,13 @@ bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv)
                     //pass
                 } break;
             }
-            VEC_PUSH(&str_arena, cc);
+            ROSA_ARRAYLIST_PUSH(&str_arena, cc);
             str_store_idx++;
         }
-        VEC_PUSH(&argp->entries, entry);
+        ROSA_ARRAYLIST_PUSH(&argp->entries, entry);
     }
 
-    for (int i = 0; i < VEC_LEN(&argp->entries); i++) {
+    for (int i = 0; i < ROSA_ARRAYLIST_LEN(&argp->entries); i++) {
         argp->entries[i].key = &str_arena[argp->entries[i].key_off];
         if (argp->entries[i].val_off == NO_VAL) {
             argp->entries[i].val = NULL;
@@ -97,8 +97,8 @@ bool rosa_argpv_create(rosa_argpv* argp, int argc, char** argv)
 
 void rosa_argpv_destroy(rosa_argpv* argp)
 {
-    VEC_DESTROY(&argp->entries[0].key);
-    VEC_DESTROY(&argp->entries);
+    ROSA_ARRAYLIST_DESTROY(&argp->entries[0].key);
+    ROSA_ARRAYLIST_DESTROY(&argp->entries);
 }
 
 bool rosa_argpv_exists(rosa_argpv* argp, const char* key)
@@ -148,7 +148,7 @@ bool rosa_argpv_val_eq(rosa_argpv* argp, const char* key, const char* val)
 int32_t rosa_argpv_find(rosa_argpv* argp, const char* key)
 {
     uint32_t key_hash = rosa_strhash(key, NULL);
-    for (uint32_t i = 0; i < VEC_LEN(&argp->entries); i++) {
+    for (uint32_t i = 0; i < ROSA_ARRAYLIST_LEN(&argp->entries); i++) {
         if (argp->entries[i].key_hash == key_hash && strcmp(argp->entries[i].key, key) == 0) {
             return i;
         }
@@ -158,7 +158,7 @@ int32_t rosa_argpv_find(rosa_argpv* argp, const char* key)
 
 rosa_argpv_entry* rosa_argpv_entry_at(rosa_argpv* argp, int32_t idx)
 {
-    if (idx >= 0 && idx < VEC_LEN(&argp->entries)) {
+    if (idx >= 0 && idx < ROSA_ARRAYLIST_LEN(&argp->entries)) {
         return &(argp->entries[idx]);
     }
     return NULL;
@@ -166,7 +166,7 @@ rosa_argpv_entry* rosa_argpv_entry_at(rosa_argpv* argp, int32_t idx)
 
 int32_t rosa_argpv_entry_count(rosa_argpv* argp)
 {
-    return VEC_LEN(&argp->entries);
+    return ROSA_ARRAYLIST_LEN(&argp->entries);
 }
 
 #ifdef __cplusplus

@@ -41,6 +41,7 @@ set(SOURCES
     src/util.c
 
     src/tests/argparse.c
+    src/tests/arraylist.c
     src/tests/base64.c
     src/tests/rand.c
     src/tests/test.c
